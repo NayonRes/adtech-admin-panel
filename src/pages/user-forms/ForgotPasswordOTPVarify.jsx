@@ -67,7 +67,6 @@ const ForgotPasswordOTPVarify = ({ email }) => {
     });
   };
 
-  
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -85,7 +84,7 @@ const ForgotPasswordOTPVarify = ({ email }) => {
         >
           <div className={classes.form}>
             <img
-              src="/image/logoTuso.png"
+              src="/logo.svg"
               alt=""
               style={{ display: "block", margin: "auto", maxWidth: "155px" }}
             />{" "}

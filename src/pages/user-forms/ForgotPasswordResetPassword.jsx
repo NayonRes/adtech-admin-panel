@@ -91,7 +91,7 @@ const ForgotPasswordResetPassword = ({ email, otp }) => {
           password: newPassword,
           password_confirmation: confirmPassword,
         };
-        let response = {}
+        let response = {};
         handleSnakbarOpen(response.data.messages.toString(), "success");
         login({});
         navigate("/");
@@ -118,7 +118,7 @@ const ForgotPasswordResetPassword = ({ email, otp }) => {
       >
         <form className={classes.form} onSubmit={onSubmit}>
           <img
-            src="/image/logoTuso.png"
+            src="/logo.svg"
             alt=""
             style={{ display: "block", margin: "auto", maxWidth: "155px" }}
           />

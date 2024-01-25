@@ -103,7 +103,7 @@ const ForgotPassword = () => {
         >
           <form className={classes.form} onSubmit={onSubmit}>
             <img
-              src="/image/logoTuso.png"
+              src="/logo.svg"
               alt=""
               style={{ display: "block", margin: "auto", maxWidth: "155px" }}
             />

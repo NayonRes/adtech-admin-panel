@@ -44,133 +44,13 @@ import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import PriceChangeIcon from "@mui/icons-material/PriceChange";
 import CircleIcon from "@mui/icons-material/Circle";
 import MenuIcon from "@mui/icons-material/Menu";
-// const useStyles = makeStyles((theme) => ({
-//   linkStyle: {
-//     textDecoration: "none",
-//     color: "#858e9b",
-//   },
-//   menuItem: {
-//     marginBottom: "5px !important",
-//     padding: "6px 16px !important",
-
-//     "& span": {
-//       fontSize: "17px",
-//       fontWeight: "500 !important",
-//       [theme.breakpoints.down("xl")]: {
-//         fontSize: "14px",
-//       },
-//       [theme.breakpoints.down("md")]: {
-//         fontSize: "12px",
-//       },
-//     },
-//     ["& .MuiListItemIcon-root"]: {
-//       minWidth: "46px",
-//     },
-//     ["& .MuiSvgIcon-root"]: {
-//       position: "relative",
-//       top: "-2px",
-//       color: "#858e9b",
-//       fontSize: "24px",
-//       [theme.breakpoints.down("md")]: {
-//         fontSize: "10px",
-//       },
-//     },
-//     ["&.MuiListItemButton-root:hover"]: {
-//       color: "rgba(158,31,96,0.7) !important",
-//       background: "rgba(158,31,96,0.2) !important",
-//       borderRadius: "10px !important",
-//       ["& .MuiSvgIcon-root"]: {
-//         color: "rgba(158,31,96,0.7) !important",
-//       },
-//     },
-//   },
-
-//   menuItemActive: {
-//     color: "rgba(158,31,96,0.7) !important",
-//     background: "rgba(158,31,96,0.2) !important",
-//     borderRadius: "10px !important",
-//     ["& .MuiSvgIcon-root"]: {
-//       color: "rgba(158,31,96,0.7) !important",
-//     },
-//   },
-//   menuSubItem: {
-//     padding: "6px 16px !important",
-//     "& span": {
-//       fontSize: "17px",
-//       fontWeight: "500 !important",
-//       [theme.breakpoints.down("xl")]: {
-//         fontSize: "14px",
-//       },
-//       [theme.breakpoints.down("md")]: {
-//         fontSize: "12px",
-//       },
-//     },
-//     ["& .MuiListItemIcon-root"]: {
-//       minWidth: "15px",
-//     },
-//     ["& .MuiSvgIcon-root"]: {
-//       position: "relative",
-//       top: "-2px",
-//       color: "#858e9b",
-//       fontSize: "7px",
-//       [theme.breakpoints.down("md")]: {
-//         fontSize: "7px",
-//       },
-//     },
-//     ["&.MuiListItemButton-root:hover"]: {
-//       backgroundColor: "transparent !important",
-//       color: "rgba(158,31,96,0.7) !important",
-//       ["& .MuiSvgIcon-root"]: {
-//         color: "rgba(158,31,96,0.7) !important",
-//       },
-//     },
-//   },
-//   subMenuItemActive: {
-//     color: "rgba(158,31,96,0.7) !important",
-//     // background: "rgba(158,31,96,0.2) !important",
-//     // borderRadius: "10px !important",
-//     ["& .MuiSvgIcon-root"]: {
-//       color: "rgba(158,31,96,0.7) !important",
-//     },
-//   },
-//   // menuSubItem: {
-//   //   padding: "6px 32px 2px 38px !important",
-//   //   "& span": {
-//   //     fontSize: "16px",
-//   //     fontWeight: 500,
-//   //     [theme.breakpoints.down("xl")]: {
-//   //       fontSize: "12px",
-//   //     },
-//   //     [theme.breakpoints.down("md")]: {
-//   //       fontSize: "10px",
-//   //     },
-//   //   },
-//   //   ["& .MuiListItemIcon-root"]: {
-//   //     minWidth: "46px",
-//   //   },
-//   //   ["& .MuiSvgIcon-root"]: {
-//   //     color: "#858e9b",
-//   //     fontSize: "24px",
-//   //     [theme.breakpoints.down("md")]: {
-//   //       fontSize: "10px",
-//   //     },
-//   //   },
-//   // },
-
-//   MuiDrawer: {
-//     backgroundColor: "#fff !important",
-//     color: "#858e9b !important",
-//     // paddingRight: "7px",
-//     // paddingLeft: "7px",
-//   },
-//   logoStyle: {
-//     position: "relative",
-//     top: "8px",
-//     left: "-11px",
-//     cursor: "pointer",
-//     maxWidth: "155px",
-//   },
-// }));
+import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
+import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
+import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
+import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
+import RecentActorsOutlinedIcon from "@mui/icons-material/RecentActorsOutlined";
+import PlaylistRemoveOutlinedIcon from "@mui/icons-material/PlaylistRemoveOutlined";
 
 const drawerWidth = 270;
 
@@ -228,7 +108,7 @@ const AppBar = styled(MuiAppBar, {
   background: "#fff !important",
   boxShadow: "none",
   zIndex: theme.zIndex.drawer + 1,
-  borderBottom: "1px solid #dddddd !important",
+  // borderBottom: "1px solid #dddddd !important",
   ...(open && {
     // width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: `${drawerWidth}px`,
@@ -249,23 +129,69 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 
 export default function Layout() {
   // const classes = useStyles();
+  const theme = useTheme();
   let navigate = useNavigate();
   let pathname = useLocation().pathname;
   console.log("pathname", pathname);
 
   const { login, tuso_admin_panel, logout } = useContext(AuthContext);
   console.log("tuso_admin_panel", tuso_admin_panel);
-
-  const theme = useTheme();
-  const [kycRequestOpen, setKycRequestOpen] = useState(false);
-  const [onboardingOpen, setOnboardingOpen] = useState(false);
-  const [manageRolesOpen, setManageRolesOpen] = useState(false);
-  const [manageAccessOpen, setManageAccessOpen] = useState(false);
-  const [bankingLogOpen, setBankingLogOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const [openLoadingDialog, setOpenLoadingDialog] = useState(false);
   const time = parseInt(1000 * 60 * 120);
 
+  const listButtonStyle = {
+    // marginBottom: "5px !important",
+    padding: "6px 16px !important",
+    "& span": {
+      color: theme.palette.text.light,
+      fontSize: "14px",
+      fontWeight: "500 !important",
+      // [theme.breakpoints.down("xl")]: {
+      //   fontSize: "14px",
+      // },
+      // [theme.breakpoints.down("md")]: {
+      //   fontSize: "12px",
+      // },
+    },
+    ["& .MuiListItemIcon-root"]: {
+      minWidth: "32px",
+    },
+    ["& .MuiSvgIcon-root"]: {
+      position: "relative",
+      top: "-2px",
+      color: theme.palette.text.light,
+      fontSize: "20px",
+      [theme.breakpoints.down("md")]: {
+        fontSize: "10px",
+      },
+    },
+    ["&.MuiListItemButton-root"]: { borderRadius: "10px" },
+    ["&.MuiListItemButton-root:hover"]: {
+      "& span": {
+        color: "#fff",
+      },
+      background: theme.palette.primary.main,
+
+      ["& .MuiSvgIcon-root"]: {
+        color: "#fff",
+      },
+    },
+  };
+  const activeStyle = {
+    ["&.MuiListItemButton-root"]: {
+      borderRadius: "10px",
+      "& span": {
+        color: "#fff",
+      },
+      background: theme.palette.primary.main,
+
+      ["& .MuiSvgIcon-root"]: {
+        color: "#fff",
+      },
+    },
+  };
   const navigateRoutes = (routeName) => {
     navigate(routeName, { replace: true });
   };
@@ -284,41 +210,6 @@ export default function Layout() {
     setAnchorEl(null);
   };
 
-  const [open, setOpen] = useState(true);
-  const manageOpen = (id) => {
-    switch (id) {
-      case "Supports":
-        setKycRequestOpen(!kycRequestOpen);
-        setOnboardingOpen(false);
-        setManageRolesOpen(false);
-        setManageAccessOpen(false);
-        setBankingLogOpen(false);
-        break;
-
-      case "Users":
-        setOnboardingOpen(false);
-        setManageRolesOpen(!manageRolesOpen);
-        setManageAccessOpen(false);
-        setKycRequestOpen(false);
-        setBankingLogOpen(false);
-        break;
-      case "Configuration":
-        setOnboardingOpen(false);
-        setManageRolesOpen(false);
-        setManageAccessOpen(!manageAccessOpen);
-        setKycRequestOpen(false);
-        setBankingLogOpen(false);
-        break;
-
-      case "close":
-        setOnboardingOpen(false);
-        setManageRolesOpen(false);
-        setManageAccessOpen(false);
-        setKycRequestOpen(false);
-        setBankingLogOpen(false);
-        break;
-    }
-  };
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -327,47 +218,6 @@ export default function Layout() {
     setOpen(!open);
   };
 
-  const checkSupportsRoute = () => {
-    const userPathname = [
-      "/request-ticket",
-      "/ticket-details",
-      "/service-history",
-      "/incident-list",
-    ];
-    if (userPathname.includes(pathname)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-  const checkUserRoute = () => {
-    const userPathname = [
-      "/user-list",
-      "/profile-creation",
-      "/user-access-control",
-    ];
-    if (userPathname.includes(pathname)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
-  const checkConfigurationRoute = () => {
-    const userPathname = [
-      "/country",
-      "/role",
-      "/department",
-      "/category",
-      "/quick-list",
-      "/urgency",
-      "/company",
-    ];
-    if (userPathname.includes(pathname)) {
-      return true;
-    } else {
-      return false;
-    }
-  };
   const withoutLayout = ["/", "/forgot-password", "/reset-password", "/verify"];
 
   if (withoutLayout.includes(pathname)) {
@@ -391,26 +241,26 @@ export default function Layout() {
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               <img
-                src="/image/logoTuso.png"
+                src="/logo.svg"
                 alt=""
                 // className={classes.logoStyle}
                 style={{
                   position: "relative",
                   top: "8px",
-                  left: "-11px",
-                  cursor: "pointer",
-                  maxWidth: "155px",
+                  left: "0px",
+                  // cursor: "pointer",
+                  maxWidth: "175px",
                 }}
               />
-              <IconButton
+              {/* <IconButton
                 onClick={handleDrawerClose}
                 aria-label="open drawer"
                 edge="start"
                 style={{
                   ml: 2,
                   position: "relative",
-                  top: "-14px",
-                  left: "55px",
+                  top: "-10px",
+                  left: "35px",
                   borderRadius: "10px",
                   border: "1px solid rgba(158,31,96,1)",
 
@@ -419,12 +269,12 @@ export default function Layout() {
                     background: "rgba(158,31,96,1)",
                   },
                 }}
-                // sx={{ mr: 2, ...(open && { display: "none" }) }}
+              
               >
                 <MenuIcon
                   sx={{ color: "rgba(158,31,96,1)", fontSize: "26px" }}
                 />
-              </IconButton>
+              </IconButton> */}
             </Typography>
 
             <div variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -436,7 +286,7 @@ export default function Layout() {
                 onClick={handleClick}
                 style={{
                   padding: 0,
-                  color: "#9e1f63",
+                  color: theme.palette.primary.main,
                   fontSize: "14px",
                   textTransform: "none",
                 }}
@@ -509,166 +359,175 @@ export default function Layout() {
             "& .MuiDrawer-paper": {
               width: drawerWidth,
               boxSizing: "border-box",
+              borderRight: "none",
+              boxShadow: "none",
             },
           }}
           variant="persistent"
           anchor="left"
           open={open}
         >
-          <DrawerHeader>
-            {/* <img
-              src="/image/logoTuso.png"
-              alt=""
-              style={{
-                width: "155px",
-                display: "block",
-                margin: "auto",
-                cursor: "pointer",
-              }}
-            />
-            <IconButton onClick={handleDrawerClose}>
-              <MenuIcon />
-            </IconButton> */}
-          </DrawerHeader>
-          <Divider />
-          <div style={{ textAlign: "center", padding: "20px 0" }}>
-            <Avatar
-              src="/image/user.jpg"
-              sx={{ width: 40, height: 40 }}
-              style={{ display: "block", margin: " auto auto 10px auto" }}
-            />
-            {tuso_admin_panel ? tuso_admin_panel.email : ""}
-          </div>
-          <Divider />
+          <DrawerHeader></DrawerHeader>
 
-          <List>
-            <Link
-              to="/dashboard"
-              //  className={classes.linkStyle}
-              className={`linkStyle`}
+          <List sx={{ px: 4, py: 4 }}>
+            <Typography
+              variant="small"
+              color="text.main"
+              sx={{ fontWeight: 700, mb: 1 }}
             >
-              <ListItemButton
-                // className={`${classes.menuItem} ${
-                //   pathname === "/dashboard" ? classes.menuItemActive : null
-                // }`}
-                sx={{
-                  marginBottom: "5px !important",
-                  padding: "6px 16px !important",
-                  "& span": {
-                    fontSize: "17px",
-                    fontWeight: "500 !important",
-                    [theme.breakpoints.down("xl")]: {
-                      fontSize: "14px",
-                    },
-                    [theme.breakpoints.down("md")]: {
-                      fontSize: "12px",
-                    },
-                  },
-                  ["& .MuiListItemIcon-root"]: {
-                    minWidth: "46px",
-                  },
-                  ["& .MuiSvgIcon-root"]: {
-                    position: "relative",
-                    top: "-2px",
-                    color: "#858e9b",
-                    fontSize: "24px",
-                    [theme.breakpoints.down("md")]: {
-                      fontSize: "10px",
-                    },
-                  },
-                  ["&.MuiListItemButton-root:hover"]: {
-                    color: "rgba(158,31,96,0.7) !important",
-                    background: "rgba(158,31,96,0.2) !important",
-                    borderRadius: "10px !important",
-                    ["& .MuiSvgIcon-root"]: {
-                      color: "rgba(158,31,96,0.7) !important",
-                    },
-                  },
-                }}
-                onClick={() => {
-                  manageOpen("close");
-                }}
-              >
-                <ListItemIcon>
-                  <HomeIcon />
-                </ListItemIcon>
-
-                <ListItemText primary="Dashboard" />
-              </ListItemButton>
-            </Link>
+              Dashboard
+            </Typography>
 
             <ListItemButton
-              // className={`${classes.menuItem} ${
-              //   checkUserRoute() ? classes.menuItemActive : null
-              // }`}
-              onClick={() => {
-                manageOpen("Users");
-              }}
+              component={Link}
+              to="/dashboard"
+              sx={[
+                { ...listButtonStyle, mb: 2 },
+                pathname === "/dashboard" && { ...activeStyle },
+              ]}
             >
               <ListItemIcon>
-                <ManageAccountsIcon />
+                <DashboardOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="Users" />
-              {manageRolesOpen ? <ExpandLess /> : <ExpandMore />}
-            </ListItemButton>
-            <Collapse
-              in={manageRolesOpen}
-              timeout="auto"
-              unmountOnExit
-              style={{
-                borderLeft: "1px solid rgba(31,158,158,0.7)",
-                marginLeft: "25px",
-              }}
-            >
-              <List component="div" disablePadding>
-                <Link to="/user-list" className={`linkStyle`}>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    // className={`${classes.menuSubItem} ${
-                    //   pathname === "/user-list"
-                    //     ? classes.subMenuItemActive
-                    //     : null
-                    // }`}
-                  >
-                    <ListItemIcon>
-                      <CircleIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="User list" />
-                  </ListItemButton>
-                </Link>
 
-                {/* <Link to="/profile-creation"  className={`linkStyle`}>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    className={`${classes.menuSubItem} ${
-                      pathname === "/profile-creation"
-                        ? classes.subMenuItemActive
-                        : null
-                    }`}
-                  >
-                    <ListItemIcon>
-                      <CircleIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Profile creation" />
-                  </ListItemButton>
-                </Link>
-                <Link to="/user-access-control"  className={`linkStyle`}>
-                  <ListItemButton
-                    sx={{ pl: 4 }}
-                    className={`${classes.menuSubItem} ${
-                      pathname === "/user-access-control"
-                        ? classes.subMenuItemActive
-                        : null
-                    }`}
-                  >
-                    <ListItemIcon>
-                      <CircleIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="User access control" />
-                  </ListItemButton>
-                </Link> */}
-              </List>
-            </Collapse>
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+            <Typography
+              variant="small"
+              color="text.main"
+              sx={{ fontWeight: 700, mb: 1 }}
+            >
+              Customer Pages
+            </Typography>
+
+            <ListItemButton
+              component={Link}
+              to="/add-customer"
+              sx={[
+                { ...listButtonStyle, mb: 0.5 },
+                pathname === "/add-customer" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <PersonAddAltOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Add Customer" />
+            </ListItemButton>
+            <ListItemButton
+              component={Link}
+              to="/customer-list"
+              sx={[
+                { ...listButtonStyle, mb: 2 },
+                pathname === "/customer-list" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <GroupsOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Customer List" />
+            </ListItemButton>
+            <Typography
+              variant="small"
+              color="text.main"
+              sx={{ fontWeight: 700, mb: 1 }}
+            >
+              Order Pages
+            </Typography>
+
+            {/* <ListItemButton
+              component={Link}
+              to="/add-order"
+              sx={[
+                { ...listButtonStyle, mb: 0.5 },
+                pathname === "/add-order" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <HomeIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Add Order" />
+            </ListItemButton> */}
+            <ListItemButton
+              component={Link}
+              to="/pending-order-list"
+              sx={[
+                { ...listButtonStyle, mb: 0.5 },
+                pathname === "/pending-order-list" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <ListAltOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Pending Order List" />
+            </ListItemButton>
+            <ListItemButton
+              component={Link}
+              to="/complete-order-list"
+              sx={[
+                { ...listButtonStyle, mb: 0.5 },
+                pathname === "/complete-order-list" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <FactCheckOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Complete Order List" />
+            </ListItemButton>
+            <ListItemButton
+              component={Link}
+              to="/refunded-order-list"
+              sx={[
+                { ...listButtonStyle, mb: 2 },
+                pathname === "/refunded-order-list" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <PlaylistRemoveOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Refunded Order List" />
+            </ListItemButton>
+            <Typography
+              variant="small"
+              color="text.main"
+              sx={{ fontWeight: 700, mb: 1 }}
+            >
+              User Pages
+            </Typography>
+
+            <ListItemButton
+              component={Link}
+              to="/add-user"
+              sx={[
+                { ...listButtonStyle, mb: 0.5 },
+                pathname === "/add-user" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <PersonAddAltOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Add User" />
+            </ListItemButton>
+            <ListItemButton
+              component={Link}
+              to="/user-list"
+              sx={[
+                { ...listButtonStyle, mb: 2 },
+                pathname === "/user-list" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <RecentActorsOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="User List" />
+            </ListItemButton>
           </List>
         </Drawer>
         <Main open={open}>

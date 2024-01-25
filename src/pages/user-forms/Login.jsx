@@ -149,7 +149,7 @@ const Login = () => {
               style={{ padding: "50px" }}
             >
               <img
-                src="/image/logoTuso.png"
+                src="/logo.svg"
                 alt=""
                 style={{ display: "block", margin: "auto", maxWidth: "155px" }}
               />
