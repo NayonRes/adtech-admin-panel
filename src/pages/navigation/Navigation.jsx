@@ -5,6 +5,8 @@ import Login from "../user-forms/Login";
 // import ResetPassword from "../user-forms/ResetPassword";
 import Verify from "../user-forms/Verify";
 import { AuthContext } from "../../context/AuthContext";
+import Tables from "../../table/Tables";
+import CustomerList from "../customer/CustomerList";
 // import NoMatch from "../NoMatch";
 // import Dialog from "@mui/material/Dialog";
 // import DialogContent from "@mui/material/DialogContent";
@@ -13,17 +15,21 @@ import { AuthContext } from "../../context/AuthContext";
 // import Dashboard from "../dashboard/Dashboard";
 
 function PrivateRoute({ children }) {
-  const { tuso_admin_panel } = useContext(AuthContext);
-
-  return tuso_admin_panel.token ? children : <Navigate to="/" />;
+  const { adtech_admin_panel } = useContext(AuthContext);
+  // console.log("adtech_admin_panel?.data?.token", adtech_admin_panel);
+  return adtech_admin_panel?.token ? children : <Navigate to="/" />;
 }
 function RedirectToHome({ children }) {
-  const { tuso_admin_panel } = useContext(AuthContext);
+  const { adtech_admin_panel } = useContext(AuthContext);
 
-  return !tuso_admin_panel.token ? children : <Navigate to="/dashboard" />;
+  return !adtech_admin_panel?.token ? (
+    children
+  ) : (
+    <Navigate to="/dashboard" />
+  );
 }
 const Navigation = () => {
-  const { tuso_admin_panel } = useContext(AuthContext);
+  const { adtech_admin_panel } = useContext(AuthContext);
 
   return (
     <div>
@@ -69,10 +75,18 @@ const Navigation = () => {
             </PrivateRoute>
           }
         /> */}
+        <Route
+          path="customer-list"
+          element={
+            <PrivateRoute>
+              <CustomerList />
+            </PrivateRoute>
+          }
+        />
 
         {/* <Route
           path="*"
-          element={!tuso_admin_panel.token ? <Navigate to="/" /> : <NoMatch />}
+          element={!adtech_admin_panel.token ? <Navigate to="/" /> : <NoMatch />}
         /> */}
       </Routes>
     </div>

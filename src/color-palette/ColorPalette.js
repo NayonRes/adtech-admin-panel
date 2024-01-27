@@ -5,7 +5,7 @@ let ColorPalette = {
     },
     primary: {
       main: "#834BFF",
-      light: "#D8F4F5",
+      light: "#dbd0f2",
       contrastText: "#fff",
     },
     secondary: {

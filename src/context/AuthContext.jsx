@@ -5,8 +5,8 @@ import authReducer from "./authReducer";
 export const AuthContext = createContext();
 
 export default function AuthContextProvider(props) {
-  const [tuso_admin_panel, dispatch] = useReducer(authReducer, {}, () => {
-    const localData = localStorage.getItem("tuso_admin_panel");
+  const [adtech_admin_panel, dispatch] = useReducer(authReducer, {}, () => {
+    const localData = localStorage.getItem("adtech_admin_panel");
     return localData ? JSON.parse(localData) : {};
   });
 
@@ -25,11 +25,14 @@ export default function AuthContextProvider(props) {
   };
 
   useEffect(() => {
-    localStorage.setItem("tuso_admin_panel", JSON.stringify(tuso_admin_panel));
+    localStorage.setItem(
+      "adtech_admin_panel",
+      JSON.stringify(adtech_admin_panel)
+    );
   }, [login]);
 
   return (
-    <AuthContext.Provider value={{ login, tuso_admin_panel, logout }}>
+    <AuthContext.Provider value={{ login, adtech_admin_panel, logout }}>
       {props.children}
     </AuthContext.Provider>
   );

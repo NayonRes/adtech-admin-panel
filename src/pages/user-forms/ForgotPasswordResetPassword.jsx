@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
 const ForgotPasswordResetPassword = ({ email, otp }) => {
   const classes = useStyles();
   const navigate = useNavigate();
-  const { login, tuso_admin_panel } = useContext(AuthContext);
+  const { login, adtech_admin_panel } = useContext(AuthContext);
   const [oldPassword, setOldPassword] = useState("");
   const [newPasswordShow, setNewPasswordShow] = useState(false);
   const [newPassword, setNewPassword] = useState("");

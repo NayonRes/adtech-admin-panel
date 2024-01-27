@@ -132,6 +132,7 @@ const theme = createTheme({
         },
       },
     },
+   
     MuiButton: {
       styleOverrides: {
         // Name of the slot
@@ -272,6 +273,8 @@ const theme = createTheme({
 });
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 axios.defaults.headers.common["Content-Type"] = "application/json";
+// axios.defaults.withCredentials = true;
+// axios.defaults.withXSRFToken = true
 function App() {
   return (
     <div>

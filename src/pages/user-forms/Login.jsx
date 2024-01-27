@@ -7,20 +7,19 @@ import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import OutlinedInput from "@mui/material/OutlinedInput";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import AlternateEmailIcon from "@mui/icons-material/AlternateEmail";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Button from "@mui/material/Button";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { useSnackbar } from "notistack";
-import axios from "axios";
 import PulseLoader from "react-spinners/PulseLoader";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import EmailIcon from "@mui/icons-material/Email";
+import { handlePostData } from "../../services/PostDataService";
+import MailOutlineRoundedIcon from "@mui/icons-material/MailOutlineRounded";
+import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 // const useStyles = makeStyles((theme) => ({
 //   main: {
 //     width: "1100px !important",
@@ -41,8 +40,8 @@ const Login = () => {
   // const classes = useStyles();
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-  const [email, setEmail] = useState("admin@admin.com");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("jewelrana.dev@gmail.com");
+  const [password, setPassword] = useState("123456789");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -96,17 +95,24 @@ const Login = () => {
     } else {
       setLoading(true);
       try {
+        let url = `/api/auth/login`;
         let data = {
           email: email.trim(),
           password: password.trim(),
         };
+        let res = await handlePostData(url, data);
+        console.log("res", res.data);
 
-        handleSnakbarOpen("Successfull", "success");
-        setTimeout(() => {
-          login(data);
-          setLoading(false);
-          navigate("/verify");
-        }, 1200);
+        if (res?.status > 199 && res?.status < 300) {
+          handleSnakbarOpen("Successfull", "success");
+          login(res?.data.data);
+          navigate("/dashboard");
+        }
+        setLoading(false);
+        return;
+        // login(data);
+        // setLoading(false);
+        // navigate("/dashboard");
       } catch (error) {
         console.log("error", error);
         handleSnakbarOpen(error.response.data.messages.toString(), "error");
@@ -170,7 +176,7 @@ const Login = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <EmailIcon />
+                      <MailOutlineRoundedIcon />
                     </InputAdornment>
                   ),
                 }}
@@ -204,7 +210,11 @@ const Login = () => {
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
                       >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                        {showPassword ? (
+                          <VisibilityOffOutlinedIcon />
+                        ) : (
+                          <RemoveRedEyeOutlinedIcon />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   }

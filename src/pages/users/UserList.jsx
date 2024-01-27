@@ -108,7 +108,7 @@ const UserList = () => {
   const [categoryMessage, setCategoryMessage] = useState("");
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [updateLoading, setUpdateLoading] = useState(false);
-  const { tuso_admin_panel } = useContext(AuthContext);
+  const { adtech_admin_panel } = useContext(AuthContext);
   const handleSnakbarOpen = (msg, vrnt) => {
     let duration;
     if (vrnt === "error") {
@@ -153,9 +153,6 @@ const UserList = () => {
           <TableCell>
             <Skeleton></Skeleton>
           </TableCell>
-        
-        
-      
         </TableRow>
       );
     }
@@ -270,7 +267,6 @@ const UserList = () => {
                     size="small"
                     variant="outlined"
                     label="City"
-                   
                   />
                 </Grid>
                 <Grid item xs={3}>
@@ -280,11 +276,9 @@ const UserList = () => {
                     size="small"
                     variant="outlined"
                     label="Street"
-                   
                   />
                 </Grid>
-              
-              
+
                 <Grid item xs={3}>
                   <FormControl variant="outlined" fullWidth size="small">
                     <InputLabel id="demo-is-assigned-outlined-label">
@@ -330,7 +324,7 @@ const UserList = () => {
                         disableElevation
                         size="large"
                         fullWidth
-                        style={{ background: "#21618C"}}
+                        style={{ background: "#21618C" }}
                         // onClick={(event) => clearFilter(event, 0)}
                       >
                         <RestartAltIcon />
@@ -379,7 +373,9 @@ const UserList = () => {
                   <TableCell style={{ minWidth: "120px" }}>Street</TableCell>
                   <TableCell style={{ minWidth: "120px" }}>Zip Code</TableCell>
 
-                  <TableCell align="center" style={{ minWidth: "120px" }}>Action</TableCell>
+                  <TableCell align="center" style={{ minWidth: "120px" }}>
+                    Action
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody className={classes.tableBodyStyle}>
@@ -419,7 +415,7 @@ const UserList = () => {
                       <TableCell style={{ whiteSpace: "nowrap" }}>
                         {row?.address?.zipcode}
                       </TableCell>
-                      
+
                       <TableCell align="center">
                         <IconButton
                           onClick={() => {
@@ -434,7 +430,7 @@ const UserList = () => {
                             navigate(`/update-store-detail/${row.id}`);
                           }}
                         >
-                          <EditIcon color="info"  />
+                          <EditIcon color="info" />
                         </IconButton>
                       </TableCell>
                     </TableRow>

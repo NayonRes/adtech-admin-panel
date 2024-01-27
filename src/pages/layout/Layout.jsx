@@ -134,8 +134,8 @@ export default function Layout() {
   let pathname = useLocation().pathname;
   console.log("pathname", pathname);
 
-  const { login, tuso_admin_panel, logout } = useContext(AuthContext);
-  console.log("tuso_admin_panel", tuso_admin_panel);
+  const { login, adtech_admin_panel, logout } = useContext(AuthContext);
+  console.log("adtech_admin_panel", adtech_admin_panel);
   const [open, setOpen] = useState(true);
 
   const [openLoadingDialog, setOpenLoadingDialog] = useState(false);
@@ -227,7 +227,7 @@ export default function Layout() {
         setOpenLoadingDialog={setOpenLoadingDialog}
       />
     );
-  } else if (!tuso_admin_panel.token) {
+  } else if (!adtech_admin_panel.token) {
     return (
       <Navigation
         openLoadingDialog={openLoadingDialog}

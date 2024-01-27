@@ -1,21 +1,17 @@
 import axios from "axios";
 
-const getDataWithToken = async (url) => {
+const getDataWithToken = async (url, token) => {
   try {
-    const localData = JSON.parse(localStorage.getItem("tuso_admin_panel"));
-
     // console.log("localData.token", localData.token);
     let response = await axios({
       method: "get",
       url: url,
       headers: {
-        Authorization: `Bearer ${localData.token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
 
-    if (response.status === 200) {
-      return response;
-    }
+    return response;
   } catch (error) {
     console.log("error", error);
     return error.response;
