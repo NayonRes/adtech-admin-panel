@@ -132,7 +132,7 @@ const theme = createTheme({
         },
       },
     },
-   
+
     MuiButton: {
       styleOverrides: {
         // Name of the slot
@@ -257,6 +257,7 @@ const theme = createTheme({
     MuiTableCell: {
       styleOverrides: {
         head: {
+          color: "#718096",
           fontSize: "14px",
           fontWeight: 500,
           padding: "6px 10px 6px 0px",

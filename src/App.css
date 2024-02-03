@@ -6,3 +6,8 @@ body {
   text-decoration: none;
   color: none;
 }
+
+.xs_textfeild .MuiOutlinedInput-input {
+  color: "#718096";
+  padding: "7.5px 14px";
+}

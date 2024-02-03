@@ -14,6 +14,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import Chip from "@mui/material/Chip";
 import {
   Avatar,
+  Box,
   Button,
   Grid,
   IconButton,
@@ -166,6 +167,7 @@ const CustomerList = () => {
   };
 
   useEffect(() => {
+    // setLoading(true);
     getData();
   }, []);
 
@@ -214,7 +216,7 @@ const CustomerList = () => {
           <Grid item xs="auto">
             <Button
               variant="outlined"
-              size="small"
+              // size="small"
               disableElevation
               startIcon={
                 openFilter ? (
@@ -238,6 +240,12 @@ const CustomerList = () => {
                 label="Name"
                 variant="outlined"
                 size="small"
+                sx={{
+                  "& .MuiOutlinedInput-input": {
+                    // color: "#718096",
+                    padding: "7px 14px",
+                  },
+                }}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -249,6 +257,12 @@ const CustomerList = () => {
                 label="Email"
                 variant="outlined"
                 size="small"
+                sx={{
+                  "& .MuiOutlinedInput-input": {
+                    // color: "#718096",
+                    padding: "7px 14px",
+                  },
+                }}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -260,6 +274,12 @@ const CustomerList = () => {
                 label="Mobile No"
                 variant="outlined"
                 size="small"
+                sx={{
+                  "& .MuiOutlinedInput-input": {
+                    // color: "#718096",
+                    padding: "7px 14px",
+                  },
+                }}
                 value={mobileNo}
                 onChange={(e) => setmobileNo(e.target.value)}
               />
@@ -269,7 +289,12 @@ const CustomerList = () => {
                 variant="outlined"
                 fullWidth
                 size="small"
-                className="xs_select"
+                sx={{
+                  "& .MuiOutlinedInput-input": {
+                    // color: "#718096",
+                    padding: "7px 14px",
+                  },
+                }}
               >
                 <InputLabel id="demo-status-outlined-label">Status</InputLabel>
                 <Select
@@ -280,15 +305,20 @@ const CustomerList = () => {
                   onChange={(e) => setStatus(e.target.value)}
                 >
                   <MenuItem value="None">None</MenuItem>
-                  <MenuItem value={1}>Success</MenuItem>
-                  <MenuItem value={0}>Pending</MenuItem>
+                  <MenuItem value={"Active"}>Active</MenuItem>
+                  <MenuItem value={"Inactive"}>Inactive</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
-                  // className="xs_input"
+                  sx={{
+                    "& .MuiOutlinedInput-input": {
+                      // color: "#718096",
+                      padding: "7px 14px",
+                    },
+                  }}
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}
@@ -304,7 +334,12 @@ const CustomerList = () => {
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DateTimePicker
-                  className="xs_input"
+                  sx={{
+                    "& .MuiOutlinedInput-input": {
+                      // color: "#718096",
+                      padding: "7px 14px",
+                    },
+                  }}
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}
@@ -355,7 +390,8 @@ const CustomerList = () => {
           style={{
             overflowX: "auto",
             minWidth: "100%",
-            width: "Calc(100vw - 370px)",
+            width: "Calc(100vw - 385px)",
+            maxHeight: "Calc(100vh - 280px)",
           }}
         >
           <Table aria-label="simple table">
@@ -363,13 +399,13 @@ const CustomerList = () => {
               <TableRow>
                 <TableCell>Name</TableCell>
                 <TableCell>Email</TableCell>
-                <TableCell>Mobile No</TableCell>
-                <TableCell>Gender</TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>Mobile No</TableCell>
+                {/* <TableCell>Gender</TableCell> */}
                 <TableCell align="center">Status</TableCell>
-                <TableCell>Created At</TableCell>
-                <TableCell>Updated At</TableCell>
-                <TableCell>Created By</TableCell>
-                <TableCell>Updated By</TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>Created At</TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>Updated By</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -390,8 +426,8 @@ const CustomerList = () => {
                     </TableCell>
                     <TableCell>{row?.email}</TableCell>
                     <TableCell>{row?.mobile}</TableCell>
-                    <TableCell>{row?.gender}</TableCell>
-                    <TableCell>
+                    {/* <TableCell>{row?.gender}</TableCell> */}
+                    <TableCell align="center">
                       {/* <img
                         src={
                           row.status === "Acitve"
@@ -424,42 +460,42 @@ const CustomerList = () => {
                         />
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{ minWidth: "90px" }}>
                       {" "}
                       {moment(row?.created_at).format(
                         "DD MMM, YYYY, HH:mm:ss a"
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{ minWidth: "90px" }}>
                       {" "}
                       {moment(row?.updated_at).format(
                         "DD MMM, YYYY, HH:mm:ss a"
                       )}
                     </TableCell>
 
-                    <TableCell>
+                    <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
                       {row.created_by !== null ? row.created_by : "-----"}
                     </TableCell>
-                    <TableCell>
+                    <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
                       {row.updated_by !== null ? row.updated_by : "-----"}
                     </TableCell>
                   </TableRow>
                 ))}
-              {!loading && list?.length < 1 ? (
-                <TableRow>
-                  <TableCell colSpan={12} style={{ textAlign: "center" }}>
-                    <strong> {message}</strong>
-                  </TableCell>
-                </TableRow>
-              ) : null}
+
               {loading && pageLoading()}
             </TableBody>
           </Table>
         </TableContainer>
+        {!loading && list?.length < 1 ? (
+          <Box sx={{ textAlign: "center", p: 2 }}>
+            <strong> No Data Found</strong>
+          </Box>
+        ) : null}
         {list?.length > 0 && (
           <TablePagination
+            rowsPerPageOptions={[]}
             component="div"
             count={totalData}
             page={page}

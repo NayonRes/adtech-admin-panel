@@ -11,7 +11,8 @@ import CustomerList from "../customer/CustomerList";
 // import Dialog from "@mui/material/Dialog";
 // import DialogContent from "@mui/material/DialogContent";
 // import PulseLoader from "react-spinners/PulseLoader";
-// import UserList from "../users/UserList";
+import UserList from "../users/UserList";
+import AddUser from "../users/AddUser";
 // import Dashboard from "../dashboard/Dashboard";
 
 function PrivateRoute({ children }) {
@@ -22,11 +23,7 @@ function PrivateRoute({ children }) {
 function RedirectToHome({ children }) {
   const { adtech_admin_panel } = useContext(AuthContext);
 
-  return !adtech_admin_panel?.token ? (
-    children
-  ) : (
-    <Navigate to="/dashboard" />
-  );
+  return !adtech_admin_panel?.token ? children : <Navigate to="/dashboard" />;
 }
 const Navigation = () => {
   const { adtech_admin_panel } = useContext(AuthContext);
@@ -67,14 +64,22 @@ const Navigation = () => {
             </PrivateRoute>
           }
         /> */}
-        {/* <Route
+        <Route
           path="user-list"
           element={
             <PrivateRoute>
               <UserList />
             </PrivateRoute>
           }
-        /> */}
+        />
+        <Route
+          path="add-user"
+          element={
+            <PrivateRoute>
+              <AddUser />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="customer-list"
           element={
