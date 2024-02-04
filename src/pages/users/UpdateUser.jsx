@@ -14,9 +14,11 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import { useParams } from "react-router-dom";
 
-const AddUser = () => {
+const UpdateUser = () => {
   const theme = useTheme();
+  const { id } = useParams();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -30,6 +32,7 @@ const AddUser = () => {
   const [userTypeList, setUserTypeList] = useState([]);
   const [userTypeId, setUserTypeId] = useState("");
   const [userTypeMessage, setUserTypeMessage] = useState("");
+  const [status, setStatus] = useState("");
   const [errors, setErrors] = useState({});
   const { enqueueSnackbar } = useSnackbar();
 
@@ -126,8 +129,8 @@ const AddUser = () => {
           role_id: roleId,
         };
         let response = await axios({
-          url: "/api/user",
-          method: "post",
+          url: `/api/user/${id}`,
+          method: "put",
           data: data,
           headers: {
             Authorization: `Bearer ${adtech_admin_panel.token}`,
@@ -159,11 +162,11 @@ const AddUser = () => {
     }
   };
 
-  const getRoles = async (pageNO, newUrl) => {
+  const getRoles = async () => {
     setRoleMessage("");
     let url = "api/role";
     let res = await getDataWithToken(url, adtech_admin_panel.token);
-    // console.log("res", res);
+    console.log("res", res);
     if (res?.status === 401) {
       logout();
       return;
@@ -181,9 +184,34 @@ const AddUser = () => {
       }
     }
   };
+  const getById = async () => {
+    let url = `api/user/${id}`;
+    let res = await getDataWithToken(url, adtech_admin_panel.token);
+    console.log("res", res);
+    if (res?.status === 401) {
+      logout();
+      return;
+    }
+    console.log("res.data.data", res.data.data);
+
+    if (res?.status === 401) {
+      logout();
+      return;
+    }
+    if (res?.status > 199 && res?.status < 300) {
+      setName(res?.data?.data?.name);
+      setEmail(res?.data?.data?.email);
+      // setPassword(res?.data?.data?.);
+      // setConfirmPassword(res?.data?.data?.);
+      setMobileNo(res?.data?.data?.mobile);
+      setRoleId(res?.data?.data?.role_id);
+      setStatus(res?.data?.data?.status);
+    }
+  };
 
   useEffect(() => {
     getRoles();
+    getById();
   }, []);
   return (
     <React.Fragment>
@@ -195,11 +223,11 @@ const AddUser = () => {
       >
         <form
           style={{
-            padding: "50px",
+            padding: " 50px",
             background: "#fff",
             borderRadius: "10px",
             // textAlign: "center",
-            width: "400px",
+            width: "550px",
             // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
           }}
           onSubmit={handleSubmit}
@@ -209,7 +237,7 @@ const AddUser = () => {
             component="div"
             style={{ marginBottom: "30px", textAlign: "center" }}
           >
-            Add User
+            Update User
           </Typography>
           <Box sx={{ marginBottom: "18px" }}>
             <Typography variant="base" htmlFor="name">
@@ -346,12 +374,43 @@ const AddUser = () => {
               </Typography>
             )}
           </Box>
-
+          <Box sx={{ marginBottom: "28px" }}>
+            <Typography variant="base" htmlFor="mobileNo">
+              Status
+            </Typography>
+            <FormControl
+              variant="outlined"
+              fullWidth
+              size="small"
+              sx={{
+                "& .MuiOutlinedInput-input": {
+                  // color: "#718096",
+                  padding: "7px 14px",
+                },
+              }}
+            >
+              <Select
+                labelId="demo-status-outlined-label"
+                id="demo-status-outlined"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <MenuItem value="None">None</MenuItem>
+                <MenuItem value={"Active"}>Active</MenuItem>
+                <MenuItem value={"Inactive"}>Inactive</MenuItem>
+              </Select>
+            </FormControl>
+            {errors.status && (
+              <Typography variant="small" color="error.main">
+                {errors.status}
+              </Typography>
+            )}
+          </Box>
           <Button
             variant="contained"
             disableElevation
             fullWidth
-            style={{ marginBottom: "30px", minHeight: "37px" }}
+            style={{ minHeight: "37px" }}
             disabled={loading}
             // onClick={onSubmit}
             type="submit"
@@ -370,4 +429,4 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default UpdateUser;

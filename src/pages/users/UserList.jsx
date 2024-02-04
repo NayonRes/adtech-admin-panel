@@ -40,6 +40,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import moment from "moment";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 const UserList = () => {
   const theme = useTheme();
@@ -83,7 +84,7 @@ const UserList = () => {
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
-      for (let j = 0; j < 9; j++) {
+      for (let j = 0; j < 10; j++) {
         cells.push(
           <TableCell key={j} sx={{ py: 1.5 }}>
             <Skeleton></Skeleton>
@@ -179,7 +180,10 @@ const UserList = () => {
       logout();
       return;
     }
-
+    if (res?.status === 401) {
+      logout();
+      return;
+    }
     if (res?.status > 199 && res?.status < 300) {
       if (res.data.data.length > 0) {
         setRoles(res.data.data);
@@ -431,7 +435,9 @@ const UserList = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated By</TableCell>
-                <TableCell sx={{ whiteSpace: "nowrap" }}>Actions</TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -493,6 +499,18 @@ const UserList = () => {
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
                       {row.updated_by !== null ? row.updated_by : "-----"}
+                    </TableCell>
+                    <TableCell
+                      sx={{ whiteSpace: "nowrap", p: 0 }}
+                      align="center"
+                    >
+                      <IconButton
+                        aria-label="edit"
+                        component={Link}
+                        to={`/update-user/${row?.id}`}
+                      >
+                        <EditOutlinedIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}

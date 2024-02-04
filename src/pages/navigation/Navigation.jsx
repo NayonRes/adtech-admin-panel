@@ -13,6 +13,7 @@ import CustomerList from "../customer/CustomerList";
 // import PulseLoader from "react-spinners/PulseLoader";
 import UserList from "../users/UserList";
 import AddUser from "../users/AddUser";
+import UpdateUser from "../users/UpdateUser";
 // import Dashboard from "../dashboard/Dashboard";
 
 function PrivateRoute({ children }) {
@@ -77,6 +78,14 @@ const Navigation = () => {
           element={
             <PrivateRoute>
               <AddUser />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="update-user/:id"
+          element={
+            <PrivateRoute>
+              <UpdateUser />
             </PrivateRoute>
           }
         />
