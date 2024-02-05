@@ -34,12 +34,14 @@ import { AuthContext } from "../../context/AuthContext";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import moment from "moment";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 
 const CustomerList = () => {
   const theme = useTheme();
@@ -126,15 +128,13 @@ const CustomerList = () => {
         // newCreatedStartTime = moment(createdStartTime).format(
         //   "YYYY-MM-DD HH:mm:ss"
         // );
-        newCreatedStartTime = dayjs(createdStartTime).format(
-          "YYYY-MM-DD HH:mm:ss"
-        );
+        newCreatedStartTime = dayjs(createdStartTime).format("YYYY-MM-DD");
       }
       if (createdEndTime !== null) {
         // newCreatedEndTime = moment(createdEndTime).format(
         //   "YYYY-MM-DD HH:mm:ss"
         // );
-        newCreatedEndTime = dayjs(createdEndTime).format("YYYY-MM-DD HH:mm:ss");
+        newCreatedEndTime = dayjs(createdEndTime).format("YYYY-MM-DD");
       }
 
       url = `api/customer?keyword=${name.trim()}&email=${encodeURIComponent(
@@ -312,7 +312,7 @@ const CustomerList = () => {
             </Grid>
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker
+                <DatePicker
                   sx={{
                     "& .MuiOutlinedInput-input": {
                       // color: "#718096",
@@ -322,6 +322,7 @@ const CustomerList = () => {
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}
+                  maxDate={dayjs(new Date())}
                   renderInput={(props) => <TextField {...props} />}
                   label="Created Starting Time"
                   value={createdStartTime}
@@ -333,7 +334,7 @@ const CustomerList = () => {
             </Grid>
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker
+                <DatePicker
                   sx={{
                     "& .MuiOutlinedInput-input": {
                       // color: "#718096",
@@ -343,6 +344,7 @@ const CustomerList = () => {
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}
+                  maxDate={dayjs(new Date())}
                   renderInput={(props) => <TextField {...props} />}
                   label="Created Ending Time"
                   value={createdEndTime}
@@ -406,6 +408,9 @@ const CustomerList = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated By</TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
+                  Actions
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -480,6 +485,18 @@ const CustomerList = () => {
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
                       {row.updated_by !== null ? row.updated_by : "-----"}
+                    </TableCell>
+                    <TableCell
+                      sx={{ whiteSpace: "nowrap", p: 0 }}
+                      align="center"
+                    >
+                      <IconButton
+                        aria-label="edit"
+                        component={Link}
+                        to={`/update-user/${row?.id}`}
+                      >
+                        <EditOutlinedIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}

@@ -34,6 +34,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
@@ -132,15 +133,13 @@ const UserList = () => {
         // newCreatedStartTime = moment(createdStartTime).format(
         //   "YYYY-MM-DD HH:mm:ss"
         // );
-        newCreatedStartTime = dayjs(createdStartTime).format(
-          "YYYY-MM-DD HH:mm:ss"
-        );
+        newCreatedStartTime = dayjs(createdStartTime).format("YYYY-MM-DD");
       }
       if (createdEndTime !== null) {
         // newCreatedEndTime = moment(createdEndTime).format(
         //   "YYYY-MM-DD HH:mm:ss"
         // );
-        newCreatedEndTime = dayjs(createdEndTime).format("YYYY-MM-DD HH:mm:ss");
+        newCreatedEndTime = dayjs(createdEndTime).format("YYYY-MM-DD");
       }
 
       url = `api/user?keyword=${name.trim()}&email=${encodeURIComponent(
@@ -341,7 +340,7 @@ const UserList = () => {
             </Grid>
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker
+                <DatePicker
                   sx={{
                     "& .MuiOutlinedInput-input": {
                       // color: "#718096",
@@ -351,6 +350,7 @@ const UserList = () => {
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}
+                  maxDate={dayjs(new Date())}
                   renderInput={(props) => <TextField {...props} />}
                   label="Created Starting Time"
                   value={createdStartTime}
@@ -362,7 +362,7 @@ const UserList = () => {
             </Grid>
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DateTimePicker
+                <DatePicker
                   sx={{
                     "& .MuiOutlinedInput-input": {
                       // color: "#718096",
@@ -372,6 +372,7 @@ const UserList = () => {
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}
+                  maxDate={dayjs(new Date())}
                   renderInput={(props) => <TextField {...props} />}
                   label="Created Ending Time"
                   value={createdEndTime}

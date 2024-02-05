@@ -14,7 +14,7 @@ import CustomerList from "../customer/CustomerList";
 import UserList from "../users/UserList";
 import AddUser from "../users/AddUser";
 import UpdateUser from "../users/UpdateUser";
-// import Dashboard from "../dashboard/Dashboard";
+import Dashboard from "../dashboard/Dashboard";
 
 function PrivateRoute({ children }) {
   const { adtech_admin_panel } = useContext(AuthContext);
@@ -48,14 +48,14 @@ const Navigation = () => {
             </RedirectToHome>
           }
         />
-        {/* <Route
+        <Route
           path="dashboard"
           element={
             <PrivateRoute>
               <Dashboard />
             </PrivateRoute>
           }
-        /> */}
+        />
         {/* <Route path="forgot-password" element={<ForgotPassword />} /> */}
         {/* <Route
           path="change-password"

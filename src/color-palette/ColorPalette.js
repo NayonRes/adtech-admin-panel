@@ -20,7 +20,7 @@ let ColorPalette = {
     },
     info: {
       main: "#3182CE",
-      light: "#90CDF4",
+      light: "#e7f6fe",
       contrastText: "#fff",
     },
     warning: {
