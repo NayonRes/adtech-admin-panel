@@ -495,11 +495,11 @@ const UserList = () => {
 
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
-                      {row.created_by !== null ? row.created_by : "-----"}
+                      {row.created_by !== null ? row.created_by.name : "-----"}
                     </TableCell>
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
-                      {row.updated_by !== null ? row.updated_by : "-----"}
+                      {row.updated_by !== null ? row.updated_by.name : "-----"}
                     </TableCell>
                     <TableCell
                       sx={{ whiteSpace: "nowrap", p: 0 }}

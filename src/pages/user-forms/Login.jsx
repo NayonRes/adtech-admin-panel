@@ -95,7 +95,7 @@ const Login = () => {
     } else {
       setLoading(true);
       try {
-        let url = `/api/auth/login`;
+        let url = `/api/auth/user/login`;
         let data = {
           email: email.trim(),
           password: password.trim(),
