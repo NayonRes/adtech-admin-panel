@@ -80,7 +80,7 @@ const CustomerList = () => {
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
-      for (let j = 0; j < 9; j++) {
+      for (let j = 0; j < 10; j++) {
         cells.push(
           <TableCell key={j} sx={{ py: 1.5 }}>
             <Skeleton></Skeleton>
@@ -402,8 +402,8 @@ const CustomerList = () => {
                 <TableCell>Name</TableCell>
                 <TableCell>Email</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Mobile No</TableCell>
-                {/* <TableCell>Gender</TableCell> */}
                 <TableCell align="center">Status</TableCell>
+                <TableCell>Remarks</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
@@ -432,6 +432,7 @@ const CustomerList = () => {
                     <TableCell>{row?.email}</TableCell>
                     <TableCell>{row?.mobile}</TableCell>
                     {/* <TableCell>{row?.gender}</TableCell> */}
+                
                     <TableCell align="center">
                       {/* <img
                         src={
@@ -464,6 +465,13 @@ const CustomerList = () => {
                           sx={{ minWidth: "75px", textAlign: "center" }}
                         />
                       )}
+                    </TableCell>
+                    <TableCell sx={{ width: "190px" }}>
+                      {row?.remarks === null
+                        ? "-------"
+                        : row?.remarks === ""
+                        ? "-------"
+                        : row?.remarks}
                     </TableCell>
                     <TableCell sx={{ minWidth: "90px" }}>
                       {" "}

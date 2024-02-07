@@ -14,10 +14,12 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import Collapse from "@mui/material/Collapse";
 
 const UpdateUser = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const { id } = useParams();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
   const [name, setName] = useState("");
@@ -32,6 +34,7 @@ const UpdateUser = () => {
   const [userTypeList, setUserTypeList] = useState([]);
   const [userTypeId, setUserTypeId] = useState("");
   const [userTypeMessage, setUserTypeMessage] = useState("");
+  const [remarks, setRemarks] = useState("");
   const [status, setStatus] = useState("");
   const [errors, setErrors] = useState({});
   const { enqueueSnackbar } = useSnackbar();
@@ -127,6 +130,7 @@ const UpdateUser = () => {
           password: password,
           password_confirm: confirmPassword,
           role_id: roleId,
+          remarks: remarks,
         };
         let response = await axios({
           url: `/api/user/${id}`,
@@ -148,6 +152,7 @@ const UpdateUser = () => {
           setConfirmPassword("");
           setMobileNo("");
           setRoleId("");
+          navigate("/user-list");
         }
       } catch (error) {
         console.log("error", error);
@@ -345,6 +350,7 @@ const UpdateUser = () => {
               </Typography>
             )} */}
           </Box>
+
           <Box sx={{ marginBottom: "18px" }}>
             <Typography variant="base" htmlFor="mobileNo">
               Select a role *
@@ -374,7 +380,7 @@ const UpdateUser = () => {
               </Typography>
             )}
           </Box>
-          <Box sx={{ marginBottom: "28px" }}>
+          <Box sx={{ marginBottom: "18px" }}>
             <Typography variant="base" htmlFor="mobileNo">
               Status
             </Typography>
@@ -406,6 +412,30 @@ const UpdateUser = () => {
               </Typography>
             )}
           </Box>
+          <Collapse in={status === "Inactive"}>
+            <Box sx={{ marginBottom: "18px" }}>
+              <Typography variant="base" htmlFor="confirmPassword">
+                Reason
+              </Typography>
+              <TextField
+                required={status === "Inactive"}
+                // label="Confirm Password"
+                fullWidth
+                size="small"
+                variant="outlined"
+                id="remarks"
+                multiline
+                rows={4}
+                value={remarks}
+                onChange={(e) => setRemarks(e.target.value)}
+              />
+              {/* {errors.password && (
+              <Typography variant="small" color="error.main">
+                {errors.password}
+              </Typography>
+            )} */}
+            </Box>
+          </Collapse>
           <Button
             variant="contained"
             disableElevation
@@ -415,7 +445,7 @@ const UpdateUser = () => {
             // onClick={onSubmit}
             type="submit"
           >
-            {loading === false && "Create & Add Another"}
+            {loading === false && "Update"}
             <PulseLoader
               color={"#353b48"}
               loading={loading}

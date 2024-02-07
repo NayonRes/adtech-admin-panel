@@ -85,7 +85,7 @@ const UserList = () => {
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 11; j++) {
         cells.push(
           <TableCell key={j} sx={{ py: 1.5 }}>
             <Skeleton></Skeleton>
@@ -432,6 +432,7 @@ const UserList = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Mobile No</TableCell>
                 <TableCell align="center">Role</TableCell>
                 <TableCell align="center">Status</TableCell>
+                <TableCell>Remarks</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
@@ -460,6 +461,7 @@ const UserList = () => {
                     <TableCell>{row?.email}</TableCell>
                     <TableCell>{row?.mobile}</TableCell>
                     <TableCell align="center">working</TableCell>
+                  
 
                     <TableCell align="center">
                       {row.status === "Active" ? (
@@ -479,6 +481,13 @@ const UserList = () => {
                           sx={{ minWidth: "75px", textAlign: "center" }}
                         />
                       )}
+                    </TableCell>
+                    <TableCell sx={{ width: "190px" }}>
+                      {row?.remarks === null
+                        ? "-------"
+                        : row?.remarks === ""
+                        ? "-------"
+                        : row?.remarks}
                     </TableCell>
                     <TableCell sx={{ minWidth: "90px" }}>
                       {" "}
