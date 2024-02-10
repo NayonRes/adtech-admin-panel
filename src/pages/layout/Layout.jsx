@@ -47,6 +47,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
+import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import RecentActorsOutlinedIcon from "@mui/icons-material/RecentActorsOutlined";
@@ -450,6 +451,20 @@ export default function Layout() {
 
               <ListItemText primary="Add Order" />
             </ListItemButton> */}
+            <ListItemButton
+              component={Link}
+              to="/add-order"
+              sx={[
+                { ...listButtonStyle, mb: 0.5 },
+                pathname === "/add-order" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <EditNoteOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Add Order" />
+            </ListItemButton>
             <ListItemButton
               component={Link}
               to="/pending-order-list"

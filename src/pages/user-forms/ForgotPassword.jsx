@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid";
-import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
@@ -10,22 +9,12 @@ import PulseLoader from "react-spinners/PulseLoader";
 import axios from "axios";
 import ForgotPasswordOTPVarify from "./ForgotPasswordOTPVarify";
 import EmailIcon from "@mui/icons-material/Email";
-const useStyles = makeStyles((theme) => ({
-  form: {
-    padding: "50px",
-    background: "#fff",
-    borderRadius: "10px",
-    textAlign: "center",
-    width: "400px",
-    boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-  },
-}));
 
 const ForgotPassword = () => {
-  const classes = useStyles();
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [emailSection, setEmailSection] = useState(true);
+  const [reference, setReference] = useState("");
   const [otpSection, setOtpSection] = useState(false);
   const [passwordSection, setPasswordSection] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -76,16 +65,23 @@ const ForgotPassword = () => {
           email,
         };
         let response = await axios({
-          url: "api/forgot-password/otp-generate",
+          url: "/api/auth/user/forgot",
           method: "post",
           data: data,
         });
-        handleSnakbarOpen(response.data.messages.toString(), "success");
-        setEmailSection(false);
-        setOtpSection(true);
+
+        if (response?.status > 199 && response?.status < 300) {
+          handleSnakbarOpen("OPT has been in your email address", "success");
+          setReference(response?.data?.data?.reference);
+          setEmailSection(false);
+          setOtpSection(true);
+        }
       } catch (error) {
         console.log("error", error);
-        handleSnakbarOpen(error.response.data.messages.toString(), "error");
+        if (error?.response?.status === 500) {
+          handleSnakbarOpen(error?.response?.statusText, "error");
+        }else{
+        handleSnakbarOpen(error.response.data.messages.toString(), "error");}
         setLoading(false);
       }
       setLoading(false);
@@ -101,7 +97,17 @@ const ForgotPassword = () => {
           alignItems="center"
           style={{ height: "100vh" }}
         >
-          <form className={classes.form} onSubmit={onSubmit}>
+          <form
+            onSubmit={onSubmit}
+            style={{
+              padding: "50px",
+              background: "#fff",
+              borderRadius: "10px",
+              textAlign: "center",
+              width: "400px",
+              // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+            }}
+          >
             <img
               src="/logo.svg"
               alt=""
@@ -133,7 +139,6 @@ const ForgotPassword = () => {
               placeholder="Enter your email address"
               fullWidth
               size="small"
-              className={classes.inputStyle}
               style={{ marginBottom: "30px" }}
               InputProps={{
                 startAdornment: (
@@ -151,7 +156,7 @@ const ForgotPassword = () => {
               variant="contained"
               disableElevation
               fullWidth
-              style={{ marginBottom: "30px" }}
+              style={{ marginBottom: "30px", minHeight: "37px" }}
               disabled={loading}
               // onClick={onSubmit}
               type="submit"
@@ -168,7 +173,9 @@ const ForgotPassword = () => {
         </Grid>
       )}
 
-      {otpSection && <ForgotPasswordOTPVarify email={email} />}
+      {otpSection && (
+        <ForgotPasswordOTPVarify email={email} reference={reference} />
+      )}
     </div>
   );
 };

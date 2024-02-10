@@ -460,8 +460,7 @@ const UserList = () => {
                     </TableCell>
                     <TableCell>{row?.email}</TableCell>
                     <TableCell>{row?.mobile}</TableCell>
-                    <TableCell align="center">working</TableCell>
-                  
+                    <TableCell align="center">{row?.role?.name}</TableCell>
 
                     <TableCell align="center">
                       {row.status === "Active" ? (
@@ -504,11 +503,11 @@ const UserList = () => {
 
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
-                      {row.created_by !== null ? row.created_by.name : "-----"}
+                      {row.created_by !== null ? row.created_by.name : "Self"}
                     </TableCell>
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
-                      {row.updated_by !== null ? row.updated_by.name : "-----"}
+                      {row.updated_by !== null ? row.updated_by.name : "Self"}
                     </TableCell>
                     <TableCell
                       sx={{ whiteSpace: "nowrap", p: 0 }}

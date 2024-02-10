@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import Grid from "@mui/material/Grid";
-import { makeStyles } from "@mui/styles";
 import Typography from "@mui/material/Typography";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
@@ -15,21 +14,11 @@ import PulseLoader from "react-spinners/PulseLoader";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-const useStyles = makeStyles((theme) => ({
-  form: {
-    padding: "50px",
-    background: "#fff",
-    borderRadius: "10px",
-    textAlign: "center",
-    width: "400px",
-    boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-  },
-}));
+import { Box } from "@mui/material";
 
 const ResetPassword = () => {
-  const classes = useStyles();
   const navigate = useNavigate();
-  const { login, adtech_admin_panel } = useContext(AuthContext);
+  const { adtech_admin_panel, login, logout } = useContext(AuthContext);
   const [oldPasswordShow, setOldPasswordShow] = useState(false);
   const [oldPassword, setOldPassword] = useState("");
   const [newPasswordShow, setNewPasswordShow] = useState(false);
@@ -37,6 +26,7 @@ const ResetPassword = () => {
   const [confirmPasswordShow, setConfirmPasswordShow] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const handleSnakbarOpen = (msg, vrnt) => {
@@ -65,6 +55,14 @@ const ResetPassword = () => {
       document.getElementById("newPassword").focus();
       return (isError = true);
     }
+    if (newPassword.trim().length < 6) {
+      handleSnakbarOpen(
+        "The password field must be at least 6 characters.",
+        "error"
+      );
+      document.getElementById("newPassword").focus();
+      return (isError = true);
+    }
     if (!confirmPassword.trim()) {
       handleSnakbarOpen("Please enter confirm password", "error");
       document.getElementById("confirmPassword").focus();
@@ -84,6 +82,7 @@ const ResetPassword = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
     let err = validation();
 
     if (err) {
@@ -94,17 +93,31 @@ const ResetPassword = () => {
         let data = {
           old_password: oldPassword,
           password: newPassword,
-          password_confirmation: confirmPassword,
+          password_confirm: confirmPassword,
         };
-        let response = {};
-        handleSnakbarOpen(response.data.messages.toString(), "success");
-        login({});
-        navigate("/");
+        let response = await axios({
+          url: "/api/auth/user/change-password",
+          method: "post",
+          data: data,
+        });
+
+        if (response?.status > 199 && response?.status < 300) {
+          handleSnakbarOpen("Password reset successfully", "success");
+          login({});
+          navigate("/");
+        }
       } catch (error) {
         console.log("error", error);
-        handleSnakbarOpen(error.response.data.messages.toString(), "error");
-
         setLoading(false);
+        if (error?.response?.status === 401) {
+          logout();
+          return;
+        }
+        if (error?.response?.status === 500) {
+          handleSnakbarOpen(error?.response?.statusText, "error");
+        } else {
+          setErrors(error.response.data.errors);
+        }
       }
       setLoading(false);
     }
@@ -121,7 +134,17 @@ const ResetPassword = () => {
         alignItems="center"
         style={{ height: "80vh" }}
       >
-        <form className={classes.form} onSubmit={onSubmit}>
+        <form
+          style={{
+            padding: "50px",
+            background: "#fff",
+            borderRadius: "10px",
+            textAlign: "center",
+            width: "400px",
+            // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+          }}
+          onSubmit={onSubmit}
+        >
           <img
             src="/logo.svg"
             alt=""
@@ -135,107 +158,116 @@ const ResetPassword = () => {
           >
             Reset your password
           </Typography>
-
-          <FormControl
-            fullWidth
-            variant="outlined"
-            style={{ marginBottom: "30px" }}
-          >
-            <OutlinedInput
-              id="oldPassword"
-              autoFocus
-              type={oldPasswordShow ? "text" : "password"}
-              placeholder="Old password"
-              size="small"
-              value={oldPassword}
-              onChange={(e) => setOldPassword(e.target.value)}
-              startAdornment={
-                <InputAdornment position="start">
-                  <LockOutlinedIcon />
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setOldPasswordShow(!oldPasswordShow)}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {oldPasswordShow ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <FormControl
-            fullWidth
-            variant="outlined"
-            style={{ marginBottom: "30px" }}
-          >
-            <OutlinedInput
-              id="newPassword"
-              type={newPasswordShow ? "text" : "password"}
-              placeholder="New password"
-              size="small"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              startAdornment={
-                <InputAdornment position="start">
-                  <LockOutlinedIcon />
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setNewPasswordShow(!newPasswordShow)}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {newPasswordShow ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <FormControl
-            fullWidth
-            variant="outlined"
-            style={{ marginBottom: "30px" }}
-          >
-            <OutlinedInput
-              id="confirmPassword"
-              type={confirmPasswordShow ? "text" : "password"}
-              placeholder="Confirm password"
-              size="small"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              startAdornment={
-                <InputAdornment position="start">
-                  <LockOutlinedIcon />
-                </InputAdornment>
-              }
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setConfirmPasswordShow(!confirmPasswordShow)}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {confirmPasswordShow ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-
+          <Box sx={{ marginBottom: "30px" }}>
+            <FormControl fullWidth variant="outlined">
+              <OutlinedInput
+                id="oldPassword"
+                autoFocus
+                type={oldPasswordShow ? "text" : "password"}
+                placeholder="Old password"
+                size="small"
+                value={oldPassword}
+                onChange={(e) => setOldPassword(e.target.value)}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <LockOutlinedIcon />
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setOldPasswordShow(!oldPasswordShow)}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {oldPasswordShow ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            {errors.old_password && (
+              <Typography variant="small" color="error.main">
+                {errors.old_password}
+              </Typography>
+            )}
+          </Box>
+          <Box sx={{ marginBottom: "30px" }}>
+            <FormControl fullWidth variant="outlined">
+              <OutlinedInput
+                id="newPassword"
+                type={newPasswordShow ? "text" : "password"}
+                placeholder="New password"
+                size="small"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <LockOutlinedIcon />
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setNewPasswordShow(!newPasswordShow)}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {newPasswordShow ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            {errors.password && (
+              <Typography variant="small" color="error.main">
+                {errors.password}
+              </Typography>
+            )}
+          </Box>
+          <Box sx={{ marginBottom: "30px" }}>
+            <FormControl fullWidth variant="outlined">
+              <OutlinedInput
+                id="confirmPassword"
+                type={confirmPasswordShow ? "text" : "password"}
+                placeholder="Confirm password"
+                size="small"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <LockOutlinedIcon />
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() =>
+                        setConfirmPasswordShow(!confirmPasswordShow)
+                      }
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {confirmPasswordShow ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+            {errors.password_confirm && (
+              <Typography variant="small" color="error.main">
+                {errors.password_confirm}
+              </Typography>
+            )}
+          </Box>
           <Button
             variant="contained"
             disableElevation
             fullWidth
-            style={{ marginBottom: "30px" }}
+            style={{ marginBottom: "30px", minHeight: "37px" }}
             disabled={loading}
             // onClick={onSubmit}
             type="submit"

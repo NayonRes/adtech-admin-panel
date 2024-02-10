@@ -17,7 +17,7 @@ import { useTheme } from "@mui/material/styles";
 import { useNavigate, useParams } from "react-router-dom";
 import Collapse from "@mui/material/Collapse";
 
-const UpdateUser = () => {
+const UpdateCustomer = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const { id } = useParams();
@@ -27,13 +27,7 @@ const UpdateUser = () => {
   const [mobileNo, setMobileNo] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [roleId, setRoleId] = useState("");
-  const [roleList, setRoleList] = useState([]);
-  const [roleMessage, setRoleMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [userTypeList, setUserTypeList] = useState([]);
-  const [userTypeId, setUserTypeId] = useState("");
-  const [userTypeMessage, setUserTypeMessage] = useState("");
   const [remarks, setRemarks] = useState("");
   const [status, setStatus] = useState("");
   const [errors, setErrors] = useState({});
@@ -89,12 +83,6 @@ const UpdateUser = () => {
       return (isError = true);
     }
 
-    // if (!roleId) {
-    //   handleSnakbarOpen("Please select user role", "error");
-
-    //   return (isError = true);
-    // }
-
     return isError;
   };
 
@@ -128,12 +116,11 @@ const UpdateUser = () => {
           mobile: mobileNo,
           password: password,
           password_confirm: confirmPassword,
-          role_id: roleId,
           remarks: remarks,
           status,
         };
         let response = await axios({
-          url: `/api/user/${id}`,
+          url: `/api/customer/${id}`,
           method: "put",
           data: data,
           headers: {
@@ -151,7 +138,7 @@ const UpdateUser = () => {
           setPassword("");
           setConfirmPassword("");
           setMobileNo("");
-          setRoleId("");
+
           navigate("/user-list");
         }
       } catch (error) {
@@ -160,7 +147,6 @@ const UpdateUser = () => {
         if (error?.response?.status === 500) {
           handleSnakbarOpen(error?.response?.statusText, "error");
         } else {
-       
           setErrors(error.response.data.errors);
         }
         // handleSnakbarOpen(error.response.data.messages.toString(), "error");
@@ -172,30 +158,8 @@ const UpdateUser = () => {
     }
   };
 
-  const getRoles = async () => {
-    setRoleMessage("");
-    let url = "api/role";
-    let res = await getDataWithToken(url, adtech_admin_panel.token);
-    console.log("res", res);
-    if (res?.status === 401) {
-      logout();
-      return;
-    }
-    if (res?.status === 401) {
-      logout();
-      return;
-    }
-    if (res?.status > 199 && res?.status < 300) {
-      if (res.data.data.length > 0) {
-        setRoleList(res.data.data);
-      } else {
-        setRoleMessage("No data found");
-        setRoleList([]);
-      }
-    }
-  };
   const getById = async () => {
-    let url = `api/user/${id}`;
+    let url = `api/customer/${id}`;
     let res = await getDataWithToken(url, adtech_admin_panel.token);
     console.log("res", res);
     if (res?.status === 401) {
@@ -214,13 +178,11 @@ const UpdateUser = () => {
       // setPassword(res?.data?.data?.);
       // setConfirmPassword(res?.data?.data?.);
       setMobileNo(res?.data?.data?.mobile);
-      setRoleId(res?.data?.data?.role?.id);
       setStatus(res?.data?.data?.status);
     }
   };
 
   useEffect(() => {
-    getRoles();
     getById();
   }, []);
   return (
@@ -247,7 +209,7 @@ const UpdateUser = () => {
             component="div"
             style={{ marginBottom: "30px", textAlign: "center" }}
           >
-            Update User
+            Update Customer
           </Typography>
           <Box sx={{ marginBottom: "18px" }}>
             <Typography variant="base" htmlFor="name">
@@ -316,7 +278,7 @@ const UpdateUser = () => {
               <span
                 style={{ color: theme.palette.text.light, fontSize: "12px" }}
               >
-                (at least 6 characters)
+                (at least 8 characters)
               </span>
             </Typography>
             <TextField
@@ -356,35 +318,6 @@ const UpdateUser = () => {
             )} */}
           </Box>
 
-          <Box sx={{ marginBottom: "18px" }}>
-            <Typography variant="base" htmlFor="mobileNo">
-              Select a role *
-            </Typography>
-            <FormControl required variant="outlined" fullWidth size="small">
-              {/* <InputLabel id="demo-issue-outlined-label">Select role</InputLabel> */}
-              <Select
-                labelId="demo-issue-outlined-label"
-                id="demo-issue-outlined"
-                // label="Select role"
-                value={roleId}
-                onChange={(e) => setRoleId(e.target.value)}
-              >
-                {roleMessage.length > 0 && (
-                  <MenuItem value={roleMessage}>{roleMessage}</MenuItem>
-                )}
-                {roleList?.map((item, i) => (
-                  <MenuItem key={i} value={item.id}>
-                    {item.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            {errors.role_id && (
-              <Typography variant="small" color="error.main">
-                {errors.role_id}
-              </Typography>
-            )}
-          </Box>
           <Box sx={{ marginBottom: "18px" }}>
             <Typography variant="base" htmlFor="mobileNo">
               Status
@@ -464,4 +397,4 @@ const UpdateUser = () => {
   );
 };
 
-export default UpdateUser;
+export default UpdateCustomer;

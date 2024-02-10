@@ -20,6 +20,8 @@ import { handlePostData } from "../../services/PostDataService";
 import MailOutlineRoundedIcon from "@mui/icons-material/MailOutlineRounded";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import { Box } from "@mui/material";
+import axios from "axios";
 // const useStyles = makeStyles((theme) => ({
 //   main: {
 //     width: "1100px !important",
@@ -44,6 +46,7 @@ const Login = () => {
   const [password, setPassword] = useState("123456789");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
   const { enqueueSnackbar } = useSnackbar();
 
   const validation = () => {
@@ -100,8 +103,13 @@ const Login = () => {
           email: email.trim(),
           password: password.trim(),
         };
-        let res = await handlePostData(url, data);
-        console.log("res", res.data);
+        // let res = await handlePostData(url, data);
+        let res = await axios({
+          url: url,
+          method: "post",
+          data: data,
+        });
+        console.log("res -----------------", res.data);
 
         if (res?.status > 199 && res?.status < 300) {
           handleSnakbarOpen("Successfull", "success");
@@ -109,14 +117,19 @@ const Login = () => {
           navigate("/dashboard");
         }
         setLoading(false);
-        return;
+
         // login(data);
         // setLoading(false);
         // navigate("/dashboard");
       } catch (error) {
-        console.log("error", error);
-        handleSnakbarOpen(error.response.data.messages.toString(), "error");
         setLoading(false);
+        console.log("catch error", error);
+        if (error?.response?.status === 500) {
+          handleSnakbarOpen(error?.response?.statusText, "error");
+        } else {
+          console.log("error.response.data.errors", error.response.data.errors);
+          setErrors(error.response.data.errors);
+        }
       }
     }
   };
@@ -159,7 +172,6 @@ const Login = () => {
                 alt=""
                 style={{ display: "block", margin: "auto", maxWidth: "155px" }}
               />
-
               <Typography
                 variant="h5"
                 component="div"
@@ -167,60 +179,76 @@ const Login = () => {
               >
                 Sign-In to continue{" "}
               </Typography>
-              <TextField
-                autoFocus
-                placeholder="Enter your email address"
-                fullWidth
-                size="small"
-                style={{ marginBottom: "30px" }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MailOutlineRoundedIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                variant="outlined"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <FormControl
-                fullWidth
-                variant="outlined"
-                style={{ marginBottom: "30px" }}
-              >
-                <OutlinedInput
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  placeholder="Enter your password"
+              <Box sx={{ marginBottom: "30px" }}>
+                <TextField
+                  autoFocus
+                  placeholder="Enter your email address"
+                  fullWidth
                   size="small"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <LockOutlinedIcon />
-                    </InputAdornment>
-                  }
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setShowPassword(!showPassword)}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                      >
-                        {showPassword ? (
-                          <VisibilityOffOutlinedIcon />
-                        ) : (
-                          <RemoveRedEyeOutlinedIcon />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-              </FormControl>
-
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MailOutlineRoundedIcon />
+                      </InputAdornment>
+                    ),
+                  }}
+                  variant="outlined"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />{" "}
+                {errors?.email && (
+                  <Typography
+                    variant="small"
+                    color="error.main"
+                    sx={{ textAlign: "left" }}
+                  >
+                    {errors.email.toString()}
+                  </Typography>
+                )}
+              </Box>
+              <Box sx={{ marginBottom: "30px" }}>
+                <FormControl fullWidth variant="outlined">
+                  <OutlinedInput
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    placeholder="Enter your password"
+                    size="small"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <LockOutlinedIcon />
+                      </InputAdornment>
+                    }
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(!showPassword)}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? (
+                            <VisibilityOffOutlinedIcon />
+                          ) : (
+                            <RemoveRedEyeOutlinedIcon />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+                {errors?.password && (
+                  <Typography
+                    variant="small"
+                    color="error.main"
+                    sx={{ textAlign: "left" }}
+                  >
+                    {errors.password.toString()}
+                  </Typography>
+                )}
+              </Box>
               <Button
                 variant="contained"
                 disableElevation

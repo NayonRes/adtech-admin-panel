@@ -1,5 +1,4 @@
 import React, { useRef, useState, useContext } from "react";
-import { makeStyles } from "@mui/styles";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -13,35 +12,39 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { AuthContext } from "../../context/AuthContext";
 import ForgotPasswordResetPassword from "./ForgotPasswordResetPassword";
 import OtpInput from "react-otp-input";
-const useStyles = makeStyles((theme) => ({
-  form: {
-    padding: "50px",
-    background: "#fff",
-    borderRadius: "10px",
-    textAlign: "center",
-    width: "400px",
-    boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-  },
-  newInputStyle: {
+// const useStyles = makeStyles((theme) => ({
+
+//   newInputStyle: {
+//     background: "none",
+//     minWidth: "40px",
+//     minHeight: "40px",
+//     fontSize: "16px",
+//     borderRadius: "3px",
+//     border: "1px solid #c3bebe",
+//   },
+//   newFocusStyle: {
+//     borderRadius: "3px",
+//     border: "1px solid #353b48",
+//     outline: "1px solid #353b48",
+//   },
+// }));
+
+const ForgotPasswordOTPVarify = ({ email, reference }) => {
+  const navigate = useNavigate();
+  const { login, adtech_admin_panel } = useContext(AuthContext);
+  const newInputStyle = {
     background: "none",
     minWidth: "40px",
     minHeight: "40px",
     fontSize: "16px",
     borderRadius: "3px",
     border: "1px solid #c3bebe",
-  },
-  newFocusStyle: {
+  };
+  const newFocusStyle = {
     borderRadius: "3px",
     border: "1px solid #353b48",
     outline: "1px solid #353b48",
-  },
-}));
-
-const ForgotPasswordOTPVarify = ({ email }) => {
-  const classes = useStyles();
-  const navigate = useNavigate();
-  const { login, adtech_admin_panel } = useContext(AuthContext);
-
+  };
   const [showOTPSection, setShowOTPSection] = useState(true);
   const [loading, setLoading] = useState(false);
   const [otpTimeOut, setOtpTimeOut] = useState(false);
@@ -82,7 +85,16 @@ const ForgotPasswordOTPVarify = ({ email }) => {
           alignItems="center"
           style={{ height: "100vh" }}
         >
-          <div className={classes.form}>
+          <div
+            style={{
+              padding: "50px",
+              background: "#fff",
+              borderRadius: "10px",
+              textAlign: "center",
+              width: "400px",
+              // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+            }}
+          >
             <img
               src="/logo.svg"
               alt=""
@@ -104,8 +116,7 @@ const ForgotPasswordOTPVarify = ({ email }) => {
                 }}
               >
                 {" "}
-                We have sent a 6 digits varification code to{" "}
-                {adtech_admin_panel.email}
+                We have sent a 6 digits varification code to {email}
               </span>
             </Typography>
             {/* {otpTimeOut && (
@@ -170,6 +181,17 @@ const ForgotPasswordOTPVarify = ({ email }) => {
                   spacing={3}
                 >
                   <Grid item xs={12}>
+                    {/* <OtpInput
+                      value={myOTP.otp}
+                      onChange={handleChange}
+                      numInputs={6}
+                      isInputNum={true}
+                      shouldAutoFocus={true}
+                      isInputSecure={true}
+                      inputStyle={newInputStyle}
+                      focusStyle={newFocusStyle}
+                      containerStyle={{ justifyContent: "space-between" }}
+                    /> */}
                     <OtpInput
                       value={myOTP.otp}
                       onChange={handleChange}
@@ -177,17 +199,21 @@ const ForgotPasswordOTPVarify = ({ email }) => {
                       isInputNum={true}
                       shouldAutoFocus={true}
                       isInputSecure={true}
-                      inputStyle={classes.newInputStyle}
-                      focusStyle={classes.newFocusStyle}
+                      // renderSeparator={<span>-</span>}
+                      inputStyle={newInputStyle}
+                      focusStyle={newFocusStyle}
+                      renderInput={(props) => <input {...props} />}
                       containerStyle={{ justifyContent: "space-between" }}
                     />
                   </Grid>
 
                   <Grid item xs={12}>
                     <Button
+                      disableElevation
                       variant="contained"
                       fullWidth
                       color="primary"
+                      style={{ minHeight: "37px" }}
                       //   className={classes.buttonStyle}
                       // inputRef={buttonref}
                       ref={buttonref}
@@ -223,7 +249,11 @@ const ForgotPasswordOTPVarify = ({ email }) => {
           </div>
         </Grid>
       ) : (
-        <ForgotPasswordResetPassword email={email} otp={myOTP.otp} />
+        <ForgotPasswordResetPassword
+          email={email}
+          otp={myOTP.otp}
+          reference={reference}
+        />
       )}
     </React.Fragment>
   );

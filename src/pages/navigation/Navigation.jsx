@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-// import ForgotPassword from "../user-forms/ForgotPassword";
+import ForgotPassword from "../user-forms/ForgotPassword";
 import Login from "../user-forms/Login";
-// import ResetPassword from "../user-forms/ResetPassword";
+import ResetPassword from "../user-forms/ResetPassword";
 import Verify from "../user-forms/Verify";
 import { AuthContext } from "../../context/AuthContext";
 import Tables from "../../table/Tables";
@@ -15,6 +15,10 @@ import UserList from "../users/UserList";
 import AddUser from "../users/AddUser";
 import UpdateUser from "../users/UpdateUser";
 import Dashboard from "../dashboard/Dashboard";
+import Test from "../test/Test";
+import AddCustomer from "../customer/AddCustomer";
+import UpdateCustomer from "../customer/UpdateCustomer";
+import AddOrder from "../order/AddOrder";
 
 function PrivateRoute({ children }) {
   const { adtech_admin_panel } = useContext(AuthContext);
@@ -32,6 +36,7 @@ const Navigation = () => {
   return (
     <div>
       <Routes>
+        <Route path="/test" element={<Test />} />
         <Route
           path="/"
           element={
@@ -56,15 +61,15 @@ const Navigation = () => {
             </PrivateRoute>
           }
         />
-        {/* <Route path="forgot-password" element={<ForgotPassword />} /> */}
-        {/* <Route
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route
           path="change-password"
           element={
             <PrivateRoute>
               <ResetPassword />
             </PrivateRoute>
           }
-        /> */}
+        />
         <Route
           path="user-list"
           element={
@@ -86,6 +91,31 @@ const Navigation = () => {
           element={
             <PrivateRoute>
               <UpdateUser />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="add-customer"
+          element={
+            <PrivateRoute>
+              <AddCustomer />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="add-order"
+          element={
+            <PrivateRoute>
+              <AddOrder />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="update-customer/:id"
+          element={
+            <PrivateRoute>
+              <UpdateCustomer />
             </PrivateRoute>
           }
         />

@@ -120,10 +120,10 @@ const AddUser = () => {
           name,
           email,
           mobile: mobileNo,
-          gender: "male",
           password: password,
           password_confirm: confirmPassword,
           role_id: roleId,
+          // status: "Active",
         };
         let response = await axios({
           url: "/api/user",
@@ -149,7 +149,11 @@ const AddUser = () => {
       } catch (error) {
         console.log("error", error);
         setLoading(false);
-        setErrors(error.response.data.errors);
+        if (error?.response?.status === 500) {
+          handleSnakbarOpen(error?.response?.statusText, "error");
+        } else {
+          setErrors(error.response.data.errors);
+        }
         // handleSnakbarOpen(error.response.data.messages.toString(), "error");
         // if (error.response.data.errors.length < 1) {
         //   handleSnakbarOpen("Something went wrong", "error");

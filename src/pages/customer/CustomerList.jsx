@@ -432,7 +432,7 @@ const CustomerList = () => {
                     <TableCell>{row?.email}</TableCell>
                     <TableCell>{row?.mobile}</TableCell>
                     {/* <TableCell>{row?.gender}</TableCell> */}
-                
+
                     <TableCell align="center">
                       {/* <img
                         src={
@@ -488,11 +488,11 @@ const CustomerList = () => {
 
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
-                      {row.created_by !== null ? row.created_by.name : "-----"}
+                      {row.created_by !== null ? row.created_by.name : "Self"}
                     </TableCell>
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
-                      {row.updated_by !== null ? row.updated_by.name : "-----"}
+                      {row.updated_by !== null ? row.updated_by.name : "Self"}
                     </TableCell>
                     <TableCell
                       sx={{ whiteSpace: "nowrap", p: 0 }}
@@ -501,7 +501,7 @@ const CustomerList = () => {
                       <IconButton
                         aria-label="edit"
                         component={Link}
-                        to={`/update-user/${row?.id}`}
+                        to={`/update-customer/${row?.id}`}
                       >
                         <EditOutlinedIcon />
                       </IconButton>
