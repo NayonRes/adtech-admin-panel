@@ -543,6 +543,29 @@ export default function Layout() {
 
               <ListItemText primary="User List" />
             </ListItemButton>
+            <Typography
+              variant="small"
+              color="text.main"
+              sx={{ fontWeight: 700, mb: 1 }}
+            >
+              Role Page
+            </Typography>
+
+           
+            <ListItemButton
+              component={Link}
+              to="/role-list"
+              sx={[
+                { ...listButtonStyle, mb: 2 },
+                pathname === "/role-list" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <RecentActorsOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Role List" />
+            </ListItemButton>
           </List>
         </Drawer>
         <Main open={open}>

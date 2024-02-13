@@ -181,10 +181,7 @@ const UpdateUser = () => {
       logout();
       return;
     }
-    if (res?.status === 401) {
-      logout();
-      return;
-    }
+   
     if (res?.status > 199 && res?.status < 300) {
       if (res.data.data.length > 0) {
         setRoleList(res.data.data);

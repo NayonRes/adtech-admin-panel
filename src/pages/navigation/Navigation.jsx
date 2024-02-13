@@ -19,6 +19,8 @@ import Test from "../test/Test";
 import AddCustomer from "../customer/AddCustomer";
 import UpdateCustomer from "../customer/UpdateCustomer";
 import AddOrder from "../order/AddOrder";
+import RoleList from "../role/RoleList";
+import UpdateRole from "../role/UpdateRole";
 
 function PrivateRoute({ children }) {
   const { adtech_admin_panel } = useContext(AuthContext);
@@ -124,6 +126,22 @@ const Navigation = () => {
           element={
             <PrivateRoute>
               <CustomerList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="role-list"
+          element={
+            <PrivateRoute>
+              <RoleList />
+            </PrivateRoute>
+          }
+        />
+          <Route
+          path="update-role/:id"
+          element={
+            <PrivateRoute>
+              <UpdateRole />
             </PrivateRoute>
           }
         />
