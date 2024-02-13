@@ -35,6 +35,8 @@ const AddOrder = () => {
   const [postLink, setPostLink] = useState("");
   const [websiteLink, setWebsiteLink] = useState("");
   const [videoLink, setVideoLink] = useState("");
+  const [messageMedia, setMessageMedia] = useState([]);
+  const [leadItems, setLeadItems] = useState([]);
 
   // ================================
   const [name, setName] = useState("");
@@ -206,6 +208,10 @@ const AddOrder = () => {
             setWebsiteLink={setWebsiteLink}
             videoLink={videoLink}
             setVideoLink={setVideoLink}
+            messageMedia={messageMedia}
+            setMessageMedia={setMessageMedia}
+            leadItems={leadItems}
+            setLeadItems={setLeadItems}
             amount={amount}
             setAmount={setAmount}
             promotion_period={promotion_period}
@@ -216,7 +222,6 @@ const AddOrder = () => {
             setMin_age={setMin_age}
             max_age={max_age}
             setMax_age={setMax_age}
-
             location={location}
             setLocation={setLocation}
             divisions={divisions}

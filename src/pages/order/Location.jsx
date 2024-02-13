@@ -33,8 +33,9 @@ const Location = ({ location, setLocation, divisions, setDivisions }) => {
       let newDivisions = divisions.filter((res) => res !== item);
       setDivisions(newDivisions);
     } else {
-      setDivisions(...divisions, item);
+      setDivisions([...divisions, item]);
     }
+    console.log("divisions", divisions);
   };
   return (
     <div>
@@ -72,6 +73,7 @@ const Location = ({ location, setLocation, divisions, setDivisions }) => {
       <FormGroup>
         {divisionNames?.map((item, i) => (
           <FormControlLabel
+          key={i}
             control={<Checkbox />}
             label={item}
             checked={divisions.includes(item)}

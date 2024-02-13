@@ -44,7 +44,7 @@ import moment from "moment";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-
+import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 const CustomerList = () => {
   const theme = useTheme();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
@@ -203,7 +203,7 @@ const CustomerList = () => {
       newCreatedEndTime = dayjs(createdEndTime).format("YYYY-MM-DD");
     }
 
-    let url = `api/customer?keyword=${name.trim()}&email=${encodeURIComponent(
+    let url = `api/customer/export?keyword=${name.trim()}&email=${encodeURIComponent(
       email.trim()
     )}&mobile=${encodeURIComponent(
       mobileNo.trim()
@@ -319,17 +319,12 @@ const CustomerList = () => {
               variant="outlined"
               // size="small"
               disableElevation
-              startIcon={
-                openFilter ? (
-                  <FilterListOffOutlinedIcon />
-                ) : (
-                  <FilterListOutlinedIcon />
-                )
-              }
-              onClick={()=>downloadFile("xlsx")}
+              startIcon={<FileDownloadOutlinedIcon />}
+              onClick={() => downloadFile("xlsx")}
             >
               Download
-            </Button>&nbsp;&nbsp;
+            </Button>
+            &nbsp;&nbsp;
             <Button
               variant="outlined"
               // size="small"
