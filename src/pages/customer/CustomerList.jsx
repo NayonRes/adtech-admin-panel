@@ -42,6 +42,8 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import moment from "moment";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import axios from "axios";
+import { useSnackbar } from "notistack";
 
 const CustomerList = () => {
   const theme = useTheme();
@@ -63,6 +65,19 @@ const CustomerList = () => {
   const [toDate, settoDate] = useState(null);
   const [createdStartTime, setCreatedStartTime] = useState(null);
   const [createdEndTime, setCreatedEndTime] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
+  const handleSnakbarOpen = (msg, vrnt) => {
+    let duration;
+    if (vrnt === "error") {
+      duration = 3000;
+    } else {
+      duration = 1000;
+    }
+    enqueueSnackbar(msg, {
+      variant: vrnt,
+      autoHideDuration: duration,
+    });
+  };
 
   const handleChangePage = (event, newPage) => {
     let pageNo = newPage + 1;
@@ -165,6 +180,92 @@ const CustomerList = () => {
     }
     setLoading(false);
   };
+  const [downloadloading, setDownloadloading] = useState(false);
+  const downloadFile = async (type) => {
+    setDownloadloading(true);
+    // try {
+    let newStatus = status;
+    let newCreatedStartTime = "";
+    let newCreatedEndTime = "";
+    if (status === "None") {
+      newStatus = "";
+    }
+    if (createdStartTime !== null) {
+      // newCreatedStartTime = moment(createdStartTime).format(
+      //   "YYYY-MM-DD HH:mm:ss"
+      // );
+      newCreatedStartTime = dayjs(createdStartTime).format("YYYY-MM-DD");
+    }
+    if (createdEndTime !== null) {
+      // newCreatedEndTime = moment(createdEndTime).format(
+      //   "YYYY-MM-DD HH:mm:ss"
+      // );
+      newCreatedEndTime = dayjs(createdEndTime).format("YYYY-MM-DD");
+    }
+
+    let url = `api/customer?keyword=${name.trim()}&email=${encodeURIComponent(
+      email.trim()
+    )}&mobile=${encodeURIComponent(
+      mobileNo.trim()
+    )}&gender=${gender}&status=${newStatus}&from=${newCreatedStartTime}&to=${newCreatedEndTime}`;
+
+    let res = await axios({
+      url: url,
+      method: "get",
+      headers: {
+        Authorization: `Bearer ${adtech_admin_panel.token}`,
+      },
+      responseType: "blob", // important
+    });
+
+    if (res?.status > 199 && res?.status < 300) {
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.setAttribute("download", `Customer.${type}`);
+
+      document.body.appendChild(link);
+      link.click();
+
+      link.remove();
+
+      handleSnakbarOpen("File download successfully", "success");
+    } else {
+      const isJsonBlob = (data) =>
+        data instanceof Blob && data.type === "application/json";
+      const responseData = isJsonBlob(res?.data)
+        ? await res?.data?.text()
+        : res?.data || {};
+      const responseJson =
+        typeof responseData === "string"
+          ? JSON.parse(responseData)
+          : responseData;
+
+      if (responseJson?.messages.length > 0) {
+        handleSnakbarOpen("Something went wrong", "error");
+      } else {
+        handleSnakbarOpen("Something went wrong", "error");
+      }
+    }
+
+    // } catch (error) {
+    //   const isJsonBlob = (data) =>
+    //     data instanceof Blob && data.type === "application/json";
+    //   const responseData = isJsonBlob(error.response?.data)
+    //     ? await error.response?.data?.text()
+    //     : error.response?.data || {};
+    //   const responseJson =
+    //     typeof responseData === "string"
+    //       ? JSON.parse(responseData)
+    //       : responseData;
+    //   console.log("error", responseJson);
+    //   handleSnakbarOpen(responseJson?.messages.toString(), "error");
+    //   handleClose();
+    //   setDownloadloading(false);
+    // }
+    setDownloadloading(false);
+  };
 
   useEffect(() => {
     // setLoading(true);
@@ -214,6 +315,21 @@ const CustomerList = () => {
             </Grid>
           </Grid>
           <Grid item xs="auto">
+            <Button
+              variant="outlined"
+              // size="small"
+              disableElevation
+              startIcon={
+                openFilter ? (
+                  <FilterListOffOutlinedIcon />
+                ) : (
+                  <FilterListOutlinedIcon />
+                )
+              }
+              onClick={()=>downloadFile("xlsx")}
+            >
+              Download
+            </Button>&nbsp;&nbsp;
             <Button
               variant="outlined"
               // size="small"
