@@ -14,6 +14,7 @@ import FormLabel from "@mui/material/FormLabel";
 import FormGroup from "@mui/material/FormGroup";
 import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
+import Collapse from "@mui/material/Collapse";
 const Location = ({ location, setLocation, divisions, setDivisions }) => {
   const divisionNames = [
     "Dhaka",
@@ -25,10 +26,19 @@ const Location = ({ location, setLocation, divisions, setDivisions }) => {
     "Rangpur",
     "Mymensingh",
   ];
+
+  const handleLocation = (e) => {
+    setLocation(e.target.value);
+    if (e.target.value === "ALL Bangladesh") {
+      setDivisions(divisionNames);
+    } else {
+      setDivisions([]);
+    }
+  };
   const handleChange = (item, i) => {
     console.log("event.target.checked", item);
     // setDivisions(event.target.checked);
-
+    setLocation("Divisions");
     if (divisions.includes(item)) {
       let newDivisions = divisions.filter((res) => res !== item);
       setDivisions(newDivisions);
@@ -56,7 +66,7 @@ const Location = ({ location, setLocation, divisions, setDivisions }) => {
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="controlled-radio-buttons-group"
           value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          onChange={handleLocation}
         >
           <FormControlLabel
             value="ALL Bangladesh"
@@ -70,10 +80,10 @@ const Location = ({ location, setLocation, divisions, setDivisions }) => {
           />
         </RadioGroup>
       </FormControl>
-      <FormGroup>
+      <FormGroup sx={{ ml: 6 }}>
         {divisionNames?.map((item, i) => (
           <FormControlLabel
-          key={i}
+            key={i}
             control={<Checkbox />}
             label={item}
             checked={divisions.includes(item)}

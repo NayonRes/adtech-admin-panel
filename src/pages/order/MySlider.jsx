@@ -94,7 +94,28 @@ function MySlider({
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = forms.length;
 
+  const disable2ndNextButton = () => {
+    let disabled = true;
+    if (promotion_objective.trim().length < 1) {
+      disabled = true;
+    }
+    if (promotion_objective === "Message") {
+      if (messageMedia.length < 1 || postLink.trim().length < 1) {
+        disabled = true;
+      }
+    }
+
+    return disabled;
+  };
+
   const handleNext = () => {
+    if (promotion.trim().length && activeStep === 0) {
+      return;
+    }
+    if (activeStep === 1 && disable2ndNextButton()) {
+      return;
+    }
+
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -289,6 +310,7 @@ function MySlider({
         index={activeStep}
         onChangeIndex={handleStepChange}
         enableMouseEvents
+        disabled
       >
         {forms.map((step, index) => (
           <div key={index}>
