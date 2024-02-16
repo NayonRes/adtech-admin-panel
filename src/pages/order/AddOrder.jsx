@@ -212,7 +212,7 @@ const AddOrder = () => {
             width: "400px",
             // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
           }}
-          onSubmit={handleSubmit}
+          // onSubmit={handleSubmit}
         >
           <Typography
             variant="h5"
@@ -222,6 +222,8 @@ const AddOrder = () => {
             Add Order
           </Typography>
           <MySlider
+          loading={loading}
+          handleSubmit={handleSubmit}
             promotion={promotion}
             setPromotion={setPromotion}
             promotion_objective={promotion_objective}
@@ -252,7 +254,7 @@ const AddOrder = () => {
             setDivisions={setDivisions}
           />
 
-          <Button
+          {/* <Button
             variant="contained"
             disableElevation
             fullWidth
@@ -272,7 +274,7 @@ const AddOrder = () => {
               size={10}
               speedMultiplier={0.5}
             />{" "}
-          </Button>
+          </Button> */}
         </form>
       </Grid>
     </React.Fragment>

@@ -70,6 +70,14 @@ const Location = ({ location, setLocation, divisions, setDivisions }) => {
           name="controlled-radio-buttons-group"
           value={location}
           onChange={handleLocation}
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontSize: 16,
+            },
+            "& .MuiSvgIcon-root": {
+              fontSize: 18,
+            },
+          }}
         >
           <FormControlLabel
             value="ALL Bangladesh"
@@ -86,6 +94,12 @@ const Location = ({ location, setLocation, divisions, setDivisions }) => {
       <FormGroup sx={{ ml: 6 }}>
         {divisionNames?.map((item, i) => (
           <FormControlLabel
+            sx={{
+              "& .MuiSvgIcon-root": { fontSize: 16 },
+              "& .MuiFormControlLabel-label": {
+                fontSize: 14,
+              },
+            }}
             key={i}
             control={<Checkbox />}
             label={item}

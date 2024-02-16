@@ -40,7 +40,7 @@ const GenderAndAge = ({
       >
         Gender
       </Typography>
-      <FormControl>
+      <FormControl sx={{ pl: 2, mb: 3 }}>
         {/* <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel> */}
         <RadioGroup
           row
@@ -48,54 +48,92 @@ const GenderAndAge = ({
           name="row-radio-buttons-group"
           value={gender}
           onChange={handleGender}
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontSize: 14,
+            },
+            "& .MuiSvgIcon-root": {
+              fontSize: 16,
+            },
+          }}
         >
           <FormControlLabel value="Male" control={<Radio />} label="Male" />
           <FormControlLabel value="Female" control={<Radio />} label="Female" />
           <FormControlLabel value="Both" control={<Radio />} label="Both" />
         </RadioGroup>
       </FormControl>
-      <Grid container alignItems="center" spacing={3}>
-        <Grid item xs={6}>
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Min Age</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={min_age}
-                label="Min Age"
-                onChange={(e) => setMin_age(e.target.value)}
-              >
-                {[...Array(48)].map((item, i) => (
-                  <MenuItem key={i} value={18 + i}>
-                    {18 + i}{" "}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
+      <Typography
+        variant="h6"
+        color="text.main"
+        sx={{
+          //   textAlign: "center",
+
+          fontSize: "20px",
+          fontWeight: 500,
+          mb: 2,
+        }}
+      >
+        Age
+      </Typography>
+      <Box sx={{ px: 2 }}>
+        <Grid container alignItems="center" spacing={1}>
+          <Grid item xs={5}>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Min Age</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Min Age"
+                  size="small"
+                  value={min_age}
+                  onChange={(e) => setMin_age(e.target.value)}
+                >
+                  {[...Array(48)].map((item, i) => (
+                    <MenuItem key={i} value={18 + i}>
+                      {18 + i}{" "}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Grid>
+          <Grid item xs={2}>
+            <Typography
+              variant="h6"
+              color="text.main"
+              sx={{
+                textAlign: "center", 
+                fontSize: "20px",
+                fontWeight: 500,
+              }}
+            >
+              To
+            </Typography>
+          </Grid>
+          <Grid item xs={5}>
+            <Box sx={{ minWidth: 120 }}>
+              <FormControl fullWidth>
+                <InputLabel id="demo-simple-select-label">Max Age</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  size="small"
+                  label="Max Age"
+                  value={max_age}
+                  onChange={(e) => setMax_age(e.target.value)}
+                >
+                  {[...Array(48)].map((item, i) => (
+                    <MenuItem key={i} value={18 + i}>
+                      {18 + i}{" "}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
+          </Grid>
         </Grid>
-        <Grid item xs={6}>
-          <Box sx={{ minWidth: 120 }}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Max Age</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={max_age}
-                label="Max Age"
-                onChange={(e) => setMax_age(e.target.value)}
-              >
-                {[...Array(48)].map((item, i) => (
-                  <MenuItem key={i} value={18 + i}>
-                    {18 + i}{" "}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-        </Grid>
-      </Grid>
+      </Box>
     </div>
   );
 };

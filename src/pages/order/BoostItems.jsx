@@ -37,6 +37,9 @@ const BoostItems = ({ promotion, setPromotion }) => {
         <Box
           sx={{
             ...buttonHolderStyle,
+            boxShadow:
+              promotion === "Facebook" &&
+              "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
             border:
               promotion === "Facebook"
                 ? `1px solid ${theme.palette.primary.main}`
@@ -87,6 +90,9 @@ const BoostItems = ({ promotion, setPromotion }) => {
         <Box
           sx={{
             ...buttonHolderStyle,
+            boxShadow:
+              promotion === "Google" &&
+              "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
             border:
               promotion === "Google"
                 ? `1px solid ${theme.palette.primary.main}`
@@ -143,6 +149,9 @@ const BoostItems = ({ promotion, setPromotion }) => {
         <Box
           sx={{
             ...buttonHolderStyle,
+            boxShadow:
+              promotion === "Youtube" &&
+              "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
             border:
               promotion === "Youtube"
                 ? `1px solid ${theme.palette.primary.main}`

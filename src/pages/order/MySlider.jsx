@@ -16,10 +16,15 @@ import Objective from "./Objective";
 import Budget from "./Budget";
 import GenderAndAge from "./GenderAndAge";
 import Location from "./Location";
+import PulseLoader from "react-spinners/PulseLoader";
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import { useSnackbar } from "notistack";
 
 const AutoPlaySwipeableViews = SwipeableViews;
 
 function MySlider({
+  loading,
+  handleSubmit,
   promotion,
   setPromotion,
   promotion_objective,
@@ -55,6 +60,7 @@ function MySlider({
   const forms = [
     <BoostItems promotion={promotion} setPromotion={setPromotion} />,
     <Objective
+    promotion={promotion}
       promotion_objective={promotion_objective}
       setPromotion_objective={setPromotion_objective}
       postLink={postLink}
@@ -91,37 +97,76 @@ function MySlider({
     />,
   ];
   const theme = useTheme();
+  const { enqueueSnackbar } = useSnackbar();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = forms.length;
-
+  const handleSnakbarOpen = (msg, vrnt) => {
+    let duration;
+    if (vrnt === "error") {
+      duration = 3000;
+    } else {
+      duration = 1000;
+    }
+    enqueueSnackbar(msg, {
+      variant: vrnt,
+      autoHideDuration: duration,
+    });
+  };
   const disable2ndNextButton = () => {
     let disabled = false;
-    if (promotion_objective.trim().length < 1) {
-      disabled = true;
-    }
-    if (promotion_objective === "Message") {
-      if (messageMedia.length < 1 || postLink.trim().length < 1) {
+    if (promotion === "Facebook") {
+      if (promotion_objective.trim().length < 1) {
+        handleSnakbarOpen("Please select a obective", "error");
         disabled = true;
       }
-    }
-    if (promotion_objective === "Traffic" && postLink.trim().length < 1) {
-      disabled = true;
-    }
-    if (promotion_objective === "Engagement" && postLink.trim().length < 1) {
-      disabled = true;
-    }
-    if (
-      promotion_objective === "Leads" &&
-      (leadItems.length < 1 || postLink.trim().length < 1)
-    ) {
-      disabled = true;
-    }
+      if (promotion_objective === "Message") {
+        if (messageMedia.length < 1) {
+          handleSnakbarOpen("Please select your message media", "error");
+          disabled = true;
+        } else if (postLink.trim().length < 1) {
+          handleSnakbarOpen("Please enter post link", "error");
+          document.getElementById("postLink").focus();
+          disabled = true;
+        }
+      }
+      if (promotion_objective === "Traffic") {
+        if (postLink.trim().length < 1) {
+          handleSnakbarOpen("Please enter post link", "error");
+          document.getElementById("postLink").focus();
+          disabled = true;
+        } else if (websiteLink.trim().length < 1) {
+          handleSnakbarOpen("Please enter website link", "error");
+          document.getElementById("websiteLinkforTrafficObective").focus();
+          disabled = true;
+        }
+      }
+      if (promotion_objective === "Engagement" && postLink.trim().length < 1) {
+        handleSnakbarOpen("Please enter post link", "error");
+        document.getElementById("postLink").focus();
+        disabled = true;
+      }
+      if (promotion_objective === "Leads") {
+        if (leadItems.length < 1) {
+          handleSnakbarOpen("Please select your lead items", "error");
+          disabled = true;
+        } else if (postLink.trim().length < 1) {
+          handleSnakbarOpen("Please enter post link", "error");
+          document.getElementById("postLink").focus();
+          disabled = true;
+        }
+      }
 
-    if (
-      promotion_objective === "Reach" &&
-      (postLink.trim().length < 1 || videoLink.trim().length < 1)
-    ) {
-      disabled = true;
+      if (promotion_objective === "Reach") {
+        if (postLink.trim().length < 1) {
+          handleSnakbarOpen("Please enter post link", "error");
+          document.getElementById("postLink").focus();
+          disabled = true;
+        } else if (videoLink.trim().length < 1) {
+          handleSnakbarOpen("Please enter video link", "error");
+          document.getElementById("videoLink").focus();
+          disabled = true;
+        }
+      }
     }
 
     return disabled;
@@ -129,9 +174,15 @@ function MySlider({
 
   const handleNext = () => {
     if (promotion.trim().length < 1 && activeStep === 0) {
+      handleSnakbarOpen("Please select a boost Item", "error");
       return;
     }
     if (activeStep === 1 && disable2ndNextButton()) {
+      return;
+    }
+
+    if (gender.trim().length < 1 && activeStep === 3) {
+      handleSnakbarOpen("Please select gender", "error");
       return;
     }
 
@@ -353,31 +404,72 @@ function MySlider({
         ))}
       </AutoPlaySwipeableViews>
       <MobileStepper
+        sx={{ mt: 2, background: "none", boxShadow: "none" }}
         steps={maxSteps}
         position="static"
         activeStep={activeStep}
         nextButton={
-          <Button
-            size="small"
-            onClick={handleNext}
-            disabled={activeStep === maxSteps - 1}
-          >
-            Next
-            {theme.direction === "rtl" ? (
+          activeStep === maxSteps - 1 ? (
+            <Button
+              variant="contained"
+              disableElevation
+              size="small"
+              style={{
+                minHeight: "31px",
+              }}
+              endIcon={
+                <SendOutlinedIcon
+                  style={{ position: "relative", top: -2, fontSize: "16px" }}
+                />
+              }
+              disabled={loading}
+              onClick={handleSubmit}
+            >
+              {loading === false && <>&nbsp;&nbsp; Confirm</>}
+              <PulseLoader
+                color={"#353b48"}
+                loading={loading}
+                size={10}
+                speedMultiplier={0.5}
+              />{" "}
+            </Button>
+          ) : (
+            <Button
+              size="small"
+              disableElevation
+              variant="contained"
+              onClick={handleNext}
+              disabled={activeStep === maxSteps - 1}
+              endIcon={
+                <KeyboardArrowRight style={{ position: "relative", top: -1 }} />
+              }
+            >
+              &nbsp;&nbsp; Next
+              {/* {theme.direction === "rtl" ? (
               <KeyboardArrowLeft />
             ) : (
               <KeyboardArrowRight />
-            )}
-          </Button>
+            )} */}
+            </Button>
+          )
         }
         backButton={
-          <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-            {theme.direction === "rtl" ? (
+          <Button
+            disableElevation
+            size="small"
+            variant="contained"
+            onClick={handleBack}
+            disabled={activeStep === 0}
+            startIcon={
+              <KeyboardArrowLeft style={{ position: "relative", top: -1 }} />
+            }
+          >
+            {/* {theme.direction === "rtl" ? (
               <KeyboardArrowRight />
             ) : (
               <KeyboardArrowLeft />
-            )}
-            Back
+            )} */}
+            Back &nbsp;&nbsp;
           </Button>
         }
       />
