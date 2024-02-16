@@ -7,6 +7,7 @@ import FormLabel from "@mui/material/FormLabel";
 import { TextField, Typography } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
+import Collapse from "@mui/material/Collapse";
 
 const Objective = ({
   promotion_objective,
@@ -112,7 +113,8 @@ const Objective = ({
       <Typography variant="medium" color="text.main" sx={{ mt: 1, mb: 2 }}>
         {obectives.find((res) => res.title === promotion_objective)?.msg}
       </Typography>
-      {promotion_objective === "Message" && (
+      {/* {promotion_objective === "Message" && ( */}
+      <Collapse in={promotion_objective === "Message"}>
         <FormGroup sx={{ flexDirection: "row" }}>
           {messageMediaList?.map((item, i) => (
             <FormControlLabel
@@ -126,8 +128,10 @@ const Objective = ({
             />
           ))}
         </FormGroup>
-      )}
-      {promotion_objective === "Leads" && (
+      </Collapse>
+      {/* )} */}
+      {/* {promotion_objective === "Leads" && ( */}
+      <Collapse in={promotion_objective === "Leads"}>
         <FormGroup sx={{ flexDirection: "row" }}>
           {leadItemList?.map((item, i) => (
             <FormControlLabel
@@ -141,9 +145,10 @@ const Objective = ({
             />
           ))}
         </FormGroup>
-      )}
-
-      {showPostLink() && (
+      </Collapse>
+      {/* )} */}
+      {/* {showPostLink() && ( */}
+      <Collapse in={showPostLink()}>
         <TextField
           sx={{ mb: 2 }}
           required
@@ -155,8 +160,10 @@ const Objective = ({
           value={postLink}
           onChange={(e) => setPostLink(e.target.value)}
         />
-      )}
-      {promotion_objective === "Reach" && (
+      </Collapse>
+      {/* )} */}
+      {/* {promotion_objective === "Reach" && ( */}
+      <Collapse in={promotion_objective === "Reach"}>
         <TextField
           sx={{ mb: 2 }}
           required
@@ -168,8 +175,10 @@ const Objective = ({
           value={videoLink}
           onChange={(e) => setVideoLink(e.target.value)}
         />
-      )}
-      {promotion_objective === "Video views" && (
+      </Collapse>
+      {/* )} */}
+      {/* {promotion_objective === "Video views" && ( */}
+      <Collapse in={promotion_objective === "Video views"}>
         <TextField
           sx={{ mb: 2 }}
           fullWidth
@@ -180,7 +189,8 @@ const Objective = ({
           value={websiteLink}
           onChange={(e) => setWebsiteLink(e.target.value)}
         />
-      )}
+      </Collapse>
+      {/* )} */}
     </div>
   );
 };

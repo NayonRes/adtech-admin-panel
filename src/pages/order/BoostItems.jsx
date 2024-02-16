@@ -1,9 +1,32 @@
-import { Box, Grid } from "@mui/material";
 import React from "react";
+import { Box, Grid } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
-import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
+const BoostItems = ({ promotion, setPromotion }) => {
+  const theme = useTheme();
+  const buttonHolderStyle = {
+    py: 1.5,
+    fontSize: "24px",
+    // color: "#316FF6",
+    background: "#fff",
+    border: "1px solid #dddddd",
+    borderRadius: "8px",
+    cursor: "pointer",
+    transition: ".5s",
+    width: "auto",
+    margin: "auto",
+    "&:hover": {
+      boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+      // boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
+    },
+  };
 
-const BoostItems = ({ setPromotion }) => {
+  const socialIconStyle = {
+    position: "relative",
+    top: "5px",
+    width: 32,
+    height: 32,
+  };
   return (
     <div>
       {" "}
@@ -13,18 +36,11 @@ const BoostItems = ({ setPromotion }) => {
       >
         <Box
           sx={{
-            py: 2,
-            fontSize: "36px",
-            color: "#316FF6",
-            background: "#fff",
-            border: "1px solid #dddddd",
-            borderRadius: "8px",
-            cursor: "pointer",
-            transition: ".5s",
-            "&:hover": {
-              boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-              // boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
-            },
+            ...buttonHolderStyle,
+            border:
+              promotion === "Facebook"
+                ? `1px solid ${theme.palette.primary.main}`
+                : "1px solid #dddddd",
           }}
         >
           <Grid
@@ -34,15 +50,33 @@ const BoostItems = ({ setPromotion }) => {
             spacing={1}
           >
             <Grid item xs="auto">
-              <FacebookOutlinedIcon
+              {/* <FacebookOutlinedIcon
                 style={{
-                  fontSize: "44px",
-                  position: "relative",
-                  top: "5px",
+                  ...socialIconStyle,
                 }}
-              />
+              /> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                // width="100"
+                // height="100"
+                viewBox="0 0 48 48"
+                style={{
+                  ...socialIconStyle,
+                }}
+              >
+                <path
+                  fill="#039be5"
+                  d="M24 5A19 19 0 1 0 24 43A19 19 0 1 0 24 5Z"
+                ></path>
+                <path
+                  fill="#fff"
+                  d="M26.572,29.036h4.917l0.772-4.995h-5.69v-2.73c0-2.075,0.678-3.915,2.619-3.915h3.119v-4.359c-0.548-0.074-1.707-0.236-3.897-0.236c-4.573,0-7.254,2.415-7.254,7.917v3.323h-4.701v4.995h4.701v13.729C22.089,42.905,23.032,43,24,43c0.875,0,1.729-0.08,2.572-0.194V29.036z"
+                ></path>
+              </svg>
             </Grid>
-            <Grid item xs="auto">
+            <Grid item xs="auto" sx={{ color: "#039be5" }}>
               Facebook &nbsp;
               <span style={{ color: "#718096", fontWeight: 200 }}>Ads</span>
             </Grid>
@@ -52,18 +86,11 @@ const BoostItems = ({ setPromotion }) => {
       <Box sx={{ marginBottom: "18px" }} onClick={() => setPromotion("Google")}>
         <Box
           sx={{
-            py: 2,
-            fontSize: "36px",
-            color: "#718096",
-            background: "#fff",
-            border: "1px solid #dddddd",
-            borderRadius: "8px",
-            cursor: "pointer",
-            transition: ".5s",
-            "&:hover": {
-              boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-              // boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
-            },
+            ...buttonHolderStyle,
+            border:
+              promotion === "Google"
+                ? `1px solid ${theme.palette.primary.main}`
+                : "1px solid #dddddd",
           }}
         >
           <Grid
@@ -77,12 +104,11 @@ const BoostItems = ({ setPromotion }) => {
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"
                 y="0px"
-                width="44"
-                height="44"
+                // width="44"
+                // height="44"
                 viewBox="0 0 48 48"
                 style={{
-                  position: "relative",
-                  top: "5px",
+                  ...socialIconStyle,
                 }}
               >
                 <path
@@ -103,7 +129,7 @@ const BoostItems = ({ setPromotion }) => {
                 ></path>
               </svg>
             </Grid>
-            <Grid item xs="auto">
+            <Grid item xs="auto" sx={{ color: "#718096" }}>
               Google &nbsp;
               <span style={{ color: "#718096", fontWeight: 200 }}>Ads</span>
             </Grid>
@@ -116,18 +142,11 @@ const BoostItems = ({ setPromotion }) => {
       >
         <Box
           sx={{
-            py: 2,
-            fontSize: "36px",
-            color: "#222",
-            background: "#fff",
-            border: "1px solid #dddddd",
-            borderRadius: "8px",
-            cursor: "pointer",
-            transition: ".5s",
-            "&:hover": {
-              boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-              // boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
-            },
+            ...buttonHolderStyle,
+            border:
+              promotion === "Youtube"
+                ? `1px solid ${theme.palette.primary.main}`
+                : "1px solid #dddddd",
           }}
         >
           <Grid
@@ -141,12 +160,11 @@ const BoostItems = ({ setPromotion }) => {
                 xmlns="http://www.w3.org/2000/svg"
                 x="0px"
                 y="0px"
-                width="44"
-                height="44"
+                // width="44"
+                // height="44"
                 viewBox="0 0 48 48"
                 style={{
-                  position: "relative",
-                  top: "5px",
+                  ...socialIconStyle,
                 }}
               >
                 <path
@@ -156,7 +174,7 @@ const BoostItems = ({ setPromotion }) => {
                 <path fill="#FFF" d="M20 31L20 17 32 24z"></path>
               </svg>
             </Grid>
-            <Grid item xs="auto">
+            <Grid item xs="auto" sx={{ color: "#222" }}>
               You<span style={{ color: "#FF3D00" }}>Tube</span> &nbsp;
               <span style={{ color: "#718096", fontWeight: 200 }}>Ads</span>
             </Grid>
