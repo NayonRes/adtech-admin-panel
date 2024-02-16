@@ -95,7 +95,7 @@ function MySlider({
   const maxSteps = forms.length;
 
   const disable2ndNextButton = () => {
-    let disabled = true;
+    let disabled = false;
     if (promotion_objective.trim().length < 1) {
       disabled = true;
     }
@@ -104,12 +104,31 @@ function MySlider({
         disabled = true;
       }
     }
+    if (promotion_objective === "Traffic" && postLink.trim().length < 1) {
+      disabled = true;
+    }
+    if (promotion_objective === "Engagement" && postLink.trim().length < 1) {
+      disabled = true;
+    }
+    if (
+      promotion_objective === "Leads" &&
+      (leadItems.length < 1 || postLink.trim().length < 1)
+    ) {
+      disabled = true;
+    }
+
+    if (
+      promotion_objective === "Reach" &&
+      (postLink.trim().length < 1 || videoLink.trim().length < 1)
+    ) {
+      disabled = true;
+    }
 
     return disabled;
   };
 
   const handleNext = () => {
-    if (promotion.trim().length && activeStep === 0) {
+    if (promotion.trim().length < 1 && activeStep === 0) {
       return;
     }
     if (activeStep === 1 && disable2ndNextButton()) {

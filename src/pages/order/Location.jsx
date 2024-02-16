@@ -15,7 +15,10 @@ import FormGroup from "@mui/material/FormGroup";
 import FormHelperText from "@mui/material/FormHelperText";
 import Checkbox from "@mui/material/Checkbox";
 import Collapse from "@mui/material/Collapse";
+
+import { useTheme } from "@mui/material/styles";
 const Location = ({ location, setLocation, divisions, setDivisions }) => {
+  const theme = useTheme();
   const divisionNames = [
     "Dhaka",
     "Chattogram",

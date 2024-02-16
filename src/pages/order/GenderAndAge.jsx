@@ -11,6 +11,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 
+import { useTheme } from "@mui/material/styles";
+
 const GenderAndAge = ({
   gender,
   setGender,
@@ -19,6 +21,7 @@ const GenderAndAge = ({
   max_age,
   setMax_age,
 }) => {
+  const theme = useTheme();
   const handleGender = (event) => {
     setGender(event.target.value);
   };

@@ -116,59 +116,83 @@ const AddOrder = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let err = validation();
+    // let err = validation();
     // let err = false;
     setErrors({});
 
-    if (err) {
-      return;
-    } else {
-      setLoading(true);
-      try {
-        let data = {
-          name,
-          email,
-          mobile: mobileNo,
-          password: password,
-          password_confirm: confirmPassword,
-
-          // status: "Active",
-        };
-        let response = await axios({
-          url: "/api/auth/register",
-          method: "post",
-          data: data,
-          headers: {
-            Authorization: `Bearer ${adtech_admin_panel.token}`,
-          },
+    // if (err) {
+    //   return;
+    // } else {
+    setLoading(true);
+    try {
+      let myObectives = [];
+      if (messageMedia.length > 0) {
+        messageMedia.map((item) => {
+          myObectives.push({ media: item });
         });
-        if (response?.status === 401) {
-          logout();
-          return;
-        }
-        if (response?.status > 199 && response?.status < 300) {
-          handleSnakbarOpen("Successful", "success");
-          setName("");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-          setMobileNo("");
-        }
-      } catch (error) {
-        console.log("error", error);
-        setLoading(false);
-        if (error?.response?.status === 500) {
-          handleSnakbarOpen(error?.response?.statusText, "error");
-        } else {
-          setErrors(error.response.data.errors);
-        }
-        // handleSnakbarOpen(error.response.data.messages.toString(), "error");
-        // if (error.response.data.errors.length < 1) {
-        //   handleSnakbarOpen("Something went wrong", "error");
-        // }
       }
+      if (leadItems.length > 0) {
+        leadItems.map((item) => {
+          myObectives.push({ lead: item });
+        });
+      }
+      if (postLink.length > 0) {
+        myObectives.push({ post_link: postLink });
+      }
+      if (videoLink.length > 0) {
+        myObectives.push({ video_link: videoLink });
+      }
+      if (websiteLink.length > 0) {
+        myObectives.push({ website_link: websiteLink });
+      }
+
+      let data = {
+        promotion: promotion,
+        gender: gender,
+        min_age: min_age,
+        max_age: max_age,
+        amount: amount,
+        promotion_period: promotion_period,
+        promotion_objective: promotion_objective,
+        divisions: divisions,
+        objectives: myObectives,
+        // status: "Active",
+      };
+      let response = await axios({
+        url: "/api/order",
+        method: "post",
+        data: data,
+        headers: {
+          Authorization: `Bearer ${adtech_admin_panel.token}`,
+        },
+      });
+      if (response?.status === 401) {
+        logout();
+        return;
+      }
+      if (response?.status > 199 && response?.status < 300) {
+        handleSnakbarOpen("Successful", "success");
+        setName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setMobileNo("");
+      }
+    } catch (error) {
+      console.log("error", error);
       setLoading(false);
+      if (error?.response?.status === 500) {
+        handleSnakbarOpen(error?.response?.statusText, "error");
+      } else {
+        setErrors(error.response.data.errors);
+      }
+      // handleSnakbarOpen(error.response.data.messages.toString(), "error");
+      // if (error.response.data.errors.length < 1) {
+      //   handleSnakbarOpen("Something went wrong", "error");
+      // }
     }
+    setLoading(false);
+    // }
   };
 
   return (

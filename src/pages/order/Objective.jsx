@@ -8,7 +8,7 @@ import { TextField, Typography } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import Collapse from "@mui/material/Collapse";
-
+import { useTheme } from "@mui/material/styles";
 const Objective = ({
   promotion_objective,
   setPromotion_objective,
@@ -23,6 +23,7 @@ const Objective = ({
   leadItems,
   setLeadItems,
 }) => {
+  const theme = useTheme();
   const obectives = [
     {
       title: "Message",
@@ -94,15 +95,27 @@ const Objective = ({
       >
         Objective
       </Typography>
-      <FormControl sx={{ pl: 3 }}>
+      <FormControl sx={{ pl: 3, mb: 2 }}>
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="controlled-radio-buttons-group"
           value={promotion_objective}
           onChange={handleChange}
+          sx={{
+            "& .MuiFormControlLabel-label": {
+              fontSize: 14,
+            },
+            "& .MuiSvgIcon-root": {
+              fontSize: 16,
+            },
+          }}
         >
           {obectives?.map((item, i) => (
             <FormControlLabel
+              // sx={{
+              //   fontSize:"13px"
+              //   // color:theme.palette.text.light,
+              // }}
               value={item?.title}
               control={<Radio />}
               label={item?.title}
@@ -110,12 +123,12 @@ const Objective = ({
           ))}
         </RadioGroup>
       </FormControl>
-      <Typography variant="medium" color="text.main" sx={{ mt: 1, mb: 2 }}>
+      <Typography variant="medium" color="text.main" sx={{ mt: 1, mb: 1 }}>
         {obectives.find((res) => res.title === promotion_objective)?.msg}
       </Typography>
       {/* {promotion_objective === "Message" && ( */}
       <Collapse in={promotion_objective === "Message"}>
-        <FormGroup sx={{ flexDirection: "row" }}>
+        <FormGroup sx={{ flexDirection: "row", mb: 1 }}>
           {messageMediaList?.map((item, i) => (
             <FormControlLabel
               key={i}
@@ -132,7 +145,7 @@ const Objective = ({
       {/* )} */}
       {/* {promotion_objective === "Leads" && ( */}
       <Collapse in={promotion_objective === "Leads"}>
-        <FormGroup sx={{ flexDirection: "row" }}>
+        <FormGroup sx={{ flexDirection: "row", mb: 1 }}>
           {leadItemList?.map((item, i) => (
             <FormControlLabel
               key={i}
@@ -150,7 +163,7 @@ const Objective = ({
       {/* {showPostLink() && ( */}
       <Collapse in={showPostLink()}>
         <TextField
-          sx={{ mb: 2 }}
+          sx={{ mb: 1 }}
           required
           fullWidth
           label="Post Link"
@@ -165,7 +178,7 @@ const Objective = ({
       {/* {promotion_objective === "Reach" && ( */}
       <Collapse in={promotion_objective === "Reach"}>
         <TextField
-          sx={{ mb: 2 }}
+          sx={{ mb: 1 }}
           required
           fullWidth
           label="Video Link"
@@ -180,7 +193,7 @@ const Objective = ({
       {/* {promotion_objective === "Video views" && ( */}
       <Collapse in={promotion_objective === "Video views"}>
         <TextField
-          sx={{ mb: 2 }}
+          sx={{ mb: 1 }}
           fullWidth
           label="Website Link (Optional)"
           size="small"

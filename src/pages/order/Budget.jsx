@@ -6,6 +6,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { useTheme } from "@mui/material/styles";
 
 const Budget = ({
   amount,
@@ -13,6 +14,7 @@ const Budget = ({
   promotion_period,
   setPromotion_period,
 }) => {
+  const theme = useTheme();
   const handleChange = (event) => {
     setPromotion_period(event.target.value);
   };
@@ -28,16 +30,38 @@ const Budget = ({
       </Typography>
       <Box sx={{ px: 4 }}>
         <Slider
+          sx={{
+            "& .MuiSlider-valueLabel": {
+              background: theme.palette.primary.main,
+              color: "#fff",
+            },
+          }}
           aria-label="Temperature"
           defaultValue={1000}
           getAriaValueText={valuetext}
-          valueLabelDisplay="auto"
+          valueLabelDisplay="on"
           shiftStep={30}
           step={500}
           marks
           min={1000}
           max={10000}
         />
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography
+            variant="body2"
+            onClick={() => valuetext(`${1000}°C`)}
+            sx={{ cursor: "pointer" }}
+          >
+            1000
+          </Typography>
+          <Typography
+            variant="body2"
+            // onClick={() => valuetext(`${10000}°C`)}
+            // sx={{ cursor: "pointer" }}
+          >
+            10000
+          </Typography>
+        </Box>
       </Box>
       <Box sx={{ textAlign: "center", mb: 2 }}>
         <Chip
