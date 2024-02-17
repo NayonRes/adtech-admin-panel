@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import FacebookObjective from "./FacebookObjective";
+import GoogleObjective from "./GoogleObjective";
+import YoutubeObjective from "./YoutubeObjective";
 
 const Objective = ({
   promotion,
@@ -15,7 +17,32 @@ const Objective = ({
   setMessageMedia,
   leadItems,
   setLeadItems,
+
+  link,
+  setLink,
+  title,
+  setTitle,
+  description,
+  setDescription,
 }) => {
+  const clearObjectiveItem = () => {
+    // facebook objective value
+    setPromotion_objective("");
+    setPostLink("");
+    setWebsiteLink("");
+    setVideoLink("");
+    setLeadItems([]);
+    setMessageMedia([]);
+    // google objective value
+    setLink("");
+    setTitle("");
+    setDescription("");
+    // youtube objective value
+  };
+  useEffect(() => {
+    clearObjectiveItem();
+  }, [promotion]);
+
   if (promotion === "Facebook") {
     return (
       <FacebookObjective
@@ -34,9 +61,23 @@ const Objective = ({
       />
     );
   }
-  if (promotion === "Facebook") {
+  if (promotion === "Google") {
     return (
-      <FacebookObjective
+      <GoogleObjective
+        promotion_objective={promotion_objective}
+        setPromotion_objective={setPromotion_objective}
+        link={link}
+        setLink={setLink}
+        title={title}
+        setTitle={setTitle}
+        description={description}
+        setDescription={setDescription}
+      />
+    );
+  }
+  if (promotion === "Youtube") {
+    return (
+      <YoutubeObjective
         promotion_objective={promotion_objective}
         setPromotion_objective={setPromotion_objective}
         postLink={postLink}

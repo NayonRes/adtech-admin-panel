@@ -82,7 +82,7 @@ const Budget = ({
             fontSize: "20px",
             fontWeight: 500,
             color: theme.palette.text.light,
-            border:`1px solid ${theme.palette.text.light}`
+            border: `1px solid ${theme.palette.text.light}`,
           }}
           label={`Tk. ${amount}`}
           variant="outlined"

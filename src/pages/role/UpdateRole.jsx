@@ -275,11 +275,12 @@ const UpdateRole = () => {
       // setPermissionList(myNewData);
       setLoading(false);
       return myNewData;
-    } else {
+    } 
+    else {
       setPermissionMessage("Something went wrong");
-      if (allPermission.data.messages.length < 1) {
-        setPermissionMessage("Something went wrong");
-      }
+      // if (allPermission.data.messages.length < 1) {
+      //   setPermissionMessage("Something went wrong");
+      // }
       setLoading(false);
       return myNewData;
     }
@@ -287,74 +288,76 @@ const UpdateRole = () => {
   };
   const getAssaignedPermissionInfo = async (id) => {
     const permissionList2 = await getPermissionInfo();
-    console.log("permissionList2", permissionList2);
-    setLoading(true);
-    let myNewData = [];
+    if (permissionList2 !== undefined) {
+      console.log("permissionList2", permissionList2);
+      setLoading(true);
+      let myNewData = [];
 
-    let allAssaignedPermission = await getDataWithToken(
-      `api/role/${id}`,
-      adtech_admin_panel.token
-    );
-    console.log("allAssaignedPermission", allAssaignedPermission);
-    if (allAssaignedPermission?.status === 401) {
-      logout();
-      return;
-    }
-    if (
-      allAssaignedPermission?.status > 199 &&
-      allAssaignedPermission?.status < 300
-    ) {
-      setRoleName(allAssaignedPermission.data.data.name);
-      let assignedPermissions = allAssaignedPermission.data.data.permissions;
+      let allAssaignedPermission = await getDataWithToken(
+        `api/role/${id}`,
+        adtech_admin_panel.token
+      );
+      console.log("allAssaignedPermission", allAssaignedPermission);
+      if (allAssaignedPermission?.status === 401) {
+        logout();
+        return;
+      }
+      if (
+        allAssaignedPermission?.status > 199 &&
+        allAssaignedPermission?.status < 300
+      ) {
+        setRoleName(allAssaignedPermission.data.data.name);
+        let assignedPermissions = allAssaignedPermission.data.data.permissions;
 
-      console.log("assignedPermissions", assignedPermissions);
-      permissionList2?.map((item) => {
-        let newObj = item.permissions.map((obj) => {
-          return {
-            ...obj,
-            // isPermitted: assignedPermissions.includes(obj.id),
-            isPermitted: assignedPermissions.some((el) => el.id === obj.id),
-            // children: obj.children.map((child) => ({
-            //   ...child,
-            //   isPermitted: assignedPermissions.includes(child.permission),
-            // })),
+        console.log("assignedPermissions", assignedPermissions);
+        permissionList2?.map((item) => {
+          let newObj = item.permissions.map((obj) => {
+            return {
+              ...obj,
+              // isPermitted: assignedPermissions.includes(obj.id),
+              isPermitted: assignedPermissions.some((el) => el.id === obj.id),
+              // children: obj.children.map((child) => ({
+              //   ...child,
+              //   isPermitted: assignedPermissions.includes(child.permission),
+              // })),
+            };
+          });
+          const isAnyPermissionFalse = newObj.some(
+            (el) => el.isPermitted === false
+          );
+
+          let isAnyChildPermissionfalse;
+          // newObj?.map((child) => {
+          //   if (child?.children.length > 0) {
+          //     isAnyChildPermissionfalse = child?.children?.some(
+          //       (el) => el.isPermitted === false
+          //     );
+          //   }
+          // });
+          let allPermission = true;
+          if (isAnyPermissionFalse || isAnyChildPermissionfalse) {
+            allPermission = false;
+          }
+          let myObj = {
+            title: item.title,
+            allPermitted: allPermission,
+            permissions: newObj,
           };
+          myNewData.push(myObj);
         });
-        const isAnyPermissionFalse = newObj.some(
-          (el) => el.isPermitted === false
-        );
+        console.log("myNewData", myNewData);
+        setPermissionListWithAssignedPermissions(myNewData);
 
-        let isAnyChildPermissionfalse;
-        // newObj?.map((child) => {
-        //   if (child?.children.length > 0) {
-        //     isAnyChildPermissionfalse = child?.children?.some(
-        //       (el) => el.isPermitted === false
-        //     );
-        //   }
-        // });
-        let allPermission = true;
-        if (isAnyPermissionFalse || isAnyChildPermissionfalse) {
-          allPermission = false;
-        }
-        let myObj = {
-          title: item.title,
-          allPermitted: allPermission,
-          permissions: newObj,
-        };
-        myNewData.push(myObj);
-      });
-      console.log("myNewData", myNewData);
-      setPermissionListWithAssignedPermissions(myNewData);
-
-      setLoading(false);
-    } else {
-      setMessage(allAssaignedPermission.data.messages.toString());
-      if (allAssaignedPermission.data.messages.length < 1) {
+        setLoading(false);
+      } else {
         setMessage("Something went wrong");
+        // if (allAssaignedPermission.data.messages.length < 1) {
+        //   setMessage("Something went wrong");
+        // }
+        setLoading(false);
       }
       setLoading(false);
     }
-    setLoading(false);
   };
 
   const handlePermissionSelectByTitle = (checked, item, index) => {

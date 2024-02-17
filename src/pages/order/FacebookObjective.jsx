@@ -48,7 +48,7 @@ const FacebookObjective = ({
     "Location",
   ];
 
-  const clearObjectiveItem = () => {
+  const clearFacebookObjectiveItem = () => {
     setPostLink("");
     setWebsiteLink("");
     setVideoLink("");
@@ -57,7 +57,7 @@ const FacebookObjective = ({
   };
   const handleChange = (event) => {
     setPromotion_objective(event.target.value);
-    clearObjectiveItem();
+    clearFacebookObjectiveItem();
   };
   const showPostLink = () => {
     if (

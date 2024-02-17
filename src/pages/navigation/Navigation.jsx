@@ -21,6 +21,7 @@ import UpdateCustomer from "../customer/UpdateCustomer";
 import AddOrder from "../order/AddOrder";
 import RoleList from "../role/RoleList";
 import UpdateRole from "../role/UpdateRole";
+import PendingOrderList from "../order/order-list/PendingOrderList";
 
 function PrivateRoute({ children }) {
   const { adtech_admin_panel } = useContext(AuthContext);
@@ -126,6 +127,14 @@ const Navigation = () => {
           element={
             <PrivateRoute>
               <CustomerList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="pending-order-list"
+          element={
+            <PrivateRoute>
+              <PendingOrderList />
             </PrivateRoute>
           }
         />

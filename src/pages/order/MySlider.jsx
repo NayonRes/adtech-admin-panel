@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useContext, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MobileStepper from "@mui/material/MobileStepper";
@@ -10,7 +10,14 @@ import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
 import BoostItems from "./BoostItems";
-import { Grid } from "@mui/material";
+import {
+  Grid,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableRow,
+} from "@mui/material";
 import FacebookOutlinedIcon from "@mui/icons-material/FacebookOutlined";
 import Objective from "./Objective";
 import Budget from "./Budget";
@@ -19,48 +26,47 @@ import Location from "./Location";
 import PulseLoader from "react-spinners/PulseLoader";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import { useSnackbar } from "notistack";
-
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import axios from "axios";
+import { AuthContext } from "../../context/AuthContext";
 const AutoPlaySwipeableViews = SwipeableViews;
 
-function MySlider({
-  loading,
-  handleSubmit,
-  promotion,
-  setPromotion,
-  promotion_objective,
-  setPromotion_objective,
-  postLink,
-  setPostLink,
-  websiteLink,
-  setWebsiteLink,
-  videoLink,
-  setVideoLink,
-  amount,
-  setAmount,
-  promotion_period,
-  setPromotion_period,
+function MySlider() {
 
-  gender,
-  setGender,
-  min_age,
-  setMin_age,
-  max_age,
-  setMax_age,
+  const theme = useTheme();
+  const { enqueueSnackbar } = useSnackbar();
+  const { adtech_admin_panel, logout } = useContext(AuthContext);
+  const [promotion, setPromotion] = useState("");
+  const [amount, setAmount] = useState(1000);
+  const [gender, setGender] = useState("");
+  const [min_age, setMin_age] = useState(18);
+  const [max_age, setMax_age] = useState(18);
+  const [location, setLocation] = useState("");
+  const [divisions, setDivisions] = useState([]);
+  const [objectives, setObjectives] = useState([]);
+  const [promotion_period, setPromotion_period] = useState(5);
+  const [promotion_objective, setPromotion_objective] = useState("");
+  const [postLink, setPostLink] = useState("");
+  const [websiteLink, setWebsiteLink] = useState("");
+  const [videoLink, setVideoLink] = useState("");
+  const [messageMedia, setMessageMedia] = useState([]);
+  const [leadItems, setLeadItems] = useState([]);
 
-  location,
-  setLocation,
-  divisions,
-  setDivisions,
-
-  messageMedia,
-  setMessageMedia,
-  leadItems,
-  setLeadItems,
-}) {
+  const [link, setLink] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = React.useState(false);
+  const [errors, setErrors] = useState({});
+  const [open, setOpen] = React.useState(false);
   const forms = [
     <BoostItems promotion={promotion} setPromotion={setPromotion} />,
     <Objective
-    promotion={promotion}
+      promotion={promotion}
       promotion_objective={promotion_objective}
       setPromotion_objective={setPromotion_objective}
       postLink={postLink}
@@ -73,6 +79,12 @@ function MySlider({
       setMessageMedia={setMessageMedia}
       leadItems={leadItems}
       setLeadItems={setLeadItems}
+      link={link}
+      setLink={setLink}
+      title={title}
+      setTitle={setTitle}
+      description={description}
+      setDescription={setDescription}
     />,
     <Budget
       setVideoLink={setVideoLink}
@@ -96,8 +108,17 @@ function MySlider({
       setDivisions={setDivisions}
     />,
   ];
-  const theme = useTheme();
-  const { enqueueSnackbar } = useSnackbar();
+  const handleClickOpen = () => {
+    if (divisions.length < 1 && activeStep === 4) {
+      handleSnakbarOpen("Please select location", "error");
+      return;
+    }
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = forms.length;
   const handleSnakbarOpen = (msg, vrnt) => {
@@ -167,6 +188,26 @@ function MySlider({
           disabled = true;
         }
       }
+    } else if (promotion === "Google") {
+      if (link.trim().length < 1) {
+        handleSnakbarOpen("Please enter link", "error");
+        document.getElementById("link").focus();
+        disabled = true;
+      } else if (title.trim().length < 1) {
+        handleSnakbarOpen("Please enter title", "error");
+        document.getElementById("title").focus();
+        disabled = true;
+      } else if (description.trim().length < 1) {
+        handleSnakbarOpen("Please enter description", "error");
+        document.getElementById("description").focus();
+        disabled = true;
+      }
+    } else if (promotion === "Youtube") {
+      if (videoLink.trim().length < 1) {
+        handleSnakbarOpen("Please enter video link", "error");
+        document.getElementById("videoLink").focus();
+        disabled = true;
+      }
     }
 
     return disabled;
@@ -196,7 +237,114 @@ function MySlider({
   const handleStepChange = (step) => {
     setActiveStep(step);
   };
+  const handleResetForm = () => {
+    setPromotion("");
+    setPromotion_objective("");
+    setPostLink("");
+    setWebsiteLink("");
+    setVideoLink("");
+    setLeadItems([]);
+    setMessageMedia([]);
 
+    setLink("");
+    setTitle("");
+    setDescription("");
+
+    setMin_age(18);
+    setMax_age(18);
+
+    setAmount(1000);
+    setPromotion_period(5);
+    setGender("");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // let err = validation();
+    // let err = false;
+    setErrors({});
+
+    // if (err) {
+    //   return;
+    // } else {
+    setLoading(true);
+    try {
+      let myObectives = [];
+      if (messageMedia.length > 0) {
+        messageMedia.map((item) => {
+          myObectives.push({ media: item });
+        });
+      }
+      if (leadItems.length > 0) {
+        leadItems.map((item) => {
+          myObectives.push({ lead: item });
+        });
+      }
+      if (postLink.trim().length > 0) {
+        myObectives.push({ post_link: postLink });
+      }
+      if (videoLink.trim().length > 0) {
+        myObectives.push({ video_link: videoLink });
+      }
+      if (websiteLink.trim().length > 0) {
+        myObectives.push({ website_link: websiteLink });
+      }
+      if (link.trim().length > 0) {
+        myObectives.push({ link: link });
+      }
+      if (title.trim().length > 0) {
+        myObectives.push({ title: title });
+      }
+      if (description.trim().length > 0) {
+        myObectives.push({ description: description });
+      }
+
+      let data = {
+        promotion: promotion,
+        gender: gender,
+        min_age: min_age,
+        max_age: max_age,
+        amount: amount,
+        promotion_period: promotion_period,
+        promotion_objective: promotion_objective,
+        divisions: divisions,
+        objectives: myObectives,
+        // status: "Active",
+      };
+      let response = await axios({
+        url: "/api/order",
+        method: "post",
+        data: data,
+        headers: {
+          Authorization: `Bearer ${adtech_admin_panel.token}`,
+        },
+      });
+      if (response?.status === 401) {
+        logout();
+        return;
+      }
+
+      if (response?.status > 199 && response?.status < 300) {
+        handleSnakbarOpen("Successful", "success");
+        handleClose();
+        handleResetForm();
+      }
+    } catch (error) {
+      console.log("error", error);
+      setLoading(false);
+      if (error?.response?.status === 500) {
+        handleSnakbarOpen(error?.response?.statusText, "error");
+      } else {
+        setErrors(error.response.data.errors);
+      }
+      // handleSnakbarOpen(error.response.data.messages.toString(), "error");
+      // if (error.response.data.errors.length < 1) {
+      //   handleSnakbarOpen("Something went wrong", "error");
+      // }
+    }
+    setLoading(false);
+    // }
+  };
   return (
     <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
       {/* <Paper
@@ -411,27 +559,17 @@ function MySlider({
         nextButton={
           activeStep === maxSteps - 1 ? (
             <Button
-              variant="contained"
-              disableElevation
               size="small"
-              style={{
-                minHeight: "31px",
-              }}
-              endIcon={
-                <SendOutlinedIcon
-                  style={{ position: "relative", top: -2, fontSize: "16px" }}
-                />
-              }
-              disabled={loading}
-              onClick={handleSubmit}
+              disableElevation
+              variant="contained"
+              onClick={handleClickOpen}
             >
-              {loading === false && <>&nbsp;&nbsp; Confirm</>}
-              <PulseLoader
-                color={"#353b48"}
-                loading={loading}
-                size={10}
-                speedMultiplier={0.5}
-              />{" "}
+              &nbsp;&nbsp; Continue &nbsp;&nbsp;
+              {/* {theme.direction === "rtl" ? (
+            <KeyboardArrowLeft />
+          ) : (
+            <KeyboardArrowRight />
+          )} */}
             </Button>
           ) : (
             <Button
@@ -473,6 +611,190 @@ function MySlider({
           </Button>
         }
       />
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        maxWidth="lg"
+        sx={{ ".MuiDialog-paper": { p: 3 } }}
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{ fontWeight: 600, position: "relative" }}
+        >
+          {"Order Details"}{" "}
+          <IconButton
+            sx={{ position: "absolute", right: 0, top: -10 }}
+            onClick={handleClose}
+          >
+            <ClearOutlinedIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ minWidth: "350px" }}>
+          <DialogContentText id="alert-dialog-description">
+            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              {" "}
+              Boost Item: &nbsp;
+              <span style={{ color: theme.palette.text.main }}>
+                {promotion}
+              </span>
+            </Typography>
+            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              {" "}
+              Boost Objective: &nbsp;
+              <span style={{ color: theme.palette.text.main }}>
+                {promotion_objective}
+              </span>
+            </Typography>
+            {messageMedia.length > 0 && (
+              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+                {" "}
+                Message Media: &nbsp;
+                <span style={{ color: theme.palette.text.main }}>
+                  {messageMedia.toString()}
+                </span>
+              </Typography>
+            )}
+            {leadItems.length > 0 && (
+              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+                {" "}
+                Lead Items: &nbsp;
+                <span style={{ color: theme.palette.text.main }}>
+                  {leadItems.toString()}
+                </span>
+              </Typography>
+            )}
+            {postLink.trim().length > 0 && (
+              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+                {" "}
+                Post Link: &nbsp;
+                <span style={{ color: theme.palette.text.main }}>
+                  {postLink}
+                </span>
+              </Typography>
+            )}
+            {videoLink.trim().length > 0 && (
+              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+                {" "}
+                Video Link: &nbsp;
+                <span style={{ color: theme.palette.text.main }}>
+                  {videoLink}
+                </span>
+              </Typography>
+            )}
+            {websiteLink.trim().length > 0 && (
+              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+                {" "}
+                Website Link: &nbsp;
+                <span style={{ color: theme.palette.text.main }}>
+                  {websiteLink}
+                </span>
+              </Typography>
+            )}
+            {link.trim().length > 0 && (
+              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+                {" "}
+                Link: &nbsp;
+                <span style={{ color: theme.palette.text.main }}>{link}</span>
+              </Typography>
+            )}
+            {title.trim().length > 0 && (
+              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+                {" "}
+                Title: &nbsp;
+                <span style={{ color: theme.palette.text.main }}>{title}</span>
+              </Typography>
+            )}
+            {description.trim().length > 0 && (
+              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+                {" "}
+                Description: &nbsp;
+                <span style={{ color: theme.palette.text.main }}>
+                  {description}
+                </span>
+              </Typography>
+            )}
+
+            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              {" "}
+              Package Amount: &nbsp;
+              <span style={{ color: theme.palette.text.main }}>
+                TK. {amount}
+              </span>
+            </Typography>
+            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              {" "}
+              Boosting Period: &nbsp;
+              <span style={{ color: theme.palette.text.main }}>
+                {promotion_period} Day{parseInt(promotion_period) > 1 && "s"}
+              </span>
+            </Typography>
+            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              {" "}
+              Gender: &nbsp;
+              <span style={{ color: theme.palette.text.main }}>
+                {gender} {gender === "Both" && "(Male and Female)"}
+              </span>
+            </Typography>
+            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              {" "}
+              Age: &nbsp;
+              <span style={{ color: theme.palette.text.main }}>
+                {min_age} To {max_age} Years
+              </span>
+            </Typography>
+            <Table>
+              <TableBody>
+                <TableRow
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell sx={{ p: 0 }}>
+                    {" "}
+                    <Typography variant="base" color="text.light">
+                      {" "}
+                      Location: &nbsp;
+                    </Typography>
+                  </TableCell>
+                  <TableCell sx={{ p: 0 }}>
+                    {" "}
+                    <Typography variant="base" color="text.main">
+                      {divisions.toString()}
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ pt: 0, pb: 1.5, justifyContent: "center" }}>
+          <Button
+            variant="contained"
+            disableElevation
+            // size="small"
+            style={{
+              minHeight: "37px",
+              minWidth: "180px",
+            }}
+            endIcon={
+              <SendOutlinedIcon
+                style={{ position: "relative", top: -2, fontSize: "16px" }}
+              />
+            }
+            disabled={loading}
+            onClick={handleSubmit}
+          >
+            {loading === false && <>&nbsp;&nbsp; Confirm</>}
+            <PulseLoader
+              color={"#353b48"}
+              loading={loading}
+              size={10}
+              speedMultiplier={0.5}
+            />{" "}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

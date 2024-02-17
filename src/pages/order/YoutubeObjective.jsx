@@ -9,37 +9,39 @@ import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import Collapse from "@mui/material/Collapse";
 import { useTheme } from "@mui/material/styles";
-const GoogleObjective = ({
+const YoutubeObjective = ({
   promotion_objective,
   setPromotion_objective,
-
-  link,
-  setLink,
-  title,
-  setTitle,
-  description,
-  setDescription,
+  postLink,
+  setPostLink,
+  websiteLink,
+  setWebsiteLink,
+  videoLink,
+  setVideoLink,
+  messageMedia,
+  setMessageMedia,
+  leadItems,
+  setLeadItems,
 }) => {
   const theme = useTheme();
   const obectives = [
     {
-      title: "Traffic",
-      msg: "Your ads show on Google searches for businesses like yours, driving website traffic.",
+      title: "Video views",
+      msg: "Get more people to watch your video on YouTube.",
     },
   ];
 
-  const clearGoogleObjectiveItem = () => {
-    setLink("");
-    setTitle("");
-    setDescription("");
+  const clearFacebookObjectiveItem = () => {
+    setWebsiteLink("");
+    setVideoLink("");
   };
   const handleChange = (event) => {
     setPromotion_objective(event.target.value);
-    clearGoogleObjectiveItem();
+    clearFacebookObjectiveItem();
   };
 
   useEffect(() => {
-    setPromotion_objective("Traffic");
+    setPromotion_objective("Video views");
   }, []);
 
   return (
@@ -56,7 +58,7 @@ const GoogleObjective = ({
       >
         Objective
       </Typography>
-      <FormControl sx={{ pl: 3, mb: 2 }}>
+      <FormControl sx={{ pl: 3, mb: 3 }}>
         <RadioGroup
           aria-labelledby="demo-controlled-radio-buttons-group"
           name="controlled-radio-buttons-group"
@@ -87,22 +89,7 @@ const GoogleObjective = ({
 
       <TextField
         sx={{
-          mb: 4,
-          "& .MuiOutlinedInput-input": {
-            padding: "7px 14px",
-          },
-        }}
-        required
-        fullWidth
-        label="Link"
-        size="small"
-        variant="outlined"
-        id="link"
-        value={link}
-        onChange={(e) => setLink(e.target.value)}
-      />
-      <TextField
-        sx={{
+          mb: 3,
           "& .MuiOutlinedInput-input": {
             // color: "#718096",
             padding: "7px 14px",
@@ -110,51 +97,30 @@ const GoogleObjective = ({
         }}
         required
         fullWidth
-        label="Title"
+        label="Youtube Video Link"
         size="small"
         variant="outlined"
-        id="title"
-        inputProps={{
-          maxLength: 90,
-        }}
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        id="videoLink"
+        value={videoLink}
+        onChange={(e) => setVideoLink(e.target.value)}
       />
-      <Typography
-        variant="small"
-        color="text.light"
-        sx={{ mb: 2, textAlign: "right" }}
-      >
-        {title.length}/90
-      </Typography>
+
       <TextField
         sx={{
+          mb: 1,
           "& .MuiOutlinedInput-input": {
             // color: "#718096",
             padding: "7px 14px",
           },
         }}
-        required
         fullWidth
-        label="Description"
+        label="Website Link (Optional)"
         size="small"
         variant="outlined"
-        id="description"
-        inputProps={{
-          maxLength: 90,
-        }}
-        multiline
-        rows={3}
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        id="websiteLink"
+        value={websiteLink}
+        onChange={(e) => setWebsiteLink(e.target.value)}
       />
-      <Typography
-        variant="small"
-        color="text.light"
-        sx={{ mb: 2, textAlign: "right" }}
-      >
-        {description.length}/90
-      </Typography>
       <Typography variant="medium" color="text.main" sx={{ mt: 1, mb: 1 }}>
         {obectives.find((res) => res.title === promotion_objective)?.msg}
       </Typography>
@@ -162,4 +128,4 @@ const GoogleObjective = ({
   );
 };
 
-export default GoogleObjective;
+export default YoutubeObjective;
