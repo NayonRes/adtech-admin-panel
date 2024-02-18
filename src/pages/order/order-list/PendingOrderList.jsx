@@ -45,6 +45,14 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import PulseLoader from "react-spinners/PulseLoader";
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 const PendingOrderList = () => {
   const theme = useTheme();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
@@ -54,8 +62,7 @@ const PendingOrderList = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [mobileNo, setmobileNo] = useState("");
+  const [invoiceNo, setInvoiceNo] = useState("");
   const [gender, setGender] = useState("");
   const [status, setStatus] = useState("Pending");
   const [totalPage, setTotalPage] = useState(0);
@@ -66,6 +73,19 @@ const PendingOrderList = () => {
   const [createdStartTime, setCreatedStartTime] = useState(null);
   const [createdEndTime, setCreatedEndTime] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
+  const [downloadloading, setDownloadloading] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [updateId, setUpdateId] = useState("");
+  const [updateLoading, setUpdateLoading] = useState(false);
+
+  const handleClickOpen = (id) => {
+    setUpdateId(id);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleSnakbarOpen = (msg, vrnt) => {
     let duration;
     if (vrnt === "error") {
@@ -95,14 +115,13 @@ const PendingOrderList = () => {
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 13; j++) {
         cells.push(
           <TableCell key={j} sx={{ py: 1.5 }}>
             <Skeleton></Skeleton>
           </TableCell>
         );
       }
-
       rows.push(<TableRow key={i}>{cells}</TableRow>);
     }
 
@@ -110,8 +129,7 @@ const PendingOrderList = () => {
   };
   const clearFilter = (event) => {
     setName("");
-    setEmail("");
-    setmobileNo("");
+    setInvoiceNo("");
     // setStatus("");
     setCreatedStartTime(null);
     setCreatedEndTime(null);
@@ -152,11 +170,7 @@ const PendingOrderList = () => {
         newCreatedEndTime = dayjs(createdEndTime).format("YYYY-MM-DD");
       }
 
-      url = `api/order?keyword=${name.trim()}&email=${encodeURIComponent(
-        email.trim()
-      )}&mobile=${encodeURIComponent(
-        mobileNo.trim()
-      )}&gender=${gender}&status=${newStatus}&from=${newCreatedStartTime}&to=${newCreatedEndTime}&page=${newPageNO}`;
+      url = `api/order?keyword=${name.trim()}&id=${invoiceNo.trim()}&gender=${gender}&status=${newStatus}&from=${newCreatedStartTime}&to=${newCreatedEndTime}&page=${newPageNO}`;
     }
 
     let res = await getDataWithToken(url, adtech_admin_panel.token);
@@ -180,7 +194,7 @@ const PendingOrderList = () => {
     }
     setLoading(false);
   };
-  const [downloadloading, setDownloadloading] = useState(false);
+
   const downloadFile = async (type) => {
     setDownloadloading(true);
     // try {
@@ -203,10 +217,8 @@ const PendingOrderList = () => {
       newCreatedEndTime = dayjs(createdEndTime).format("YYYY-MM-DD");
     }
 
-    let url = `api/order/export?keyword=${name.trim()}&email=${encodeURIComponent(
-      email.trim()
-    )}&mobile=${encodeURIComponent(
-      mobileNo.trim()
+    let url = `api/order/export?keyword=${name.trim()}&id=${encodeURIComponent(
+      invoiceNo.trim()
     )}&gender=${gender}&status=${newStatus}&from=${newCreatedStartTime}&to=${newCreatedEndTime}`;
 
     let res = await axios({
@@ -265,6 +277,48 @@ const PendingOrderList = () => {
     //   setDownloadloading(false);
     // }
     setDownloadloading(false);
+  };
+
+  const updateStatus = async (id) => {
+    // let err = false;
+    // setErrors({});
+
+    setUpdateLoading(true);
+    try {
+      let data = {
+        status: "Publish",
+      };
+      let response = await axios({
+        url: `/api/order/${id}`,
+        method: "put",
+        data: data,
+        headers: {
+          Authorization: `Bearer ${adtech_admin_panel.token}`,
+        },
+      });
+      if (response?.status === 401) {
+        logout();
+        return;
+      }
+      if (response?.status > 199 && response?.status < 300) {
+        handleSnakbarOpen("Update Successfully", "success");
+        getData();
+      }
+    } catch (error) {
+      console.log("error", error);
+      setUpdateLoading(false);
+      if (error?.response?.status === 500) {
+        handleSnakbarOpen(error?.response?.statusText, "error");
+      } else {
+        // setErrors(error.response.data.errors);
+      }
+      // handleSnakbarOpen(error.response.data.messages.toString(), "error");
+      // if (error.response.data.errors.length < 1) {
+      //   handleSnakbarOpen("Something went wrong", "error");
+      // }
+
+      setUpdateLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -348,7 +402,24 @@ const PendingOrderList = () => {
               <TextField
                 fullWidth
                 id="outlined-basic"
-                label="Name"
+                label="Invoice No"
+                variant="outlined"
+                size="small"
+                sx={{
+                  "& .MuiOutlinedInput-input": {
+                    // color: "#718096",
+                    padding: "7px 14px",
+                  },
+                }}
+                value={invoiceNo}
+                onChange={(e) => setInvoiceNo(e.target.value)}
+              />
+            </Grid>
+            <Grid item lg={2}>
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="promotion"
                 variant="outlined"
                 size="small"
                 sx={{
@@ -361,40 +432,7 @@ const PendingOrderList = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </Grid>
-            <Grid item lg={2}>
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                label="Email"
-                variant="outlined"
-                size="small"
-                sx={{
-                  "& .MuiOutlinedInput-input": {
-                    // color: "#718096",
-                    padding: "7px 14px",
-                  },
-                }}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Grid>
-            <Grid item lg={2}>
-              <TextField
-                fullWidth
-                id="outlined-basic"
-                label="Mobile No"
-                variant="outlined"
-                size="small"
-                sx={{
-                  "& .MuiOutlinedInput-input": {
-                    // color: "#718096",
-                    padding: "7px 14px",
-                  },
-                }}
-                value={mobileNo}
-                onChange={(e) => setmobileNo(e.target.value)}
-              />
-            </Grid>
+
             {/* <Grid item lg={2}>
               <FormControl
                 variant="outlined"
@@ -466,7 +504,6 @@ const PendingOrderList = () => {
               </LocalizationProvider>
             </Grid>
 
-            <Grid item lg={10}></Grid>
             <Grid item lg={2}>
               <Grid container alignItems="center" spacing={{ lg: 6, xl: 3 }}>
                 <Grid item xs={3}>
@@ -567,10 +604,12 @@ const PendingOrderList = () => {
                       {row?.min_age} - {row?.max_age}
                     </TableCell>
                     <TableCell
-                      sx={{ 
-                        // maxWidth: "220px",
-                        // background: "red",
-                      }}
+                      sx={
+                        {
+                          // maxWidth: "220px",
+                          // background: "red",
+                        }
+                      }
                     >
                       {JSON.parse(row?.divisions)?.map((item, i) =>
                         JSON.parse(row?.divisions).length < i ? (
@@ -634,13 +673,21 @@ const PendingOrderList = () => {
                       sx={{ whiteSpace: "nowrap", p: 0 }}
                       align="center"
                     >
-                      <IconButton
+                      <Button
+                        variant="outlined"
+                        color="info"
+                        size="small"
+                        onClick={() => handleClickOpen(row?.id)}
+                      >
+                        Pass To Publish List
+                      </Button>
+                      {/* <IconButton
                         aria-label="edit"
                         component={Link}
                         to={`/update-customer/${row?.id}`}
                       >
                         <EditOutlinedIcon />
-                      </IconButton>
+                      </IconButton> */}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -666,6 +713,59 @@ const PendingOrderList = () => {
           />
         )}
       </Paper>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        maxWidth="lg"
+        sx={{ ".MuiDialog-paper": { p: 3 } }}
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{ fontWeight: 600, position: "relative" }}
+        >
+          {"Are you sure?"}{" "}
+          <IconButton
+            sx={{ position: "absolute", right: 0, top: -10 }}
+            onClick={handleClose}
+          >
+            <ClearOutlinedIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ minWidth: "350px" }}>
+          <DialogContentText id="alert-dialog-description">
+            You want to pass it to publish list!!!
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ pt: 0, pb: 1.5 }}>
+          <Button
+            variant="contained"
+            disableElevation
+            // size="small"
+            style={{
+              minHeight: "37px",
+              minWidth: "180px",
+            }}
+            endIcon={
+              <SendOutlinedIcon
+                style={{ position: "relative", top: -2, fontSize: "16px" }}
+              />
+            }
+            disabled={updateLoading}
+            onClick={updateStatus}
+          >
+            {updateLoading === false && <>&nbsp;&nbsp; Confirm</>}
+            <PulseLoader
+              color={"#353b48"}
+              loading={updateLoading}
+              size={10}
+              speedMultiplier={0.5}
+            />{" "}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
