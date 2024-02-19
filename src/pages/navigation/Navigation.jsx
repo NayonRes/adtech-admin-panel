@@ -22,6 +22,9 @@ import AddOrder from "../order/AddOrder";
 import RoleList from "../role/RoleList";
 import UpdateRole from "../role/UpdateRole";
 import PendingOrderList from "../order/order-list/PendingOrderList";
+import PublishOrderList from "../order/order-list/PublishOrderList";
+import CompleteOrderList from "../order/order-list/CompleteOrderList";
+import RefundedOrderList from "../order/order-list/RefundedOrderList";
 
 function PrivateRoute({ children }) {
   const { adtech_admin_panel } = useContext(AuthContext);
@@ -139,6 +142,30 @@ const Navigation = () => {
           }
         />
         <Route
+          path="publish-order-list"
+          element={
+            <PrivateRoute>
+              <PublishOrderList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="complete-order-list"
+          element={
+            <PrivateRoute>
+              <CompleteOrderList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="refunded-order-list"
+          element={
+            <PrivateRoute>
+              <RefundedOrderList />
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="role-list"
           element={
             <PrivateRoute>
@@ -146,7 +173,7 @@ const Navigation = () => {
             </PrivateRoute>
           }
         />
-          <Route
+        <Route
           path="update-role/:id"
           element={
             <PrivateRoute>

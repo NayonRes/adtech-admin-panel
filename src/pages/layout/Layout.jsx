@@ -53,6 +53,7 @@ import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import RecentActorsOutlinedIcon from "@mui/icons-material/RecentActorsOutlined";
 import PlaylistRemoveOutlinedIcon from "@mui/icons-material/PlaylistRemoveOutlined";
 import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";
+import { Button } from "@mui/material";
 
 const drawerWidth = 270;
 
@@ -280,21 +281,23 @@ export default function Layout() {
             </Typography>
 
             <div variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              <IconButton
+              <Button
+                variant="outlined"
                 id="basic-button"
                 aria-controls={menuOpen ? "basic-menu" : undefined}
                 aria-haspopup="true"
                 aria-expanded={menuOpen ? "true" : undefined}
                 onClick={handleClick}
                 style={{
-                  padding: 0,
+                  // padding: 0,
                   color: theme.palette.primary.main,
                   fontSize: "14px",
                   textTransform: "none",
                 }}
               >
-                <SettingsPowerIcon sx={{ width: 40, height: 40 }} />
-              </IconButton>
+                {adtech_admin_panel?.name}&nbsp;
+                <SettingsPowerIcon sx={{ width: 20, height: 20 }} />
+              </Button>
 
               <Menu
                 id="basic-menu"

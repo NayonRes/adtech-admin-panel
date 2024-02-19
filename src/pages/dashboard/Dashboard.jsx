@@ -40,6 +40,9 @@ import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
 import PlaylistRemoveOutlinedIcon from "@mui/icons-material/PlaylistRemoveOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import RecentActorsOutlinedIcon from "@mui/icons-material/RecentActorsOutlined";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 const Dashboard = () => {
   const theme = useTheme();
   const [progress, setProgress] = React.useState(50);
@@ -62,6 +65,27 @@ const Dashboard = () => {
   //     clearInterval(timer);
   //   };
   // }, []);
+
+  const getCurrentMonth = () => {
+    const month = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const d = new Date();
+    let monthName = month[d.getMonth()];
+    return monthName;
+  };
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -100,7 +124,14 @@ const Dashboard = () => {
               </Grid>
             </Grid>
             <Divider /> */}
-          <Grid container alignItems="center" spacing={3} sx={{ mt: 2.5 }}>
+          <Typography
+            variant="h6"
+            color="text.main"
+            sx={{ fontWeight: 500, mt: 2.5, mb: 1 }}
+          >
+            Orders Summary Of {getCurrentMonth()}
+          </Typography>
+          <Grid container alignItems="center" spacing={3}>
             <Grid item xs={3}>
               <Paper sx={{ p: 3, height: "100%" }}>
                 <Grid container alignItems="center" spacing={2}>
@@ -221,7 +252,9 @@ const Dashboard = () => {
                         bgcolor: `${theme.palette.secondary.light}`,
                       }}
                     >
-                      <PlaylistRemoveOutlinedIcon sx={{color:theme.palette.secondary.main}} />
+                      <PlaylistRemoveOutlinedIcon
+                        sx={{ color: theme.palette.secondary.main }}
+                      />
                     </Avatar>
                   </Grid>
                   <Grid item xs="auto">
@@ -269,14 +302,7 @@ const Dashboard = () => {
                     color="text.main"
                     sx={{ fontWeight: 500 }}
                   >
-                    Refunded Orders
-                  </Typography>
-                  <Typography
-                    variant="medium"
-                    color="text.main"
-                    sx={{ fontWeight: 400 }}
-                  >
-                    Weekly Attempted Overview
+                    Orders Summary
                   </Typography>
                 </Grid>
                 <Grid item xs="auto">
