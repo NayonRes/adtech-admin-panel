@@ -52,6 +52,7 @@ import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import RecentActorsOutlinedIcon from "@mui/icons-material/RecentActorsOutlined";
 import PlaylistRemoveOutlinedIcon from "@mui/icons-material/PlaylistRemoveOutlined";
+import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";
 
 const drawerWidth = 270;
 
@@ -481,6 +482,20 @@ export default function Layout() {
             </ListItemButton>
             <ListItemButton
               component={Link}
+              to="/publish-order-list"
+              sx={[
+                { ...listButtonStyle, mb: 0.5 },
+                pathname === "/publish-order-list" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <PlaylistPlayOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Publish Order List" />
+            </ListItemButton>
+            <ListItemButton
+              component={Link}
               to="/complete-order-list"
               sx={[
                 { ...listButtonStyle, mb: 0.5 },
@@ -551,7 +566,6 @@ export default function Layout() {
               Role Page
             </Typography>
 
-           
             <ListItemButton
               component={Link}
               to="/role-list"
