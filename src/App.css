@@ -2,6 +2,32 @@ body {
   background: #f7fafc;
 }
 
+.xs_input .MuiInputLabel-root,
+.xs_select .MuiInputLabel-root {
+  font-size: 12px !important;
+}
+.xs_input .MuiOutlinedInput-input {
+  padding: 7.5px 14px !important;
+  font-size: 12px !important;
+}
+.xs_input p {
+  font-size: 12px !important;
+}
+.xs_input svg {
+  width: 18px !important;
+  height: 18px !important;
+  top: 8px !important;
+}
+.xs_select .MuiOutlinedInput-input {
+  padding: 4.5px 14px !important;
+  font-size: 12px !important;
+}
+.xs_select svg {
+  width: 18px !important;
+  height: 18px !important;
+  top: 8px !important;
+}
+
 .linkStyle {
   text-decoration: none;
   color: none;

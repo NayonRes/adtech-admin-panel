@@ -268,12 +268,7 @@ const UserList = () => {
                 label="Name"
                 variant="outlined"
                 size="small"
-                sx={{
-                  "& .MuiOutlinedInput-input": {
-                    // color: "#718096",
-                    padding: "7px 14px",
-                  },
-                }}
+                className="xs_input"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -285,12 +280,7 @@ const UserList = () => {
                 label="Email"
                 variant="outlined"
                 size="small"
-                sx={{
-                  "& .MuiOutlinedInput-input": {
-                    // color: "#718096",
-                    padding: "7px 14px",
-                  },
-                }}
+                className="xs_input"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -302,12 +292,7 @@ const UserList = () => {
                 label="Mobile No"
                 variant="outlined"
                 size="small"
-                sx={{
-                  "& .MuiOutlinedInput-input": {
-                    // color: "#718096",
-                    padding: "7px 14px",
-                  },
-                }}
+                className="xs_input"
                 value={mobileNo}
                 onChange={(e) => setmobileNo(e.target.value)}
               />
@@ -317,12 +302,7 @@ const UserList = () => {
                 variant="outlined"
                 fullWidth
                 size="small"
-                sx={{
-                  "& .MuiOutlinedInput-input": {
-                    // color: "#718096",
-                    padding: "7px 14px",
-                  },
-                }}
+                className="xs_select"
               >
                 <InputLabel id="demo-status-outlined-label">Status</InputLabel>
                 <Select
@@ -341,12 +321,7 @@ const UserList = () => {
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  sx={{
-                    "& .MuiOutlinedInput-input": {
-                      // color: "#718096",
-                      padding: "7px 14px",
-                    },
-                  }}
+                  className="xs_input"
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}
@@ -363,12 +338,7 @@ const UserList = () => {
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  sx={{
-                    "& .MuiOutlinedInput-input": {
-                      // color: "#718096",
-                      padding: "7px 14px",
-                    },
-                  }}
+                  className="xs_input"
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}

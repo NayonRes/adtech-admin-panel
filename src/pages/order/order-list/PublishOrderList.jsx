@@ -53,9 +53,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import PulseLoader from "react-spinners/PulseLoader";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import CellTowerOutlinedIcon from "@mui/icons-material/CellTowerOutlined";
+
+import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
+
 import MoneyOffCsredOutlinedIcon from "@mui/icons-material/MoneyOffCsredOutlined";
-import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";
-const PendingOrderList = () => {
+const PublishOrderList = () => {
   const theme = useTheme();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
   const [openFilter, setOpenFilter] = useState(false);
@@ -66,7 +69,7 @@ const PendingOrderList = () => {
   const [name, setName] = useState("");
   const [invoiceNo, setInvoiceNo] = useState("");
   const [gender, setGender] = useState("");
-  const [status, setStatus] = useState("Pending");
+  const [status, setStatus] = useState("Publish");
   const [totalPage, setTotalPage] = useState(0);
   const [totalData, setTotalData] = useState(0);
   const [message, setMessage] = useState("");
@@ -288,7 +291,7 @@ const PendingOrderList = () => {
     setUpdateLoading(true);
     try {
       let data = {
-        status: "Publish",
+        status: "Complete",
       };
       let response = await axios({
         url: `/api/order/${id}/action`,
@@ -356,7 +359,7 @@ const PendingOrderList = () => {
                   color="text.main"
                   sx={{ fontWeight: 500 }}
                 >
-                  Pending Order List
+                  Publish Order List
                 </Typography>
 
                 {/* <Breadcrumbs
@@ -657,18 +660,18 @@ const PendingOrderList = () => {
                     >
                       <Button
                         variant="outlined"
-                        color="info"
+                        color="success"
                         size="small"
                         startIcon={
-                          <PlaylistPlayOutlinedIcon
+                          <FactCheckOutlinedIcon
                             style={{ position: "relative", top: -1 }}
                           />
                         }
                         onClick={() => handleClickOpen(row?.id)}
                       >
-                        Publish Order
+                        Complete Order
                       </Button>{" "}
-                      &nbsp;
+                      {/* &nbsp;
                       <Button
                         variant="outlined"
                         color="error"
@@ -681,7 +684,7 @@ const PendingOrderList = () => {
                         // onClick={() => handleClickOpen(row?.id)}
                       >
                         Refund Order
-                      </Button>
+                      </Button> */}
                       {/* <IconButton
                         aria-label="edit"
                         component={Link}
@@ -771,4 +774,4 @@ const PendingOrderList = () => {
   );
 };
 
-export default PendingOrderList;
+export default PublishOrderList;

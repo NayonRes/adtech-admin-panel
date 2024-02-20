@@ -53,9 +53,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import PulseLoader from "react-spinners/PulseLoader";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import CellTowerOutlinedIcon from "@mui/icons-material/CellTowerOutlined";
 import MoneyOffCsredOutlinedIcon from "@mui/icons-material/MoneyOffCsredOutlined";
-import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";
-const PendingOrderList = () => {
+const RefundedOrderList = () => {
   const theme = useTheme();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
   const [openFilter, setOpenFilter] = useState(false);
@@ -66,7 +66,7 @@ const PendingOrderList = () => {
   const [name, setName] = useState("");
   const [invoiceNo, setInvoiceNo] = useState("");
   const [gender, setGender] = useState("");
-  const [status, setStatus] = useState("Pending");
+  const [status, setStatus] = useState("Refunded");
   const [totalPage, setTotalPage] = useState(0);
   const [totalData, setTotalData] = useState(0);
   const [message, setMessage] = useState("");
@@ -117,7 +117,7 @@ const PendingOrderList = () => {
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
-      for (let j = 0; j < 13; j++) {
+      for (let j = 0; j < 12; j++) {
         cells.push(
           <TableCell key={j} sx={{ py: 1.5 }}>
             <Skeleton></Skeleton>
@@ -288,7 +288,7 @@ const PendingOrderList = () => {
     setUpdateLoading(true);
     try {
       let data = {
-        status: "Publish",
+        status: "Complete",
       };
       let response = await axios({
         url: `/api/order/${id}/action`,
@@ -356,7 +356,7 @@ const PendingOrderList = () => {
                   color="text.main"
                   sx={{ fontWeight: 500 }}
                 >
-                  Pending Order List
+                  Refunded Order List
                 </Typography>
 
                 {/* <Breadcrumbs
@@ -454,7 +454,7 @@ const PendingOrderList = () => {
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  className="xs_input"
+                className="xs_input"
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}
@@ -471,7 +471,7 @@ const PendingOrderList = () => {
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                  className="xs_input"
+                className="xs_input"
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}
@@ -544,9 +544,6 @@ const PendingOrderList = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated By</TableCell>
-                <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
-                  Actions
-                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -651,45 +648,6 @@ const PendingOrderList = () => {
                       {" "}
                       {row.updated_by !== null ? row.updated_by.name : "Self"}
                     </TableCell>
-                    <TableCell
-                      sx={{ whiteSpace: "nowrap", p: 0 }}
-                      align="center"
-                    >
-                      <Button
-                        variant="outlined"
-                        color="info"
-                        size="small"
-                        startIcon={
-                          <PlaylistPlayOutlinedIcon
-                            style={{ position: "relative", top: -1 }}
-                          />
-                        }
-                        onClick={() => handleClickOpen(row?.id)}
-                      >
-                        Publish Order
-                      </Button>{" "}
-                      &nbsp;
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        size="small"
-                        startIcon={
-                          <MoneyOffCsredOutlinedIcon
-                            style={{ position: "relative", top: -1 }}
-                          />
-                        }
-                        // onClick={() => handleClickOpen(row?.id)}
-                      >
-                        Refund Order
-                      </Button>
-                      {/* <IconButton
-                        aria-label="edit"
-                        component={Link}
-                        to={`/update-customer/${row?.id}`}
-                      >
-                        <EditOutlinedIcon />
-                      </IconButton> */}
-                    </TableCell>
                   </TableRow>
                 ))}
 
@@ -771,4 +729,4 @@ const PendingOrderList = () => {
   );
 };
 
-export default PendingOrderList;
+export default RefundedOrderList;
