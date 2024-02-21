@@ -8,7 +8,6 @@ import { useSnackbar } from "notistack";
 import axios from "axios";
 import PulseLoader from "react-spinners/PulseLoader";
 import { AuthContext } from "../../context/AuthContext";
-import { getDataWithToken } from "../../services/GetDataService";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -121,6 +120,7 @@ const AddCustomer = () => {
             Authorization: `Bearer ${adtech_admin_panel.token}`,
           },
         });
+        console.log("response -----------", response);
         if (response?.status === 401) {
           logout();
           return;

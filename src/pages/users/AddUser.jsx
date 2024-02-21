@@ -168,14 +168,11 @@ const AddUser = () => {
     let url = "api/role";
     let res = await getDataWithToken(url, adtech_admin_panel.token);
     // console.log("res", res);
-    if (res?.status === 401) {
+    if (res?.status === 401 || res?.status === 403) {
       logout();
       return;
     }
-    if (res?.status === 401) {
-      logout();
-      return;
-    }
+   
     if (res?.status > 199 && res?.status < 300) {
       if (res.data.data.length > 0) {
         setRoleList(res.data.data);
@@ -331,6 +328,7 @@ const AddUser = () => {
                 labelId="demo-issue-outlined-label"
                 id="demo-issue-outlined"
                 // label="Select role"
+                sx={{ textTransform: "capitalize" }}
                 value={roleId}
                 onChange={(e) => setRoleId(e.target.value)}
               >
@@ -338,7 +336,11 @@ const AddUser = () => {
                   <MenuItem value={roleMessage}>{roleMessage}</MenuItem>
                 )}
                 {roleList?.map((item, i) => (
-                  <MenuItem key={i} value={item.id}>
+                  <MenuItem
+                    key={i}
+                    value={item.id}
+                    sx={{ textTransform: "capitalize" }}
+                  >
                     {item.name}
                   </MenuItem>
                 ))}

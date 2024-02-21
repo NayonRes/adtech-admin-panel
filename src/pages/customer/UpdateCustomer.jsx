@@ -168,7 +168,7 @@ const UpdateCustomer = () => {
     }
     console.log("res.data.data", res.data.data);
 
-    if (res?.status === 401) {
+    if (res?.status === 401 || res?.status === 403) {
       logout();
       return;
     }

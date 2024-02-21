@@ -449,7 +449,7 @@ const Dashboard = () => {
           {/* </Box> */}
         </Grid>
 
-        <Grid item xs={6}>
+        {/* <Grid item xs={6}>
           <Paper sx={{ p: 3 }}>
             {" "}
             <Grid
@@ -481,7 +481,7 @@ const Dashboard = () => {
                     Last {months} months overview
                   </Typography>
                 </Grid>
-                {/* <Grid item xs="auto">
+                <Grid item xs="auto">
                  
                   <FormControl sx={{ minWidth: 120 }} size="small">
                     <InputLabel id="demo-simple-select-label">
@@ -499,36 +499,13 @@ const Dashboard = () => {
                       <MenuItem value={3}>3 Months</MenuItem>
                     </Select>
                   </FormControl>
-                </Grid> */}
+                </Grid>
               </Grid>
 
               <Grid container alignItems="end" spacing={3}>
-                {/* <Grid item xs={4}>
-                  <Typography
-                    variant="h2"
-                    color="text.main"
-                    sx={{ mb: 1.5, fontWeight: 600 }}
-                  >
-                    168.5K
-                  </Typography>
-                  <Typography
-                    variant="medium"
-                    color="text.main"
-                    sx={{ fontWeight: 400, mb: 2 }}
-                  >
-                    You informed of this week compared to last week
-                  </Typography>
-                </Grid> */}
+               
                 <Grid item xs={12}>
-                  {/* <img
-                    src={
-                      theme.palette.mode === "light"
-                        ? "/images/Chart1_Light.png"
-                        : "/images/Chart1_Dark.png"
-                    }
-                    width="100%"
-                  /> */}
-                  {/* <ColumnChart chartData={chartData} /> */}
+                 
                   <div style={{ maxWidth: "630px", position: "relative" }}>
                     {summaryLoading && (
                       <SyncLoader
@@ -561,8 +538,8 @@ const Dashboard = () => {
               </Grid>
             </Grid>
           </Paper>
-        </Grid>
-        <Grid item xs={6}>
+        </Grid> */}
+        {/* <Grid item xs={6}>
           <Paper sx={{ p: 3 }}>
             {" "}
             <Grid
@@ -594,7 +571,7 @@ const Dashboard = () => {
                     Last {months} months overview
                   </Typography>
                 </Grid>
-                {/* <Grid item xs="auto">
+                <Grid item xs="auto">
                  
                   <FormControl sx={{ minWidth: 120 }} size="small">
                     <InputLabel id="demo-simple-select-label">
@@ -612,36 +589,13 @@ const Dashboard = () => {
                       <MenuItem value={3}>3 Months</MenuItem>
                     </Select>
                   </FormControl>
-                </Grid> */}
+                </Grid>
               </Grid>
 
               <Grid container alignItems="end" spacing={3}>
-                {/* <Grid item xs={4}>
-                  <Typography
-                    variant="h2"
-                    color="text.main"
-                    sx={{ mb: 1.5, fontWeight: 600 }}
-                  >
-                    168.5K
-                  </Typography>
-                  <Typography
-                    variant="medium"
-                    color="text.main"
-                    sx={{ fontWeight: 400, mb: 2 }}
-                  >
-                    You informed of this week compared to last week
-                  </Typography>
-                </Grid> */}
+            
                 <Grid item xs={12}>
-                  {/* <img
-                    src={
-                      theme.palette.mode === "light"
-                        ? "/images/Chart1_Light.png"
-                        : "/images/Chart1_Dark.png"
-                    }
-                    width="100%"
-                  /> */}
-                  {/* <ColumnChart chartData={chartData} /> */}
+                
                   <div style={{ maxWidth: "630px", position: "relative" }}>
                     {summaryLoading && (
                       <SyncLoader
@@ -674,7 +628,7 @@ const Dashboard = () => {
               </Grid>
             </Grid>
           </Paper>
-        </Grid>
+        </Grid> */}
       </Grid>
     </>
   );

@@ -251,9 +251,8 @@ const UpdateRole = () => {
     let myNewData = [];
     let url = "api/permission";
     let allPermission = await getDataWithToken(url, adtech_admin_panel.token);
-
-    // let allPermission = await getDataWithToken(`api/module-permissions`,adtech_admin_panel, logout,login);
-    if (allPermission?.status === 401) {
+ 
+    if (allPermission?.status === 401 || allPermission?.status === 403) {
       logout();
       return;
     }
@@ -289,7 +288,7 @@ const UpdateRole = () => {
   const getAssaignedPermissionInfo = async (id) => {
     const permissionList2 = await getPermissionInfo();
     if (permissionList2 !== undefined) {
-      console.log("permissionList2", permissionList2);
+    
       setLoading(true);
       let myNewData = [];
 
@@ -297,8 +296,8 @@ const UpdateRole = () => {
         `api/role/${id}`,
         adtech_admin_panel.token
       );
-      console.log("allAssaignedPermission", allAssaignedPermission);
-      if (allAssaignedPermission?.status === 401) {
+      
+      if (allAssaignedPermission?.status === 401 || allAssaignedPermission?.status === 403) {
         logout();
         return;
       }

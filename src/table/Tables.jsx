@@ -143,7 +143,7 @@ const Tables = () => {
 
     let res = await getDataWithToken(url, adtech_admin_panel.token);
     console.log("res", res);
-    if (res?.status === 401) {
+    if (res?.status === 401 || res?.status === 403) {
       logout();
       return;
     }

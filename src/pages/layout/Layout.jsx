@@ -290,9 +290,10 @@ export default function Layout() {
                 aria-haspopup="true"
                 aria-expanded={menuOpen ? "true" : undefined}
                 onClick={handleClick}
+                color="text"
                 style={{
                   // padding: 0,
-                  color: theme.palette.primary.main,
+                  // color: theme.palette.text.main,
                   fontSize: "14px",
                   textTransform: "none",
                 }}

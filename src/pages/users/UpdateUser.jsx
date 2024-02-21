@@ -160,7 +160,6 @@ const UpdateUser = () => {
         if (error?.response?.status === 500) {
           handleSnakbarOpen(error?.response?.statusText, "error");
         } else {
-       
           setErrors(error.response.data.errors);
         }
         // handleSnakbarOpen(error.response.data.messages.toString(), "error");
@@ -177,11 +176,11 @@ const UpdateUser = () => {
     let url = "api/role";
     let res = await getDataWithToken(url, adtech_admin_panel.token);
     console.log("res", res);
-    if (res?.status === 401) {
+    if (res?.status === 401 || res?.status === 403) {
       logout();
       return;
     }
-   
+
     if (res?.status > 199 && res?.status < 300) {
       if (res.data.data.length > 0) {
         setRoleList(res.data.data);
@@ -201,7 +200,7 @@ const UpdateUser = () => {
     }
     console.log("res.data.data", res.data.data);
 
-    if (res?.status === 401) {
+    if (res?.status === 401 || res?.status === 403) {
       logout();
       return;
     }
@@ -362,6 +361,7 @@ const UpdateUser = () => {
               <Select
                 labelId="demo-issue-outlined-label"
                 id="demo-issue-outlined"
+                sx={{ textTransform: "capitalize" }}
                 // label="Select role"
                 value={roleId}
                 onChange={(e) => setRoleId(e.target.value)}
@@ -370,7 +370,11 @@ const UpdateUser = () => {
                   <MenuItem value={roleMessage}>{roleMessage}</MenuItem>
                 )}
                 {roleList?.map((item, i) => (
-                  <MenuItem key={i} value={item.id}>
+                  <MenuItem
+                    key={i}
+                    value={item.id}
+                    sx={{ textTransform: "capitalize" }}
+                  >
                     {item.name}
                   </MenuItem>
                 ))}

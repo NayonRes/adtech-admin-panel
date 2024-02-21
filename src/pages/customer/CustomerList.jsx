@@ -161,7 +161,7 @@ const CustomerList = () => {
 
     let res = await getDataWithToken(url, adtech_admin_panel.token);
     console.log("res", res);
-    if (res?.status === 401) {
+    if (res?.status === 401 || res?.status === 403) {
       logout();
       return;
     }
@@ -444,7 +444,7 @@ const CustomerList = () => {
                     variant="outlined"
                     color="info"
                     disableElevation
-                    sx={{ minHeight: "40px" }}
+                    size="small"
                     onClick={clearFilter}
                   >
                     <ReplayOutlinedIcon />
@@ -456,7 +456,8 @@ const CustomerList = () => {
                     variant="contained"
                     color="info"
                     disableElevation
-                    sx={{ minHeight: "40px" }}
+                    size="small"
+                    sx={{ minHeight: "32px" }}
                     onClick={(event) => handleChangePage(event, 0)}
                   >
                     <SearchOutlinedIcon />

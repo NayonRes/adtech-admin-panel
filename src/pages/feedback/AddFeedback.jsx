@@ -7,8 +7,7 @@ import Button from "@mui/material/Button";
 import { useSnackbar } from "notistack";
 import axios from "axios";
 import PulseLoader from "react-spinners/PulseLoader";
-import { AuthContext } from "../../context/AuthContext";
-import { getDataWithToken } from "../../services/GetDataService";
+import { AuthContext } from "../../context/AuthContext"; 
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -24,24 +23,13 @@ const AddFeedback = () => {
   const [reviwerDesignation, setReviwerDesignation] = useState("");
   const [website, setWebsite] = useState("");
   const [videoLink, setVideoLink] = useState("");
-  const [roleList, setRoleList] = useState([]);
-  const [roleMessage, setRoleMessage] = useState("");
+ 
   const [loading, setLoading] = useState(false);
 
   const [errors, setErrors] = useState({});
   const { enqueueSnackbar } = useSnackbar();
 
-  const validation = () => {
-    let isError = false;
-
-    // if (!roleId) {
-    //   handleSnakbarOpen("Please select user role", "error");
-
-    //   return (isError = true);
-    // }
-
-    return isError;
-  };
+  
 
   const handleSnakbarOpen = (msg, vrnt) => {
     let duration;
@@ -109,32 +97,8 @@ const AddFeedback = () => {
     setLoading(false);
   };
 
-  const getRoles = async (pageNO, newUrl) => {
-    setRoleMessage("");
-    let url = "api/role";
-    let res = await getDataWithToken(url, adtech_admin_panel.token);
-    // console.log("res", res);
-    if (res?.status === 401) {
-      logout();
-      return;
-    }
-    if (res?.status === 401) {
-      logout();
-      return;
-    }
-    if (res?.status > 199 && res?.status < 300) {
-      if (res.data.data.length > 0) {
-        setRoleList(res.data.data);
-      } else {
-        setRoleMessage("No data found");
-        setRoleList([]);
-      }
-    }
-  };
-
-  useEffect(() => {
-    getRoles();
-  }, []);
+ 
+ 
   return (
     <React.Fragment>
       <Grid

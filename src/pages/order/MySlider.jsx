@@ -34,6 +34,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
 const AutoPlaySwipeableViews = SwipeableViews;
 
 function MySlider() {

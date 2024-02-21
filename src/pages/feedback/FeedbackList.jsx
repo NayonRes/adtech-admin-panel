@@ -52,7 +52,7 @@ const FeedbackList = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [companyName, setCompanyName] = useState("");
-   
+
   const [status, setStatus] = useState("");
   const [totalPage, setTotalPage] = useState(0);
   const [totalData, setTotalData] = useState(0);
@@ -83,7 +83,7 @@ const FeedbackList = () => {
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
-      for (let j = 0; j < 11; j++) {
+      for (let j = 0; j < 13; j++) {
         cells.push(
           <TableCell key={j} sx={{ py: 1.5 }}>
             <Skeleton></Skeleton>
@@ -144,16 +144,16 @@ const FeedbackList = () => {
 
     let res = await getDataWithToken(url, adtech_admin_panel.token);
     console.log("res", res);
-    if (res?.status === 401) {
+    if (res?.status === 401 || res?.status === 403) {
       logout();
       return;
     }
 
     if (res?.status > 199 && res?.status < 300) {
-      // setTotalData(res.data.data.total);
-      // setRowsPerPage(res.data.data.per_page);
-      if (res.data.data.length > 0) {
-        setList(res.data.data);
+      setTotalData(res.data.data.total);
+      setRowsPerPage(res.data.data.per_page);
+      if (res.data?.data?.data?.length > 0) {
+        setList(res.data.data.data);
       } else {
         setMessage(res.data.message);
         setList([]);
@@ -354,6 +354,9 @@ const FeedbackList = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>
                   Reviewer Designation
                 </TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>
+                  Reviewer Website
+                </TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Video Link</TableCell>
 
                 <TableCell align="center">Status</TableCell>
@@ -383,9 +386,14 @@ const FeedbackList = () => {
                     >
                       {row?.company}
                     </TableCell>
-                    <TableCell>{row?.moto}</TableCell>
+                    <TableCell sx={{ minWidth: "220px" }}>
+                      {row?.moto}
+                    </TableCell>
                     <TableCell>{row?.name}</TableCell>
                     <TableCell>{row?.designation}</TableCell>
+                    <TableCell sx={{ whiteSpace: "nowrap" }}>
+                      {row?.website}
+                    </TableCell>
                     <TableCell>{row?.video_link}</TableCell>
 
                     <TableCell align="center">
@@ -421,14 +429,14 @@ const FeedbackList = () => {
                       )}
                     </TableCell>
 
-                    {/* <TableCell sx={{ whiteSpace: "nowrap" }}>
+                    <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
                       {row.created_by !== null ? row.created_by.name : "Self"}
                     </TableCell>
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
                       {row.updated_by !== null ? row.updated_by.name : "Self"}
-                    </TableCell> */}
+                    </TableCell>
                     <TableCell
                       sx={{ whiteSpace: "nowrap", p: 0 }}
                       align="center"
@@ -436,7 +444,7 @@ const FeedbackList = () => {
                       <IconButton
                         aria-label="edit"
                         component={Link}
-                        to={`/update-user/${row?.id}`}
+                        to={`/update-feedback/${row?.id}`}
                       >
                         <EditOutlinedIcon />
                       </IconButton>
