@@ -324,7 +324,7 @@ const Dashboard = () => {
                       color="text.light"
                       sx={{ fontWeight: 500 }}
                     >
-                      91825
+                      <CountUp delay={0} end={91825} />
                     </Typography>
                     <Typography
                       variant="medium"
@@ -360,7 +360,7 @@ const Dashboard = () => {
                       color="text.light"
                       sx={{ fontWeight: 500 }}
                     >
-                      9862
+                      <CountUp delay={0} end={9862} />
                     </Typography>
                     <Typography
                       variant="medium"
@@ -396,7 +396,7 @@ const Dashboard = () => {
                       color="text.light"
                       sx={{ fontWeight: 500 }}
                     >
-                      6926
+                      <CountUp delay={0} end={6926} />
                     </Typography>
                     <Typography
                       variant="medium"
@@ -432,7 +432,7 @@ const Dashboard = () => {
                       color="text.light"
                       sx={{ fontWeight: 500 }}
                     >
-                      1681
+                      <CountUp delay={0} end={1681} />
                     </Typography>
                     <Typography
                       variant="medium"
@@ -481,10 +481,8 @@ const Dashboard = () => {
                     Last {months} months overview
                   </Typography>
                 </Grid>
-                <Grid item xs="auto">
-                  {/* <IconButton>
-                    <MenuIcon color={theme.palette.text.light} />
-                  </IconButton> */}
+                {/* <Grid item xs="auto">
+                 
                   <FormControl sx={{ minWidth: 120 }} size="small">
                     <InputLabel id="demo-simple-select-label">
                       Months
@@ -501,7 +499,7 @@ const Dashboard = () => {
                       <MenuItem value={3}>3 Months</MenuItem>
                     </Select>
                   </FormControl>
-                </Grid>
+                </Grid> */}
               </Grid>
 
               <Grid container alignItems="end" spacing={3}>
@@ -555,7 +553,7 @@ const Dashboard = () => {
                         options={chartData.options}
                         series={chartData.series}
                         type="bar"
-                        height={280}
+                        height={350}
                       />
                     </div>
                   </div>
@@ -586,7 +584,7 @@ const Dashboard = () => {
                     color="text.main"
                     sx={{ fontWeight: 500 }}
                   >
-                    Orders
+                    Customers
                   </Typography>
                   <Typography
                     variant="medium"
@@ -596,10 +594,8 @@ const Dashboard = () => {
                     Last {months} months overview
                   </Typography>
                 </Grid>
-                <Grid item xs="auto">
-                  {/* <IconButton>
-                    <MenuIcon color={theme.palette.text.light} />
-                  </IconButton> */}
+                {/* <Grid item xs="auto">
+                 
                   <FormControl sx={{ minWidth: 120 }} size="small">
                     <InputLabel id="demo-simple-select-label">
                       Months
@@ -616,7 +612,7 @@ const Dashboard = () => {
                       <MenuItem value={3}>3 Months</MenuItem>
                     </Select>
                   </FormControl>
-                </Grid>
+                </Grid> */}
               </Grid>
 
               <Grid container alignItems="end" spacing={3}>
@@ -666,11 +662,11 @@ const Dashboard = () => {
                       className={{ ...chartContainer }}
                       style={{ opacity: summaryLoading && 0.5 }}
                     >
-                      <AreaChart
+                      <AreaChart Chart
                         options={chartData.options}
                         series={chartData.series}
                         type="bar"
-                        height={280}
+                        height={350}
                       />
                     </div>
                   </div>

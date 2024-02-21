@@ -46,11 +46,13 @@ import CircleIcon from "@mui/icons-material/Circle";
 import MenuIcon from "@mui/icons-material/Menu";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
+import AddCommentOutlinedIcon from "@mui/icons-material/AddCommentOutlined";
 import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import RecentActorsOutlinedIcon from "@mui/icons-material/RecentActorsOutlined";
+import InsertCommentOutlinedIcon from "@mui/icons-material/InsertCommentOutlined";
 import PlaylistRemoveOutlinedIcon from "@mui/icons-material/PlaylistRemoveOutlined";
 import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";
 import { Button } from "@mui/material";
@@ -438,6 +440,42 @@ export default function Layout() {
               color="text.main"
               sx={{ fontWeight: 700, mb: 1 }}
             >
+              Feedback Pages
+            </Typography>
+
+            <ListItemButton
+              component={Link}
+              to="/add-feedback"
+              sx={[
+                { ...listButtonStyle, mb: 0.5 },
+                pathname === "/add-feedback" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <AddCommentOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Add Feedback" />
+            </ListItemButton>
+            <ListItemButton
+              component={Link}
+              to="/feedback-list"
+              sx={[
+                { ...listButtonStyle, mb: 2 },
+                pathname === "/feedback-list" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <InsertCommentOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Feedback List" />
+            </ListItemButton>
+            <Typography
+              variant="small"
+              color="text.main"
+              sx={{ fontWeight: 700, mb: 1 }}
+            >
               Order Pages
             </Typography>
 
@@ -530,6 +568,28 @@ export default function Layout() {
               color="text.main"
               sx={{ fontWeight: 700, mb: 1 }}
             >
+              Role Page
+            </Typography>
+
+            <ListItemButton
+              component={Link}
+              to="/role-list"
+              sx={[
+                { ...listButtonStyle, mb: 2 },
+                pathname === "/role-list" && { ...activeStyle },
+              ]}
+            >
+              <ListItemIcon>
+                <RecentActorsOutlinedIcon />
+              </ListItemIcon>
+
+              <ListItemText primary="Role List" />
+            </ListItemButton>
+            <Typography
+              variant="small"
+              color="text.main"
+              sx={{ fontWeight: 700, mb: 1 }}
+            >
               User Pages
             </Typography>
 
@@ -560,28 +620,6 @@ export default function Layout() {
               </ListItemIcon>
 
               <ListItemText primary="User List" />
-            </ListItemButton>
-            <Typography
-              variant="small"
-              color="text.main"
-              sx={{ fontWeight: 700, mb: 1 }}
-            >
-              Role Page
-            </Typography>
-
-            <ListItemButton
-              component={Link}
-              to="/role-list"
-              sx={[
-                { ...listButtonStyle, mb: 2 },
-                pathname === "/role-list" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <RecentActorsOutlinedIcon />
-              </ListItemIcon>
-
-              <ListItemText primary="Role List" />
             </ListItemButton>
           </List>
         </Drawer>
