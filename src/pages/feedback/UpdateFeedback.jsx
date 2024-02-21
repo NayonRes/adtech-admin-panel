@@ -75,16 +75,13 @@ const UpdateFeedback = () => {
       };
       let response = await axios({
         url: "/api/feedback",
-        method: "post",
+        method: "put",
         data: data,
         headers: {
           Authorization: `Bearer ${adtech_admin_panel.token}`,
         },
       });
-      if (response?.status === 401) {
-        logout();
-        return;
-      }
+    
       if (response?.status > 199 && response?.status < 300) {
         handleSnakbarOpen("Successful", "success");
         setCompanyName("");
@@ -93,10 +90,15 @@ const UpdateFeedback = () => {
         setReviwerDesignation("");
         setWebsite("");
         setVideoLink("");
+        navigate("/feedback-list");
       }
     } catch (error) {
       console.log("error", error);
       setLoading(false);
+      if (error?.response?.status === 401 || error?.response?.status === 403) {
+        logout();
+        return;
+      }
       if (error?.response?.status === 500) {
         handleSnakbarOpen(error?.response?.statusText, "error");
       } else {
@@ -118,15 +120,14 @@ const UpdateFeedback = () => {
       logout();
       return;
     }
-
+    console.log("res?.data", res?.data);
     if (res?.status > 199 && res?.status < 300) {
-      setCompanyName(res?.data?.data?.name);
-      setCompanyDetails(res?.data?.data?.email);
-      setReviwerName(res?.data?.data?.mobile);
-      setReviwerDesignation(res?.data?.data?.mobile);
-      setWebsite(res?.data?.data?.mobile);
-      setVideoLink(res?.data?.data?.mobile);
-
+      setCompanyName(res?.data?.data?.company);
+      setCompanyDetails(res?.data?.data?.moto);
+      setReviwerName(res?.data?.data?.name);
+      setReviwerDesignation(res?.data?.data?.designation);
+      setWebsite(res?.data?.data?.website);
+      setVideoLink(res?.data?.data?.video_link);
       setStatus(res?.data?.data?.status);
     }
   };

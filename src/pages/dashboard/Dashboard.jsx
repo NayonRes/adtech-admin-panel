@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Badge,
   Container,
@@ -46,8 +46,11 @@ import Select from "@mui/material/Select";
 import Chart from "react-apexcharts";
 import { PulseLoader, SyncLoader } from "react-spinners";
 import CountUp from "react-countup";
+import { AuthContext } from "../../context/AuthContext";
+import { getDataWithToken } from "../../services/GetDataService";
 const Dashboard = () => {
   const theme = useTheme();
+  const { adtech_admin_panel, logout } = useContext(AuthContext);
   const [progress, setProgress] = useState(50);
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -58,6 +61,9 @@ const Dashboard = () => {
   const [summaryList, setSummaryList] = useState([]);
   const [display, setDisplay] = useState(false);
   const [summaryMessage, setSummaryMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [statData, setStatData] = useState({});
 
   const [chartData, setChartData] = useState({
     series: [
@@ -255,13 +261,40 @@ const Dashboard = () => {
     // setDisplay(true);
     // setSummaryLoading(false);
   };
+  const getData = async (pageNO, newUrl) => {
+    setLoading(true);
+    // setUserList([]);
+    setMessage("");
+
+    let url = "api/dashboard";
+    let res = await getDataWithToken(url, adtech_admin_panel.token);
+
+    if (res?.status === 401 || res?.status === 403) {
+      logout();
+      return;
+    }
+
+    if (res?.status > 199 && res?.status < 300) {
+      if (res.data.data.length > 0) {
+        setStatData(res.data.data);
+      } else {
+        setMessage(res.data.message);
+        setStatData({});
+      }
+    } else {
+      setMessage(res.data.message);
+    }
+    setLoading(false);
+  };
   useEffect(() => {
+    getData();
     window.scrollTo({
       top: 0,
       left: 0,
       behavior: "smooth",
     });
   }, []);
+
   return (
     <>
       <Grid container alignItems="center" spacing={3}>
@@ -293,159 +326,165 @@ const Dashboard = () => {
               </Grid>
             </Grid>
             <Divider /> */}
-          <Typography
-            variant="h6"
-            color="text.main"
-            sx={{ fontWeight: 500, mt: 2.5, mb: 1 }}
-          >
-            Orders Summary Of {getCurrentMonth()}
-          </Typography>
-          <Grid container alignItems="center" spacing={3}>
-            <Grid item xs={3}>
-              <Paper sx={{ p: 3, height: "100%" }}>
-                <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs="auto">
-                    {" "}
-                    <Avatar
-                      sx={{
-                        width: 36,
-                        height: 36,
-                        bgcolor: `${theme.palette.info.light}`,
-                      }}
-                    >
-                      <BallotOutlinedIcon
-                        sx={{ color: theme.palette.info.main }}
-                      />
-                    </Avatar>
-                  </Grid>
-                  <Grid item xs="auto">
-                    <Typography
-                      variant="h5"
-                      color="text.light"
-                      sx={{ fontWeight: 500 }}
-                    >
-                      <CountUp delay={0} end={91825} />
-                    </Typography>
-                    <Typography
-                      variant="medium"
-                      color="text.main"
-                      sx={{ fontWeight: 400 }}
-                    >
-                      Total Orders
-                    </Typography>
-                  </Grid>
+          {adtech_admin_panel?.permission?.some(
+            (el) => el.name === "dashboard-stats"
+          ) && (
+            <>
+              <Typography
+                variant="h6"
+                color="text.main"
+                sx={{ fontWeight: 500, mt: 2.5, mb: 1 }}
+              >
+                Orders Summary Of {getCurrentMonth()}
+              </Typography>
+              <Grid container alignItems="center" spacing={3}>
+                <Grid item xs={3}>
+                  <Paper sx={{ p: 3, height: "100%" }}>
+                    <Grid container alignItems="center" spacing={2}>
+                      <Grid item xs="auto">
+                        {" "}
+                        <Avatar
+                          sx={{
+                            width: 36,
+                            height: 36,
+                            bgcolor: `${theme.palette.info.light}`,
+                          }}
+                        >
+                          <BallotOutlinedIcon
+                            sx={{ color: theme.palette.info.main }}
+                          />
+                        </Avatar>
+                      </Grid>
+                      <Grid item xs="auto">
+                        <Typography
+                          variant="h5"
+                          color="text.light"
+                          sx={{ fontWeight: 500 }}
+                        >
+                          <CountUp delay={0} end={91825} />
+                        </Typography>
+                        <Typography
+                          variant="medium"
+                          color="text.main"
+                          sx={{ fontWeight: 400 }}
+                        >
+                          Total Orders
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Paper>
                 </Grid>
-              </Paper>
-            </Grid>
-            <Grid item xs={3}>
-              <Paper sx={{ p: 3, height: "100%" }}>
-                <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs="auto">
-                    {" "}
-                    <Avatar
-                      sx={{
-                        width: 36,
-                        height: 36,
-                        bgcolor: `${theme.palette.success.light}`,
-                      }}
-                    >
-                      <FactCheckOutlinedIcon
-                        sx={{ color: theme.palette.success.main }}
-                      />
-                    </Avatar>
-                  </Grid>
-                  <Grid item xs="auto">
-                    <Typography
-                      variant="h5"
-                      color="text.light"
-                      sx={{ fontWeight: 500 }}
-                    >
-                      <CountUp delay={0} end={9862} />
-                    </Typography>
-                    <Typography
-                      variant="medium"
-                      color="text.main"
-                      sx={{ fontWeight: 400 }}
-                    >
-                      Complete Orders
-                    </Typography>
-                  </Grid>
+                <Grid item xs={3}>
+                  <Paper sx={{ p: 3, height: "100%" }}>
+                    <Grid container alignItems="center" spacing={2}>
+                      <Grid item xs="auto">
+                        {" "}
+                        <Avatar
+                          sx={{
+                            width: 36,
+                            height: 36,
+                            bgcolor: `${theme.palette.success.light}`,
+                          }}
+                        >
+                          <FactCheckOutlinedIcon
+                            sx={{ color: theme.palette.success.main }}
+                          />
+                        </Avatar>
+                      </Grid>
+                      <Grid item xs="auto">
+                        <Typography
+                          variant="h5"
+                          color="text.light"
+                          sx={{ fontWeight: 500 }}
+                        >
+                          <CountUp delay={0} end={9862} />
+                        </Typography>
+                        <Typography
+                          variant="medium"
+                          color="text.main"
+                          sx={{ fontWeight: 400 }}
+                        >
+                          Complete Orders
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Paper>
                 </Grid>
-              </Paper>
-            </Grid>
-            <Grid item xs={3}>
-              <Paper sx={{ p: 3, height: "100%" }}>
-                <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs="auto">
-                    {" "}
-                    <Avatar
-                      sx={{
-                        width: 36,
-                        height: 36,
-                        bgcolor: `${theme.palette.warning.light}`,
-                      }}
-                    >
-                      <ListAltOutlinedIcon
-                        sx={{ color: theme.palette.warning.main }}
-                      />
-                    </Avatar>
-                  </Grid>
-                  <Grid item xs="auto">
-                    <Typography
-                      variant="h5"
-                      color="text.light"
-                      sx={{ fontWeight: 500 }}
-                    >
-                      <CountUp delay={0} end={6926} />
-                    </Typography>
-                    <Typography
-                      variant="medium"
-                      color="text.main"
-                      sx={{ fontWeight: 400 }}
-                    >
-                      Pending Orders
-                    </Typography>
-                  </Grid>
+                <Grid item xs={3}>
+                  <Paper sx={{ p: 3, height: "100%" }}>
+                    <Grid container alignItems="center" spacing={2}>
+                      <Grid item xs="auto">
+                        {" "}
+                        <Avatar
+                          sx={{
+                            width: 36,
+                            height: 36,
+                            bgcolor: `${theme.palette.warning.light}`,
+                          }}
+                        >
+                          <ListAltOutlinedIcon
+                            sx={{ color: theme.palette.warning.main }}
+                          />
+                        </Avatar>
+                      </Grid>
+                      <Grid item xs="auto">
+                        <Typography
+                          variant="h5"
+                          color="text.light"
+                          sx={{ fontWeight: 500 }}
+                        >
+                          <CountUp delay={0} end={6926} />
+                        </Typography>
+                        <Typography
+                          variant="medium"
+                          color="text.main"
+                          sx={{ fontWeight: 400 }}
+                        >
+                          Pending Orders
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Paper>
                 </Grid>
-              </Paper>
-            </Grid>
-            <Grid item xs={3}>
-              <Paper sx={{ p: 3, height: "100%" }}>
-                <Grid container alignItems="center" spacing={2}>
-                  <Grid item xs="auto">
-                    {" "}
-                    <Avatar
-                      sx={{
-                        width: 36,
-                        height: 36,
-                        bgcolor: `${theme.palette.secondary.light}`,
-                      }}
-                    >
-                      <PlaylistRemoveOutlinedIcon
-                        sx={{ color: theme.palette.secondary.main }}
-                      />
-                    </Avatar>
-                  </Grid>
-                  <Grid item xs="auto">
-                    <Typography
-                      variant="h5"
-                      color="text.light"
-                      sx={{ fontWeight: 500 }}
-                    >
-                      <CountUp delay={0} end={1681} />
-                    </Typography>
-                    <Typography
-                      variant="medium"
-                      color="text.main"
-                      sx={{ fontWeight: 400 }}
-                    >
-                      Refunded Orders
-                    </Typography>
-                  </Grid>
+                <Grid item xs={3}>
+                  <Paper sx={{ p: 3, height: "100%" }}>
+                    <Grid container alignItems="center" spacing={2}>
+                      <Grid item xs="auto">
+                        {" "}
+                        <Avatar
+                          sx={{
+                            width: 36,
+                            height: 36,
+                            bgcolor: `${theme.palette.secondary.light}`,
+                          }}
+                        >
+                          <PlaylistRemoveOutlinedIcon
+                            sx={{ color: theme.palette.secondary.main }}
+                          />
+                        </Avatar>
+                      </Grid>
+                      <Grid item xs="auto">
+                        <Typography
+                          variant="h5"
+                          color="text.light"
+                          sx={{ fontWeight: 500 }}
+                        >
+                          <CountUp delay={0} end={1681} />
+                        </Typography>
+                        <Typography
+                          variant="medium"
+                          color="text.main"
+                          sx={{ fontWeight: 400 }}
+                        >
+                          Refunded Orders
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Paper>
                 </Grid>
-              </Paper>
-            </Grid>
-          </Grid>
+              </Grid>
+            </>
+          )}
           {/* </Box> */}
         </Grid>
 

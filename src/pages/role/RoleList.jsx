@@ -139,25 +139,7 @@ const RoleList = () => {
     }
     setLoading(false);
   };
-  const getRoles = async (pageNO, newUrl) => {
-    setRoleMessage("");
-    let url = "api/role";
-    let res = await getDataWithToken(url, adtech_admin_panel.token);
  
- 
-    if (res?.status === 401 || res?.status === 403) {
-      logout();
-      return;
-    }
-    if (res?.status > 199 && res?.status < 300) {
-      if (res.data.data.length > 0) {
-        setRoles(res.data.data);
-      } else {
-        setRoleMessage("No data found");
-        setRoles([]);
-      }
-    }
-  };
 
   useEffect(() => {
     // setLoading(true);

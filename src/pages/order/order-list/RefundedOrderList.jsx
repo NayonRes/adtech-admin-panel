@@ -298,10 +298,7 @@ const RefundedOrderList = () => {
           Authorization: `Bearer ${adtech_admin_panel.token}`,
         },
       });
-      if (response?.status === 401) {
-        logout();
-        return;
-      }
+    
       if (response?.status > 199 && response?.status < 300) {
         handleSnakbarOpen("Update Successfully", "success");
         getData();
@@ -309,6 +306,10 @@ const RefundedOrderList = () => {
     } catch (error) {
       console.log("error", error);
       setUpdateLoading(false);
+      if (error?.response?.status === 401 || error?.response?.status === 403) {
+        logout();
+        return;
+      }
       if (error?.response?.status === 500) {
         handleSnakbarOpen(error?.response?.statusText, "error");
       } else {

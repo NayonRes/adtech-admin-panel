@@ -137,15 +137,18 @@ export default function Layout() {
   const theme = useTheme();
   let navigate = useNavigate();
   let pathname = useLocation().pathname;
-  console.log("pathname", pathname);
+  // console.log("pathname", pathname);
 
   const { login, adtech_admin_panel, logout } = useContext(AuthContext);
-  console.log("adtech_admin_panel", adtech_admin_panel);
+  // console.log("adtech_admin_panel", adtech_admin_panel);
   const [open, setOpen] = useState(true);
 
   const [openLoadingDialog, setOpenLoadingDialog] = useState(false);
   const time = parseInt(1000 * 60 * 120);
-
+  console.log(
+    "adtech_admin_panel permission",
+    adtech_admin_panel?.permission?.some((el) => el.name === "")
+  );
   const listButtonStyle = {
     // marginBottom: "5px !important",
     padding: "6px 16px !important",
@@ -221,6 +224,55 @@ export default function Layout() {
 
   const handleDrawerClose = () => {
     setOpen(!open);
+  };
+
+  const showCustomerPages = () => {
+    if (
+      !adtech_admin_panel?.permission?.some(
+        (el) => el.name === "customer-create"
+      ) ||
+      !adtech_admin_panel?.permission?.some(
+        (el) => el.name === "customer-create"
+      )
+    ) {
+      return false;
+    }
+    return true;
+  };
+  const showFeedbackPages = () => {
+    if (
+      !adtech_admin_panel?.permission?.some(
+        (el) => el.name === "feedback-create"
+      ) ||
+      !adtech_admin_panel?.permission?.some(
+        (el) => el.name === "feedback-create"
+      )
+    ) {
+      return false;
+    }
+    return true;
+  };
+  const showOrderPages = () => {
+    if (
+      !adtech_admin_panel?.permission?.some(
+        (el) => el.name === "order-create"
+      ) ||
+      !adtech_admin_panel?.permission?.some((el) => el.name === "order-create")
+    ) {
+      return false;
+    }
+    return true;
+  };
+  const showUserPages = () => {
+    if (
+      !adtech_admin_panel?.permission?.some(
+        (el) => el.name === "user-create"
+      ) ||
+      !adtech_admin_panel?.permission?.some((el) => el.name === "user-create")
+    ) {
+      return false;
+    }
+    return true;
   };
 
   const withoutLayout = ["/", "/forgot-password", "/reset-password", "/verify"];
@@ -400,228 +452,275 @@ export default function Layout() {
 
               <ListItemText primary="Dashboard" />
             </ListItemButton>
-            <Typography
-              variant="small"
-              color="text.main"
-              sx={{ fontWeight: 700, mb: 1 }}
-            >
-              Customer Pages
-            </Typography>
+            {showCustomerPages() && (
+              <>
+                <Typography
+                  variant="small"
+                  color="text.main"
+                  sx={{ fontWeight: 700, mb: 1 }}
+                >
+                  Customer Pages
+                </Typography>
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "customer-create"
+                ) && (
+                  <ListItemButton
+                    component={Link}
+                    to="/add-customer"
+                    sx={[
+                      { ...listButtonStyle, mb: 0.5 },
+                      pathname === "/add-customer" && { ...activeStyle },
+                    ]}
+                  >
+                    <ListItemIcon>
+                      <PersonAddAltOutlinedIcon />
+                    </ListItemIcon>
 
-            <ListItemButton
-              component={Link}
-              to="/add-customer"
-              sx={[
-                { ...listButtonStyle, mb: 0.5 },
-                pathname === "/add-customer" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <PersonAddAltOutlinedIcon />
-              </ListItemIcon>
+                    <ListItemText primary="Add Customer" />
+                  </ListItemButton>
+                )}
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "customer-list"
+                ) && (
+                  <ListItemButton
+                    component={Link}
+                    to="/customer-list"
+                    sx={[
+                      { ...listButtonStyle, mb: 2 },
+                      pathname === "/customer-list" && { ...activeStyle },
+                    ]}
+                  >
+                    <ListItemIcon>
+                      <GroupsOutlinedIcon />
+                    </ListItemIcon>
 
-              <ListItemText primary="Add Customer" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/customer-list"
-              sx={[
-                { ...listButtonStyle, mb: 2 },
-                pathname === "/customer-list" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <GroupsOutlinedIcon />
-              </ListItemIcon>
+                    <ListItemText primary="Customer List" />
+                  </ListItemButton>
+                )}
+              </>
+            )}
+            {showFeedbackPages() && (
+              <>
+                <Typography
+                  variant="small"
+                  color="text.main"
+                  sx={{ fontWeight: 700, mb: 1 }}
+                >
+                  Feedback Pages
+                </Typography>
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "feedback-create"
+                ) && (
+                  <ListItemButton
+                    component={Link}
+                    to="/add-feedback"
+                    sx={[
+                      { ...listButtonStyle, mb: 0.5 },
+                      pathname === "/add-feedback" && { ...activeStyle },
+                    ]}
+                  >
+                    <ListItemIcon>
+                      <AddCommentOutlinedIcon />
+                    </ListItemIcon>
 
-              <ListItemText primary="Customer List" />
-            </ListItemButton>
-            <Typography
-              variant="small"
-              color="text.main"
-              sx={{ fontWeight: 700, mb: 1 }}
-            >
-              Feedback Pages
-            </Typography>
+                    <ListItemText primary="Add Feedback" />
+                  </ListItemButton>
+                )}
 
-            <ListItemButton
-              component={Link}
-              to="/add-feedback"
-              sx={[
-                { ...listButtonStyle, mb: 0.5 },
-                pathname === "/add-feedback" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <AddCommentOutlinedIcon />
-              </ListItemIcon>
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "feedback-list"
+                ) && (
+                  <ListItemButton
+                    component={Link}
+                    to="/feedback-list"
+                    sx={[
+                      { ...listButtonStyle, mb: 2 },
+                      pathname === "/feedback-list" && { ...activeStyle },
+                    ]}
+                  >
+                    <ListItemIcon>
+                      <InsertCommentOutlinedIcon />
+                    </ListItemIcon>
 
-              <ListItemText primary="Add Feedback" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/feedback-list"
-              sx={[
-                { ...listButtonStyle, mb: 2 },
-                pathname === "/feedback-list" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <InsertCommentOutlinedIcon />
-              </ListItemIcon>
+                    <ListItemText primary="Feedback List" />
+                  </ListItemButton>
+                )}
+              </>
+            )}
+            {showOrderPages() && (
+              <>
+                <Typography
+                  variant="small"
+                  color="text.main"
+                  sx={{ fontWeight: 700, mb: 1 }}
+                >
+                  Order Pages
+                </Typography>
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "order-create"
+                ) && (
+                  <ListItemButton
+                    component={Link}
+                    to="/add-order"
+                    sx={[
+                      { ...listButtonStyle, mb: 0.5 },
+                      pathname === "/add-order" && { ...activeStyle },
+                    ]}
+                  >
+                    <ListItemIcon>
+                      <EditNoteOutlinedIcon />
+                    </ListItemIcon>
 
-              <ListItemText primary="Feedback List" />
-            </ListItemButton>
-            <Typography
-              variant="small"
-              color="text.main"
-              sx={{ fontWeight: 700, mb: 1 }}
-            >
-              Order Pages
-            </Typography>
+                    <ListItemText primary="Add Order" />
+                  </ListItemButton>
+                )}
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "order-list"
+                ) && (
+                  <>
+                    <ListItemButton
+                      component={Link}
+                      to="/pending-order-list"
+                      sx={[
+                        { ...listButtonStyle, mb: 0.5 },
+                        pathname === "/pending-order-list" && {
+                          ...activeStyle,
+                        },
+                      ]}
+                    >
+                      <ListItemIcon>
+                        <ListAltOutlinedIcon />
+                      </ListItemIcon>
 
-            {/* <ListItemButton
-              component={Link}
-              to="/add-order"
-              sx={[
-                { ...listButtonStyle, mb: 0.5 },
-                pathname === "/add-order" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <HomeIcon />
-              </ListItemIcon>
+                      <ListItemText primary="Pending Order List" />
+                    </ListItemButton>
+                    <ListItemButton
+                      component={Link}
+                      to="/publish-order-list"
+                      sx={[
+                        { ...listButtonStyle, mb: 0.5 },
+                        pathname === "/publish-order-list" && {
+                          ...activeStyle,
+                        },
+                      ]}
+                    >
+                      <ListItemIcon>
+                        <PlaylistPlayOutlinedIcon />
+                      </ListItemIcon>
 
-              <ListItemText primary="Add Order" />
-            </ListItemButton> */}
-            <ListItemButton
-              component={Link}
-              to="/add-order"
-              sx={[
-                { ...listButtonStyle, mb: 0.5 },
-                pathname === "/add-order" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <EditNoteOutlinedIcon />
-              </ListItemIcon>
+                      <ListItemText primary="Publish Order List" />
+                    </ListItemButton>
+                    <ListItemButton
+                      component={Link}
+                      to="/complete-order-list"
+                      sx={[
+                        { ...listButtonStyle, mb: 0.5 },
+                        pathname === "/complete-order-list" && {
+                          ...activeStyle,
+                        },
+                      ]}
+                    >
+                      <ListItemIcon>
+                        <FactCheckOutlinedIcon />
+                      </ListItemIcon>
 
-              <ListItemText primary="Add Order" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/pending-order-list"
-              sx={[
-                { ...listButtonStyle, mb: 0.5 },
-                pathname === "/pending-order-list" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <ListAltOutlinedIcon />
-              </ListItemIcon>
+                      <ListItemText primary="Complete Order List" />
+                    </ListItemButton>
+                    <ListItemButton
+                      component={Link}
+                      to="/refunded-order-list"
+                      sx={[
+                        { ...listButtonStyle, mb: 2 },
+                        pathname === "/refunded-order-list" && {
+                          ...activeStyle,
+                        },
+                      ]}
+                    >
+                      <ListItemIcon>
+                        <PlaylistRemoveOutlinedIcon />
+                      </ListItemIcon>
 
-              <ListItemText primary="Pending Order List" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/publish-order-list"
-              sx={[
-                { ...listButtonStyle, mb: 0.5 },
-                pathname === "/publish-order-list" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <PlaylistPlayOutlinedIcon />
-              </ListItemIcon>
+                      <ListItemText primary="Refunded Order List" />
+                    </ListItemButton>
+                  </>
+                )}
+              </>
+            )}
+            {adtech_admin_panel?.permission?.some(
+              (el) => el.name === "role-list"
+            ) && (
+              <>
+                <Typography
+                  variant="small"
+                  color="text.main"
+                  sx={{ fontWeight: 700, mb: 1 }}
+                >
+                  Role Page
+                </Typography>
 
-              <ListItemText primary="Publish Order List" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/complete-order-list"
-              sx={[
-                { ...listButtonStyle, mb: 0.5 },
-                pathname === "/complete-order-list" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <FactCheckOutlinedIcon />
-              </ListItemIcon>
+                <ListItemButton
+                  component={Link}
+                  to="/role-list"
+                  sx={[
+                    { ...listButtonStyle, mb: 2 },
+                    pathname === "/role-list" && { ...activeStyle },
+                  ]}
+                >
+                  <ListItemIcon>
+                    <RecentActorsOutlinedIcon />
+                  </ListItemIcon>
 
-              <ListItemText primary="Complete Order List" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/refunded-order-list"
-              sx={[
-                { ...listButtonStyle, mb: 2 },
-                pathname === "/refunded-order-list" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <PlaylistRemoveOutlinedIcon />
-              </ListItemIcon>
+                  <ListItemText primary="Role List" />
+                </ListItemButton>
+              </>
+            )}
+            {showUserPages() && (
+              <>
+                <Typography
+                  variant="small"
+                  color="text.main"
+                  sx={{ fontWeight: 700, mb: 1 }}
+                >
+                  User Pages
+                </Typography>
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "user-create"
+                ) && (
+                  <ListItemButton
+                    component={Link}
+                    to="/add-user"
+                    sx={[
+                      { ...listButtonStyle, mb: 0.5 },
+                      pathname === "/add-user" && { ...activeStyle },
+                    ]}
+                  >
+                    <ListItemIcon>
+                      <PersonAddAltOutlinedIcon />
+                    </ListItemIcon>
 
-              <ListItemText primary="Refunded Order List" />
-            </ListItemButton>
-            <Typography
-              variant="small"
-              color="text.main"
-              sx={{ fontWeight: 700, mb: 1 }}
-            >
-              Role Page
-            </Typography>
+                    <ListItemText primary="Add User" />
+                  </ListItemButton>
+                )}
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "user-list"
+                ) && (
+                  <ListItemButton
+                    component={Link}
+                    to="/user-list"
+                    sx={[
+                      { ...listButtonStyle, mb: 2 },
+                      pathname === "/user-list" && { ...activeStyle },
+                    ]}
+                  >
+                    <ListItemIcon>
+                      <RecentActorsOutlinedIcon />
+                    </ListItemIcon>
 
-            <ListItemButton
-              component={Link}
-              to="/role-list"
-              sx={[
-                { ...listButtonStyle, mb: 2 },
-                pathname === "/role-list" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <RecentActorsOutlinedIcon />
-              </ListItemIcon>
-
-              <ListItemText primary="Role List" />
-            </ListItemButton>
-            <Typography
-              variant="small"
-              color="text.main"
-              sx={{ fontWeight: 700, mb: 1 }}
-            >
-              User Pages
-            </Typography>
-
-            <ListItemButton
-              component={Link}
-              to="/add-user"
-              sx={[
-                { ...listButtonStyle, mb: 0.5 },
-                pathname === "/add-user" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <PersonAddAltOutlinedIcon />
-              </ListItemIcon>
-
-              <ListItemText primary="Add User" />
-            </ListItemButton>
-            <ListItemButton
-              component={Link}
-              to="/user-list"
-              sx={[
-                { ...listButtonStyle, mb: 2 },
-                pathname === "/user-list" && { ...activeStyle },
-              ]}
-            >
-              <ListItemIcon>
-                <RecentActorsOutlinedIcon />
-              </ListItemIcon>
-
-              <ListItemText primary="User List" />
-            </ListItemButton>
+                    <ListItemText primary="User List" />
+                  </ListItemButton>
+                )}
+              </>
+            )}
           </List>
         </Drawer>
         <Main open={open}>

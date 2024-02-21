@@ -191,7 +191,7 @@ const UpdateRole = () => {
       permissionListWithAssignedPermissions.map((item) => {
         item.permissions.map((el) => {
           if (el.isPermitted) {
-            permissionsList.push(el.name);
+            permissionsList.push(el.id);
           }
         });
       });
@@ -210,7 +210,7 @@ const UpdateRole = () => {
         },
       });
 
-  
+     
       if (response?.status > 199 && response?.status < 300) {
         handleSnakbarOpen("Updated Successfully", "success");
       } else {
@@ -227,9 +227,7 @@ const UpdateRole = () => {
       //   }
 
       // }
-     
     } catch (error) {
-     
       console.log("error", error);
       setLoading(false);
       if (error?.response?.status === 401 || error?.response?.status === 403) {
@@ -254,7 +252,7 @@ const UpdateRole = () => {
     let myNewData = [];
     let url = "api/permission";
     let allPermission = await getDataWithToken(url, adtech_admin_panel.token);
-
+ 
     if (allPermission?.status === 401 || allPermission?.status === 403) {
       logout();
       return;
@@ -277,7 +275,8 @@ const UpdateRole = () => {
       // setPermissionList(myNewData);
       setLoading(false);
       return myNewData;
-    } else {
+    } 
+    else {
       setPermissionMessage("Something went wrong");
       // if (allPermission.data.messages.length < 1) {
       //   setPermissionMessage("Something went wrong");
@@ -290,6 +289,7 @@ const UpdateRole = () => {
   const getAssaignedPermissionInfo = async (id) => {
     const permissionList2 = await getPermissionInfo();
     if (permissionList2 !== undefined) {
+    
       setLoading(true);
       let myNewData = [];
 
@@ -297,11 +297,8 @@ const UpdateRole = () => {
         `api/role/${id}`,
         adtech_admin_panel.token
       );
-
-      if (
-        allAssaignedPermission?.status === 401 ||
-        allAssaignedPermission?.status === 403
-      ) {
+      
+      if (allAssaignedPermission?.status === 401 || allAssaignedPermission?.status === 403) {
         logout();
         return;
       }
@@ -484,7 +481,7 @@ const UpdateRole = () => {
               background: "#fff",
               borderRadius: "10px",
               textAlign: "center",
-              width: "450px",
+              width: "400px",
               boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
               margin: "auto",
             }}
@@ -616,9 +613,7 @@ const UpdateRole = () => {
                               <FormControlLabel
                                 component="div"
                                 control={<Checkbox size="small" />}
-                                label={el.name
-                                  .replace(/-/g, " ")
-                                  .replace(/\b\w/g, (c) => c.toUpperCase())}
+                                label={el.name}
                                 checked={el.isPermitted}
                                 onChange={() => {
                                   handlePermissionChange(item, index, el, i);
