@@ -170,7 +170,6 @@ const UserList = () => {
     }
     setLoading(false);
   };
- 
 
   useEffect(() => {
     // setLoading(true);

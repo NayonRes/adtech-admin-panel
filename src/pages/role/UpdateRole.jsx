@@ -484,7 +484,7 @@ const UpdateRole = () => {
               background: "#fff",
               borderRadius: "10px",
               textAlign: "center",
-              width: "450px",
+              width: "1100px",
               boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
               margin: "auto",
             }}
@@ -517,7 +517,7 @@ const UpdateRole = () => {
               style={{
                 padding: "20px 16px 16px",
                 boxSizing: "border-box",
-                maxWidth: "900px",
+                maxWidth: "1100px",
               }}
             >
               {roleName.length > 0 && (

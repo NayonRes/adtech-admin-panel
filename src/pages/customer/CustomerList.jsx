@@ -315,16 +315,22 @@ const CustomerList = () => {
             </Grid>
           </Grid>
           <Grid item xs="auto">
-            <Button
-              variant="outlined"
-              // size="small"
-              disableElevation
-              startIcon={<FileDownloadOutlinedIcon />}
-              onClick={() => downloadFile("xlsx")}
-            >
-              Download
-            </Button>
-            &nbsp;&nbsp;
+            {adtech_admin_panel?.permission?.some(
+              (el) => el.name === "customer-export"
+            ) && (
+              <>
+                <Button
+                  variant="outlined"
+                  // size="small"
+                  disableElevation
+                  startIcon={<FileDownloadOutlinedIcon />}
+                  onClick={() => downloadFile("xlsx")}
+                >
+                  Download
+                </Button>
+                &nbsp;&nbsp;
+              </>
+            )}
             <Button
               variant="outlined"
               // size="small"

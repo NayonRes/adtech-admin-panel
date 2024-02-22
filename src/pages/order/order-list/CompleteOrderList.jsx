@@ -176,7 +176,7 @@ const CompleteOrderList = () => {
     }
 
     let res = await getDataWithToken(url, adtech_admin_panel.token);
-   
+
     if (res?.status === 401 || res?.status === 403) {
       logout();
       return;
@@ -298,7 +298,7 @@ const CompleteOrderList = () => {
           Authorization: `Bearer ${adtech_admin_panel.token}`,
         },
       });
-     
+
       if (response?.status > 199 && response?.status < 300) {
         handleSnakbarOpen("Update Successfully", "success");
         getData();
@@ -372,16 +372,22 @@ const CompleteOrderList = () => {
             </Grid>
           </Grid>
           <Grid item xs="auto">
-            <Button
-              variant="outlined"
-              // size="small"
-              disableElevation
-              startIcon={<FileDownloadOutlinedIcon />}
-              onClick={() => downloadFile("xlsx")}
-            >
-              Download
-            </Button>
-            &nbsp;&nbsp;
+            {adtech_admin_panel?.permission?.some(
+              (el) => el.name === "order-export"
+            ) && (
+              <>
+                <Button
+                  variant="outlined"
+                  // size="small"
+                  disableElevation
+                  startIcon={<FileDownloadOutlinedIcon />}
+                  onClick={() => downloadFile("xlsx")}
+                >
+                  Download
+                </Button>
+                &nbsp;&nbsp;{" "}
+              </>
+            )}
             <Button
               variant="outlined"
               // size="small"
@@ -494,7 +500,7 @@ const CompleteOrderList = () => {
                     variant="outlined"
                     color="info"
                     disableElevation
-                    size="small" 
+                    size="small"
                     onClick={clearFilter}
                   >
                     <ReplayOutlinedIcon />

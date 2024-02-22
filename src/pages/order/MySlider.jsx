@@ -11,6 +11,7 @@ import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
 import BoostItems from "./BoostItems";
 import {
+  Avatar,
   Grid,
   IconButton,
   Table,
@@ -34,12 +35,12 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 const AutoPlaySwipeableViews = SwipeableViews;
 
 function MySlider() {
-
   const theme = useTheme();
   const { enqueueSnackbar } = useSnackbar();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
@@ -321,7 +322,6 @@ function MySlider() {
           Authorization: `Bearer ${adtech_admin_panel.token}`,
         },
       });
-    
 
       if (response?.status > 199 && response?.status < 300) {
         handleSnakbarOpen("Successful", "success");
@@ -627,13 +627,62 @@ function MySlider() {
           id="alert-dialog-title"
           sx={{ fontWeight: 600, position: "relative" }}
         >
-          {"Order Details"}{" "}
+          {/* {"Order Details"}{" "}
           <IconButton
             sx={{ position: "absolute", right: 0, top: -10 }}
             onClick={handleClose}
           >
             <ClearOutlinedIcon />
-          </IconButton>
+          </IconButton> */}
+          <Grid container alignItems="center" justifyContent="space-between">
+            <Grid item xs="auto">
+              <Grid container alignItems="center" spacing={1}>
+                <Grid item xs="auto">
+                  {" "}
+                  <Avatar
+                    sx={{
+                      width: 32,
+                      height: 32,
+                      bgcolor: `${theme.palette.primary.light}`,
+                    }}
+                  >
+                    <ListAltOutlinedIcon
+                      sx={{
+                        color: theme.palette.primary.main,
+                        fontSize: "18px",
+                      }}
+                    />
+                  </Avatar>
+                </Grid>
+                <Grid item xs="auto">
+                  <Typography
+                    variant="base"
+                    color="text.main"
+                    sx={{ fontWeight: 500 }}
+                  >
+                    Order Details
+                  </Typography>
+
+                  {/* <Breadcrumbs
+                  aria-label="breadcrumb"
+                  // className={classes.breadcrumbsStyle}
+                >
+                  <Link to="/">Home</Link>
+                  <Link to="/">Users</Link>
+                  <Link to="#">List of Users</Link>
+                </Breadcrumbs> */}
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item xs="auto" sx={{ textAlign: "right" }}>
+              <IconButton
+                // sx={{ position: "absolute", right: 0, top: -10 }}
+                onClick={handleClose}
+              >
+                <ClearOutlinedIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
         </DialogTitle>
         <DialogContent sx={{ minWidth: "350px" }}>
           <DialogContentText id="alert-dialog-description">
@@ -753,7 +802,7 @@ function MySlider() {
                 <TableRow
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
-                  <TableCell sx={{ p: 0 }}>
+                  <TableCell sx={{ p: 0, width: "75px" }}>
                     {" "}
                     <Typography variant="base" color="text.light">
                       {" "}

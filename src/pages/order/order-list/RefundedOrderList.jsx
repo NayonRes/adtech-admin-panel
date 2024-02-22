@@ -298,7 +298,7 @@ const RefundedOrderList = () => {
           Authorization: `Bearer ${adtech_admin_panel.token}`,
         },
       });
-    
+
       if (response?.status > 199 && response?.status < 300) {
         handleSnakbarOpen("Update Successfully", "success");
         getData();
@@ -372,16 +372,22 @@ const RefundedOrderList = () => {
             </Grid>
           </Grid>
           <Grid item xs="auto">
-            <Button
-              variant="outlined"
-              // size="small"
-              disableElevation
-              startIcon={<FileDownloadOutlinedIcon />}
-              onClick={() => downloadFile("xlsx")}
-            >
-              Download
-            </Button>
-            &nbsp;&nbsp;
+            {adtech_admin_panel?.permission?.some(
+              (el) => el.name === "order-export"
+            ) && (
+              <>
+                <Button
+                  variant="outlined"
+                  // size="small"
+                  disableElevation
+                  startIcon={<FileDownloadOutlinedIcon />}
+                  onClick={() => downloadFile("xlsx")}
+                >
+                  Download
+                </Button>
+                &nbsp;&nbsp;{" "}
+              </>
+            )}
             <Button
               variant="outlined"
               // size="small"
@@ -455,7 +461,7 @@ const RefundedOrderList = () => {
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                className="xs_input"
+                  className="xs_input"
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}
@@ -472,7 +478,7 @@ const RefundedOrderList = () => {
             <Grid item lg={2}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
-                className="xs_input"
+                  className="xs_input"
                   slotProps={{
                     textField: { size: "small", fullWidth: true },
                   }}
@@ -495,7 +501,6 @@ const RefundedOrderList = () => {
                     color="info"
                     disableElevation
                     size="small"
-                
                     onClick={clearFilter}
                   >
                     <ReplayOutlinedIcon />

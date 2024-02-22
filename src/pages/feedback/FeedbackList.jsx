@@ -360,7 +360,7 @@ const FeedbackList = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Video Link</TableCell>
 
                 <TableCell align="center">Status</TableCell>
-
+                <TableCell>Remarks</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
@@ -392,7 +392,11 @@ const FeedbackList = () => {
                     <TableCell>{row?.name}</TableCell>
                     <TableCell>{row?.designation}</TableCell>
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
-                      {row?.website}
+                      {row?.website === null
+                        ? "-------"
+                        : row?.website === ""
+                        ? "-------"
+                        : row?.website}
                     </TableCell>
                     <TableCell>{row?.video_link}</TableCell>
 
@@ -415,7 +419,13 @@ const FeedbackList = () => {
                         />
                       )}
                     </TableCell>
-
+                    <TableCell sx={{ width: "190px" }}>
+                      {row?.remarks === null
+                        ? "-------"
+                        : row?.remarks === ""
+                        ? "-------"
+                        : row?.remarks}
+                    </TableCell>
                     <TableCell sx={{ minWidth: "90px" }}>
                       {" "}
                       {moment(row?.created_at).format(

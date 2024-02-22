@@ -66,22 +66,22 @@ const UpdateFeedback = () => {
     setLoading(true);
     try {
       let data = {
-        company: companyName.trim(),
-        moto: companyDetails.trim(),
-        name: reviwerName.trim(),
-        designation: reviwerDesignation.trim(),
-        website: website.trim(),
-        video_link: videoLink.trim(),
+        company: companyName?.trim(),
+        moto: companyDetails?.trim(),
+        name: reviwerName?.trim(),
+        designation: reviwerDesignation?.trim(),
+        website: website?.trim(),
+        video_link: videoLink?.trim(),
       };
       let response = await axios({
-        url: "/api/feedback",
+        url: `/api/feedback/${id}`,
         method: "put",
         data: data,
         headers: {
           Authorization: `Bearer ${adtech_admin_panel.token}`,
         },
       });
-    
+
       if (response?.status > 199 && response?.status < 300) {
         handleSnakbarOpen("Successful", "success");
         setCompanyName("");
@@ -102,7 +102,7 @@ const UpdateFeedback = () => {
       if (error?.response?.status === 500) {
         handleSnakbarOpen(error?.response?.statusText, "error");
       } else {
-        setErrors(error.response.data.errors);
+        setErrors(error.response?.data?.errors);
       }
       // handleSnakbarOpen(error.response.data.messages.toString(), "error");
       // if (error.response.data.errors.length < 1) {
