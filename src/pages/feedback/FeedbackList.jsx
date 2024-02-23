@@ -445,7 +445,9 @@ const FeedbackList = () => {
                     </TableCell>
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
-                      {row.updated_by !== null ? row.updated_by.name : "Self"}
+                      {row.updated_by !== null
+                        ? row.updated_by.name
+                        : "-------"}
                     </TableCell>
                     <TableCell
                       sx={{ whiteSpace: "nowrap", p: 0 }}

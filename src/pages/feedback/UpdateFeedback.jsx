@@ -72,6 +72,8 @@ const UpdateFeedback = () => {
         designation: reviwerDesignation?.trim(),
         website: website?.trim(),
         video_link: videoLink?.trim(),
+        remarks: remarks,
+        status,
       };
       let response = await axios({
         url: `/api/feedback/${id}`,

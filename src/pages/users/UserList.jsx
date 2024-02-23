@@ -408,7 +408,12 @@ const UserList = () => {
                     </TableCell>
                     <TableCell>{row?.email}</TableCell>
                     <TableCell>{row?.mobile}</TableCell>
-                    <TableCell align="center">{row?.role?.name}</TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{ textTransform: "capitalize" }}
+                    >
+                      {row?.role?.name}
+                    </TableCell>
 
                     <TableCell align="center">
                       {row.status === "Active" ? (
@@ -455,19 +460,23 @@ const UserList = () => {
                     </TableCell>
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
-                      {row.updated_by !== null ? row.updated_by.name : "Self"}
+                      {row.updated_by !== null
+                        ? row.updated_by.name
+                        : "-------"}
                     </TableCell>
                     <TableCell
                       sx={{ whiteSpace: "nowrap", p: 0 }}
                       align="center"
                     >
-                      <IconButton
-                        aria-label="edit"
-                        component={Link}
-                        to={`/update-user/${row?.id}`}
-                      >
-                        <EditOutlinedIcon />
-                      </IconButton>
+                      {adtech_admin_panel?.id !== row.id && (
+                        <IconButton
+                          aria-label="edit"
+                          component={Link}
+                          to={`/update-user/${row?.id}`}
+                        >
+                          <EditOutlinedIcon />
+                        </IconButton>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

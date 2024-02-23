@@ -41,53 +41,6 @@ const UpdateUser = () => {
 
   const validation = () => {
     let isError = false;
-    // if (!name.trim()) {
-    //   handleSnakbarOpen("Please enter user name", "error");
-    //   document.getElementById("name").focus();
-    //   return (isError = true);
-    // }
-    // if (!mobileNo.trim()) {
-    //   handleSnakbarOpen("Please enter mobile number", "error");
-    //   document.getElementById("mobileNo").focus();
-    //   return (isError = true);
-    // }
-    // if (!email.trim()) {
-    //   handleSnakbarOpen("Please enter email address", "error");
-    //   document.getElementById("email").focus();
-    //   return (isError = true);
-    // } else if (
-    //   !/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-    //     email
-    //   )
-    // ) {
-    //   handleSnakbarOpen("Invalid email address", "error");
-    //   document.getElementById("email").focus();
-    //   return (isError = true);
-    // }
-
-    // if (!password.trim()) {
-    //   handleSnakbarOpen("Please enter password", "error");
-    //   document.getElementById("password").focus();
-    //   return (isError = true);
-    // }
-    // if (password.trim().length < 6) {
-    //   handleSnakbarOpen(
-    //     "The password field must be at least 6 characters.",
-    //     "error"
-    //   );
-    //   document.getElementById("password").focus();
-    //   return (isError = true);
-    // }
-    // if (!confirmPassword.trim()) {
-    //   handleSnakbarOpen("Please enter confirm password", "error");
-    //   document.getElementById("confirmPassword").focus();
-    //   return (isError = true);
-    // }
-    if (password.trim() !== confirmPassword.trim()) {
-      handleSnakbarOpen("password and confirm password doesn't match", "error");
-
-      return (isError = true);
-    }
 
     // if (!roleId) {
     //   handleSnakbarOpen("Please select user role", "error");
@@ -140,7 +93,7 @@ const UpdateUser = () => {
             Authorization: `Bearer ${adtech_admin_panel.token}`,
           },
         });
-      
+
         if (response?.status > 199 && response?.status < 300) {
           handleSnakbarOpen("Successful", "success");
           setName("");
@@ -154,7 +107,10 @@ const UpdateUser = () => {
       } catch (error) {
         console.log("error", error);
         setLoading(false);
-        if (error?.response?.status === 401 || error?.response?.status === 403) {
+        if (
+          error?.response?.status === 401 ||
+          error?.response?.status === 403
+        ) {
           logout();
           return;
         }
@@ -307,7 +263,7 @@ const UpdateUser = () => {
               </Typography>
             )}
           </Box>
-          <Box sx={{ marginBottom: "18px" }}>
+          {/* <Box sx={{ marginBottom: "18px" }}>
             <Typography variant="base" htmlFor="password">
               Password *{" "}
               <span
@@ -337,8 +293,6 @@ const UpdateUser = () => {
               Confirm Password *
             </Typography>
             <TextField
-              // required
-              // label="Confirm Password"
               fullWidth
               size="small"
               variant="outlined"
@@ -346,12 +300,8 @@ const UpdateUser = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            {/* {errors.password && (
-              <Typography variant="small" color="error.main">
-                {errors.password}
-              </Typography>
-            )} */}
-          </Box>
+           
+          </Box> */}
 
           <Box sx={{ marginBottom: "18px" }}>
             <Typography variant="base" htmlFor="mobileNo">

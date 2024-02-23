@@ -113,21 +113,16 @@ const RoleList = () => {
     setLoading(true);
     // setUserList([]);
     setMessage("");
-   
-     
-   
-    
+
     let url = "api/role";
     let res = await getDataWithToken(url, adtech_admin_panel.token);
-   
+
     if (res?.status === 401 || res?.status === 403) {
       logout();
       return;
     }
 
     if (res?.status > 199 && res?.status < 300) {
-     
-      
       if (res.data.data.length > 0) {
         setList(res.data.data);
       } else {
@@ -139,8 +134,12 @@ const RoleList = () => {
     }
     setLoading(false);
   };
- 
-
+  const showEditButton = (row) => {
+    if (row?.id !== 1 && adtech_admin_panel?.role?.id !== row.id) {
+      return true;
+    }
+    return false;
+  };
   useEffect(() => {
     // setLoading(true);
     // getRoles();
@@ -189,11 +188,8 @@ const RoleList = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs="auto">
-           
-          </Grid>
+          <Grid item xs="auto"></Grid>
         </Grid>
-      
       </Paper>
       <Paper sx={{ p: 3, pb: 0 }}>
         <TableContainer
@@ -208,7 +204,7 @@ const RoleList = () => {
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                
+
                 <TableCell sx={{ whiteSpace: "nowrap" }} align="right">
                   Actions
                 </TableCell>
@@ -219,32 +215,33 @@ const RoleList = () => {
                 list?.length > 0 &&
                 list?.map((row, i) => (
                   <TableRow
-                  key={i}
-                  // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    key={i}
+                    // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell
                       sx={{
                         // color: `${theme.palette.primary.main}`,
                         fontWeight: 500,
                         whiteSpace: "nowrap",
-                        textTransform:"capitalize"
+                        textTransform: "capitalize",
                       }}
                     >
                       {row?.name}
                     </TableCell>
-                  
-                   
+
                     <TableCell
                       sx={{ whiteSpace: "nowrap", p: 0 }}
                       align="right"
                     >
-                      <IconButton
-                        aria-label="edit"
-                        component={Link}
-                        to={`/update-role/${row?.id}`}
-                      >
-                        <EditOutlinedIcon />
-                      </IconButton>
+                      {showEditButton(row) && (
+                        <IconButton
+                          aria-label="edit"
+                          component={Link}
+                          to={`/update-role/${row?.id}`}
+                        >
+                          <EditOutlinedIcon />
+                        </IconButton>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}
@@ -258,7 +255,6 @@ const RoleList = () => {
             <strong> No Data Found</strong>
           </Box>
         ) : null}
-      
       </Paper>
     </div>
   );
