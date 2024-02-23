@@ -127,7 +127,7 @@ const UpdateCustomer = () => {
             Authorization: `Bearer ${adtech_admin_panel.token}`,
           },
         });
-     
+
         if (response?.status > 199 && response?.status < 300) {
           handleSnakbarOpen("Successful", "success");
           setName("");
@@ -136,12 +136,15 @@ const UpdateCustomer = () => {
           setConfirmPassword("");
           setMobileNo("");
 
-          navigate("/user-list");
+          navigate("/customer-list");
         }
       } catch (error) {
         console.log("error", error);
         setLoading(false);
-        if (error?.response?.status === 401 || error?.response?.status === 403) {
+        if (
+          error?.response?.status === 401 ||
+          error?.response?.status === 403
+        ) {
           logout();
           return;
         }

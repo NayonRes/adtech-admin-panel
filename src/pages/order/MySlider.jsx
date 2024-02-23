@@ -532,6 +532,7 @@ function MySlider() {
         onChangeIndex={handleStepChange}
         enableMouseEvents
         disabled
+      
       >
         {forms.map((step, index) => (
           <div key={index}>
@@ -543,7 +544,7 @@ function MySlider() {
                   display: "block",
                   // maxWidth: 400,
                   // overflow: "hidden",
-                  width: "100%",
+                  width: "100%", 
                 }}
                 // src={step.imgPath}
                 // alt={step.label}

@@ -28,7 +28,7 @@ const BoostItems = ({ promotion, setPromotion }) => {
     height: 32,
   };
   return (
-    <div>
+    <Box sx={{mt:5}}>
       {" "}
       <Box
         sx={{ marginBottom: "18px" }}
@@ -190,7 +190,7 @@ const BoostItems = ({ promotion, setPromotion }) => {
           </Grid>{" "}
         </Box>
       </Box>
-    </div>
+    </Box>
   );
 };
 

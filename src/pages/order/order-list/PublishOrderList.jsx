@@ -284,7 +284,7 @@ const PublishOrderList = () => {
     setDownloadloading(false);
   };
 
-  const updateStatus = async (id) => {
+  const updateStatus = async () => {
     // let err = false;
     // setErrors({});
 
@@ -294,7 +294,7 @@ const PublishOrderList = () => {
         status: "Complete",
       };
       let response = await axios({
-        url: `/api/order/${id}/action`,
+        url: `/api/order/${updateId}/action`,
         method: "put",
         data: data,
         headers: {
