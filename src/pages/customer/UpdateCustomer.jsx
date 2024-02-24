@@ -276,7 +276,7 @@ const UpdateCustomer = () => {
               </Typography>
             )}
           </Box>
-          <Box sx={{ marginBottom: "18px" }}>
+          {/* <Box sx={{ marginBottom: "18px" }}>
             <Typography variant="base" htmlFor="password">
               Password *{" "}
               <span
@@ -315,12 +315,12 @@ const UpdateCustomer = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
             />
-            {/* {errors.password && (
+            {errors.password && (
               <Typography variant="small" color="error.main">
                 {errors.password}
               </Typography>
-            )} */}
-          </Box>
+            )}
+          </Box> */}
 
           <Box sx={{ marginBottom: "18px" }}>
             <Typography variant="base" htmlFor="mobileNo">

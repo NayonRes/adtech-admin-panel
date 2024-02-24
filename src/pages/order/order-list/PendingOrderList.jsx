@@ -76,7 +76,8 @@ const PendingOrderList = () => {
   const [createdEndTime, setCreatedEndTime] = useState(null);
   const { enqueueSnackbar } = useSnackbar();
   const [downloadloading, setDownloadloading] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [openRefund, setOpenRefund] = useState(false);
   const [updateId, setUpdateId] = useState("");
   const [updateLoading, setUpdateLoading] = useState(false);
 
@@ -87,6 +88,14 @@ const PendingOrderList = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleClickOpenRefund = (id) => {
+    setUpdateId(id);
+    setOpenRefund(true);
+  };
+
+  const handleCloseRefund = () => {
+    setOpenRefund(false);
   };
   const handleSnakbarOpen = (msg, vrnt) => {
     let duration;
@@ -113,11 +122,15 @@ const PendingOrderList = () => {
   };
   const pageLoading = () => {
     let rows = [];
-
+    let cellNo = adtech_admin_panel?.permission?.some(
+      (el) => el.name === "order-update"
+    )
+      ? 13
+      : 12;
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
-      for (let j = 0; j < 13; j++) {
+      for (let j = 0; j < cellNo; j++) {
         cells.push(
           <TableCell key={j} sx={{ py: 1.5 }}>
             <Skeleton></Skeleton>
@@ -281,14 +294,14 @@ const PendingOrderList = () => {
     setDownloadloading(false);
   };
 
-  const updateStatus = async () => {
+  const updateStatus = async (newStatus) => {
     // let err = false;
     // setErrors({});
 
     setUpdateLoading(true);
     try {
       let data = {
-        status: "Publish",
+        status: newStatus,
       };
       let response = await axios({
         url: `/api/order/${updateId}/action`,
@@ -301,6 +314,9 @@ const PendingOrderList = () => {
 
       if (response?.status > 199 && response?.status < 300) {
         handleSnakbarOpen("Update Successfully", "success");
+        handleClose();
+        handleCloseRefund();
+        setUpdateLoading(false);
         getData();
       }
     } catch (error) {
@@ -323,7 +339,18 @@ const PendingOrderList = () => {
       setUpdateLoading(false);
     }
   };
+  const checkCreateAndUpdatedSame = (createdAt, updatedAt) => {
+    // Convert strings to Date objects
+    const createdDate = new Date(createdAt);
+    const updatedDate = new Date(updatedAt);
 
+    // Compare the Date objects
+    if (createdDate.getTime() === updatedDate.getTime()) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   useEffect(() => {
     // setLoading(true);
     getData();
@@ -552,9 +579,13 @@ const PendingOrderList = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated By</TableCell>
-                <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
-                  Actions
-                </TableCell>
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "order-update"
+                ) && (
+                  <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
+                    Actions
+                  </TableCell>
+                )}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -593,21 +624,15 @@ const PendingOrderList = () => {
                     >
                       {row?.min_age} - {row?.max_age}
                     </TableCell>
-                    <TableCell
-                      sx={
-                        {
-                          // maxWidth: "220px",
-                          // background: "red",
-                        }
-                      }
-                    >
-                      {JSON.parse(row?.divisions)?.map((item, i) =>
-                        JSON.parse(row?.divisions).length < i + 2 ? (
+                    <TableCell>
+                      {row?.divisions?.toString()}
+                      {/* {row?.divisions?.map((item, i) =>
+                        row?.divisions.length < i + 2 ? (
                           <span key={i}>{item}</span>
                         ) : (
                           <span key={i}>{item}&nbsp;,</span>
                         )
-                      )}
+                      )} */}
                     </TableCell>
 
                     {/* <TableCell align="center">
@@ -645,9 +670,17 @@ const PendingOrderList = () => {
                       )}
                     </TableCell>
                     <TableCell sx={{ minWidth: "90px" }}>
-                      {" "}
-                      {moment(row?.updated_at).format(
-                        "DD MMM, YYYY, HH:mm:ss a"
+                      {checkCreateAndUpdatedSame(
+                        row?.created_at,
+                        row?.updated_at
+                      ) ? (
+                        "-------"
+                      ) : (
+                        <>
+                          {moment(row?.updated_at).format(
+                            "DD MMM, YYYY, HH:mm:ss a"
+                          )}
+                        </>
                       )}
                     </TableCell>
 
@@ -657,47 +690,50 @@ const PendingOrderList = () => {
                     </TableCell>
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
-                      {row.updated_by !== null ? row.updated_by.name : "Self"}
+                      {row.updated_by !== null
+                        ? row.updated_by.name
+                        : "-------"}
                     </TableCell>
-                    <TableCell
-                      sx={{ whiteSpace: "nowrap", p: 0 }}
-                      align="center"
-                    >
-                      <Button
-                        variant="outlined"
-                        color="info"
-                        size="small"
-                        startIcon={
-                          <PlaylistPlayOutlinedIcon
-                            style={{ position: "relative", top: -1 }}
-                          />
-                        }
-                        onClick={() => handleClickOpen(row?.id)}
-                      >
-                        Publish Order
-                      </Button>{" "}
-                      &nbsp;
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        size="small"
-                        startIcon={
-                          <MoneyOffCsredOutlinedIcon
-                            style={{ position: "relative", top: -1 }}
-                          />
-                        }
-                        // onClick={() => handleClickOpen(row?.id)}
-                      >
-                        Refund Order
-                      </Button>
-                      {/* <IconButton
+                    {adtech_admin_panel?.permission?.some(
+                      (el) => el.name === "order-update"
+                    ) && (
+                      <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
+                        <Button
+                          variant="outlined"
+                          color="info"
+                          size="small"
+                          startIcon={
+                            <PlaylistPlayOutlinedIcon
+                              style={{ position: "relative", top: -1 }}
+                            />
+                          }
+                          onClick={() => handleClickOpen(row?.id)}
+                        >
+                          Publish Order
+                        </Button>{" "}
+                        &nbsp;
+                        <Button
+                          variant="outlined"
+                          color="error"
+                          size="small"
+                          startIcon={
+                            <MoneyOffCsredOutlinedIcon
+                              style={{ position: "relative", top: -1 }}
+                            />
+                          }
+                          onClick={() => handleClickOpenRefund(row?.id)}
+                        >
+                          Refund Order
+                        </Button>
+                        {/* <IconButton
                         aria-label="edit"
                         component={Link}
                         to={`/update-customer/${row?.id}`}
                       >
                         <EditOutlinedIcon />
                       </IconButton> */}
-                    </TableCell>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
 
@@ -736,26 +772,33 @@ const PendingOrderList = () => {
           sx={{ fontWeight: 600, position: "relative" }}
         >
           {"Are you sure?"}{" "}
-          <IconButton
+          {/* <IconButton
             sx={{ position: "absolute", right: 0, top: -10 }}
             onClick={handleClose}
           >
             <ClearOutlinedIcon />
-          </IconButton>
+          </IconButton> */}
         </DialogTitle>
         <DialogContent sx={{ minWidth: "350px" }}>
           <DialogContentText id="alert-dialog-description">
-            You want to pass it to publish list!!!
+            You want to pass it to <b>publish list!!!</b>
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ pt: 0, pb: 1.5 }}>
+          <Button
+            color="text"
+            sx={{ color: theme.palette.text.light }}
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
           <Button
             variant="contained"
             disableElevation
             // size="small"
             style={{
               minHeight: "37px",
-              minWidth: "180px",
+              // minWidth: "180px",
             }}
             endIcon={
               <SendOutlinedIcon
@@ -763,7 +806,66 @@ const PendingOrderList = () => {
               />
             }
             disabled={updateLoading}
-            onClick={updateStatus}
+            onClick={() => updateStatus("Publish")}
+          >
+            {updateLoading === false && <>&nbsp;&nbsp; Confirm</>}
+            <PulseLoader
+              color={"#353b48"}
+              loading={updateLoading}
+              size={10}
+              speedMultiplier={0.5}
+            />{" "}
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openRefund}
+        onClose={handleCloseRefund}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+        maxWidth="lg"
+        sx={{ ".MuiDialog-paper": { p: 3 } }}
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          sx={{ fontWeight: 600, position: "relative" }}
+        >
+          {"Are you sure?"}{" "}
+          {/* <IconButton
+            sx={{ position: "absolute", right: 0, top: -10 }}
+            onClick={handleCloseRefund}
+          >
+            <ClearOutlinedIcon />
+          </IconButton> */}
+        </DialogTitle>
+        <DialogContent sx={{ minWidth: "350px" }}>
+          <DialogContentText id="alert-dialog-description">
+            You want to pass it to <b>refund list!!!</b>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ pt: 0, pb: 1.5 }}>
+          <Button
+            color="text"
+            sx={{ color: theme.palette.text.light }}
+            onClick={handleCloseRefund}
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="contained"
+            disableElevation
+            // size="small"
+            style={{
+              minHeight: "37px",
+              // minWidth: "180px",
+            }}
+            endIcon={
+              <SendOutlinedIcon
+                style={{ position: "relative", top: -2, fontSize: "16px" }}
+              />
+            }
+            disabled={updateLoading}
+            onClick={() => updateStatus("Refunded")}
           >
             {updateLoading === false && <>&nbsp;&nbsp; Confirm</>}
             <PulseLoader

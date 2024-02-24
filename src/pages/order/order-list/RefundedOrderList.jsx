@@ -323,7 +323,18 @@ const RefundedOrderList = () => {
       setUpdateLoading(false);
     }
   };
+  const checkCreateAndUpdatedSame = (createdAt, updatedAt) => {
+    // Convert strings to Date objects
+    const createdDate = new Date(createdAt);
+    const updatedDate = new Date(updatedAt);
 
+    // Compare the Date objects
+    if (createdDate.getTime() === updatedDate.getTime()) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   useEffect(() => {
     // setLoading(true);
     getData();
@@ -598,13 +609,14 @@ const RefundedOrderList = () => {
                         }
                       }
                     >
-                      {JSON.parse(row?.divisions)?.map((item, i) =>
+                      {row?.divisions?.toString()}
+                      {/* {JSON.parse(row?.divisions)?.map((item, i) =>
                         JSON.parse(row?.divisions).length < i + 2 ? (
                           <span key={i}>{item}</span>
                         ) : (
                           <span key={i}>{item}&nbsp;,</span>
                         )
-                      )}
+                      )} */}
                     </TableCell>
 
                     {/* <TableCell align="center">
@@ -642,9 +654,17 @@ const RefundedOrderList = () => {
                       )}
                     </TableCell>
                     <TableCell sx={{ minWidth: "90px" }}>
-                      {" "}
-                      {moment(row?.updated_at).format(
-                        "DD MMM, YYYY, HH:mm:ss a"
+                      {checkCreateAndUpdatedSame(
+                        row?.created_at,
+                        row?.updated_at
+                      ) ? (
+                        "-------"
+                      ) : (
+                        <>
+                          {moment(row?.updated_at).format(
+                            "DD MMM, YYYY, HH:mm:ss a"
+                          )}
+                        </>
                       )}
                     </TableCell>
 
@@ -654,7 +674,9 @@ const RefundedOrderList = () => {
                     </TableCell>
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
-                      {row.updated_by !== null ? row.updated_by.name : "Self"}
+                      {row.updated_by !== null
+                        ? row.updated_by.name
+                        : "-------"}
                     </TableCell>
                   </TableRow>
                 ))}

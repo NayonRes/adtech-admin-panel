@@ -42,8 +42,8 @@ const Login = () => {
   // const classes = useStyles();
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-  const [email, setEmail] = useState("jewelrana.dev@gmail.com");
-  const [password, setPassword] = useState("123456789");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});

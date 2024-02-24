@@ -163,7 +163,18 @@ const FeedbackList = () => {
     }
     setLoading(false);
   };
+  const checkCreateAndUpdatedSame = (createdAt, updatedAt) => {
+    // Convert strings to Date objects
+    const createdDate = new Date(createdAt);
+    const updatedDate = new Date(updatedAt);
 
+    // Compare the Date objects
+    if (createdDate.getTime() === updatedDate.getTime()) {
+     return true
+    } else {
+      return false
+    }
+  };
   useEffect(() => {
     // setLoading(true);
 
@@ -433,10 +444,13 @@ const FeedbackList = () => {
                       )}
                     </TableCell>
                     <TableCell sx={{ minWidth: "90px" }}>
-                      {" "}
+                    {checkCreateAndUpdatedSame(row?.created_at,row?.updated_at) ? "-------":
+                    <>
                       {moment(row?.updated_at).format(
                         "DD MMM, YYYY, HH:mm:ss a"
                       )}
+                    </>
+                    }
                     </TableCell>
 
                     <TableCell sx={{ whiteSpace: "nowrap" }}>

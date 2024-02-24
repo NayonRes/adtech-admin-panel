@@ -116,11 +116,15 @@ const PublishOrderList = () => {
   };
   const pageLoading = () => {
     let rows = [];
-
+    let cellNo = adtech_admin_panel?.permission?.some(
+      (el) => el.name === "order-update"
+    )
+      ? 13
+      : 12;
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
-      for (let j = 0; j < 13; j++) {
+      for (let j = 0; j < cellNo; j++) {
         cells.push(
           <TableCell key={j} sx={{ py: 1.5 }}>
             <Skeleton></Skeleton>
@@ -304,6 +308,8 @@ const PublishOrderList = () => {
 
       if (response?.status > 199 && response?.status < 300) {
         handleSnakbarOpen("Update Successfully", "success");
+        handleClose();
+        setUpdateLoading(false);
         getData();
       }
     } catch (error) {
@@ -326,7 +332,18 @@ const PublishOrderList = () => {
       setUpdateLoading(false);
     }
   };
+  const checkCreateAndUpdatedSame = (createdAt, updatedAt) => {
+    // Convert strings to Date objects
+    const createdDate = new Date(createdAt);
+    const updatedDate = new Date(updatedAt);
 
+    // Compare the Date objects
+    if (createdDate.getTime() === updatedDate.getTime()) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   useEffect(() => {
     // setLoading(true);
     getData();
@@ -555,9 +572,13 @@ const PublishOrderList = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated By</TableCell>
-                <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
-                  Actions
-                </TableCell>
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "order-update"
+                ) && (
+                  <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
+                    Action
+                  </TableCell>
+                )}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -604,13 +625,14 @@ const PublishOrderList = () => {
                         }
                       }
                     >
-                      {JSON.parse(row?.divisions)?.map((item, i) =>
+                      {row?.divisions?.toString()}
+                      {/* {JSON.parse(row?.divisions)?.map((item, i) =>
                         JSON.parse(row?.divisions).length < i + 2 ? (
                           <span key={i}>{item}</span>
                         ) : (
                           <span key={i}>{item}&nbsp;,</span>
                         )
-                      )}
+                      )} */}
                     </TableCell>
 
                     {/* <TableCell align="center">
@@ -648,9 +670,17 @@ const PublishOrderList = () => {
                       )}
                     </TableCell>
                     <TableCell sx={{ minWidth: "90px" }}>
-                      {" "}
-                      {moment(row?.updated_at).format(
-                        "DD MMM, YYYY, HH:mm:ss a"
+                      {checkCreateAndUpdatedSame(
+                        row?.created_at,
+                        row?.updated_at
+                      ) ? (
+                        "-------"
+                      ) : (
+                        <>
+                          {moment(row?.updated_at).format(
+                            "DD MMM, YYYY, HH:mm:ss a"
+                          )}
+                        </>
                       )}
                     </TableCell>
 
@@ -660,26 +690,28 @@ const PublishOrderList = () => {
                     </TableCell>
                     <TableCell sx={{ whiteSpace: "nowrap" }}>
                       {" "}
-                      {row.updated_by !== null ? row.updated_by.name : "Self"}
+                      {row.updated_by !== null
+                        ? row.updated_by.name
+                        : "-------"}
                     </TableCell>
-                    <TableCell
-                      sx={{ whiteSpace: "nowrap", p: 0 }}
-                      align="center"
-                    >
-                      <Button
-                        variant="outlined"
-                        color="success"
-                        size="small"
-                        startIcon={
-                          <FactCheckOutlinedIcon
-                            style={{ position: "relative", top: -1 }}
-                          />
-                        }
-                        onClick={() => handleClickOpen(row?.id)}
-                      >
-                        Complete Order
-                      </Button>{" "}
-                      {/* &nbsp;
+                    {adtech_admin_panel?.permission?.some(
+                      (el) => el.name === "order-update"
+                    ) && (
+                      <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
+                        <Button
+                          variant="outlined"
+                          color="info"
+                          size="small"
+                          startIcon={
+                            <FactCheckOutlinedIcon
+                              style={{ position: "relative", top: -1 }}
+                            />
+                          }
+                          onClick={() => handleClickOpen(row?.id)}
+                        >
+                          Complete Order
+                        </Button>{" "}
+                        {/* &nbsp;
                       <Button
                         variant="outlined"
                         color="error"
@@ -693,14 +725,15 @@ const PublishOrderList = () => {
                       >
                         Refund Order
                       </Button> */}
-                      {/* <IconButton
+                        {/* <IconButton
                         aria-label="edit"
                         component={Link}
                         to={`/update-customer/${row?.id}`}
                       >
                         <EditOutlinedIcon />
                       </IconButton> */}
-                    </TableCell>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
 
@@ -739,26 +772,33 @@ const PublishOrderList = () => {
           sx={{ fontWeight: 600, position: "relative" }}
         >
           {"Are you sure?"}{" "}
-          <IconButton
+          {/* <IconButton
             sx={{ position: "absolute", right: 0, top: -10 }}
             onClick={handleClose}
           >
             <ClearOutlinedIcon />
-          </IconButton>
+          </IconButton> */}
         </DialogTitle>
         <DialogContent sx={{ minWidth: "350px" }}>
           <DialogContentText id="alert-dialog-description">
-            You want to pass it to publish list!!!
+            You want to pass it to <b>publish list!!!</b>
           </DialogContentText>
         </DialogContent>
         <DialogActions sx={{ pt: 0, pb: 1.5 }}>
+          <Button
+            color="text"
+            sx={{ color: theme.palette.text.light }}
+            onClick={handleClose}
+          >
+            Cancel
+          </Button>
           <Button
             variant="contained"
             disableElevation
             // size="small"
             style={{
               minHeight: "37px",
-              minWidth: "180px",
+              // minWidth: "180px",
             }}
             endIcon={
               <SendOutlinedIcon
