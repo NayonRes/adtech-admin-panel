@@ -28,7 +28,7 @@ const BoostItems = ({ promotion, setPromotion }) => {
     height: 32,
   };
   return (
-    <Box sx={{mt:5}}>
+    <Box sx={{ mt: 5 }}>
       {" "}
       <Box
         sx={{ marginBottom: "18px" }}
@@ -80,8 +80,8 @@ const BoostItems = ({ promotion, setPromotion }) => {
               </svg>
             </Grid>
             <Grid item xs="auto" sx={{ color: "#039be5" }}>
-              Facebook &nbsp;
-              <span style={{ color: "#718096", fontWeight: 200 }}>Ads</span>
+              Facebook
+              {/* <span style={{ color: "#718096", fontWeight: 200 }}>Ads</span> */}
             </Grid>
           </Grid>{" "}
         </Box>
@@ -136,8 +136,8 @@ const BoostItems = ({ promotion, setPromotion }) => {
               </svg>
             </Grid>
             <Grid item xs="auto" sx={{ color: "#718096" }}>
-              Google &nbsp;
-              <span style={{ color: "#718096", fontWeight: 200 }}>Ads</span>
+              Google
+              {/* <span style={{ color: "#718096", fontWeight: 200 }}>Ads</span> */}
             </Grid>
           </Grid>{" "}
         </Box>
@@ -184,8 +184,8 @@ const BoostItems = ({ promotion, setPromotion }) => {
               </svg>
             </Grid>
             <Grid item xs="auto" sx={{ color: "#222" }}>
-              You<span style={{ color: "#FF3D00" }}>Tube</span> &nbsp;
-              <span style={{ color: "#718096", fontWeight: 200 }}>Ads</span>
+              You<span style={{ color: "#FF3D00" }}>Tube</span>
+              {/* <span style={{ color: "#718096", fontWeight: 200 }}>Ads</span> */}
             </Grid>
           </Grid>{" "}
         </Box>

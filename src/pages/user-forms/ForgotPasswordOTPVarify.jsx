@@ -29,7 +29,7 @@ import OtpInput from "react-otp-input";
 //   },
 // }));
 
-const ForgotPasswordOTPVarify = ({ email, reference }) => {
+const ForgotPasswordOTPVarify = ({ email, reference, setReference }) => {
   const navigate = useNavigate();
   const { login, adtech_admin_panel } = useContext(AuthContext);
   const newInputStyle = {
@@ -69,11 +69,38 @@ const ForgotPasswordOTPVarify = ({ email, reference }) => {
       autoHideDuration: duration,
     });
   };
-
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    setShowOTPSection(false);
+    try {
+      let data = {
+        // email: email,
+        otp: myOTP.otp.toString(),
+        reference: reference,
+      };
+
+      let response = await axios({
+        url: "/api/auth/user/verify",
+        method: "post",
+        data: data,
+      });
+
+      if (response?.status > 199 && response?.status < 300) {
+        // handleSnakbarOpen("Password reset successfully", "success");
+        setReference(response?.data?.data?.reference);
+        setShowOTPSection(false);
+      }
+    } catch (error) {
+      console.log("error", error);
+      if (error?.response?.status === 500) {
+        handleSnakbarOpen(error?.response?.statusText, "error");
+      } else {
+        handleSnakbarOpen(error.response.data.errors.otp[0], "error");
+      }
+
+      setLoading(false);
+    }
+    setLoading(false);
   };
 
   return (

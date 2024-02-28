@@ -145,10 +145,7 @@ export default function Layout() {
 
   const [openLoadingDialog, setOpenLoadingDialog] = useState(false);
   const time = parseInt(1000 * 60 * 120);
-  console.log(
-    "adtech_admin_panel permission",
-    adtech_admin_panel?.permission?.some((el) => el.name === "")
-  );
+  
   const listButtonStyle = {
     // marginBottom: "5px !important",
     padding: "6px 16px !important",
@@ -230,7 +227,7 @@ export default function Layout() {
     if (
       !adtech_admin_panel?.permission?.some(
         (el) => el.name === "customer-create"
-      ) ||
+      ) &&
       !adtech_admin_panel?.permission?.some(
         (el) => el.name === "customer-create"
       )
@@ -243,7 +240,7 @@ export default function Layout() {
     if (
       !adtech_admin_panel?.permission?.some(
         (el) => el.name === "feedback-create"
-      ) ||
+      ) &&
       !adtech_admin_panel?.permission?.some(
         (el) => el.name === "feedback-create"
       )
@@ -256,7 +253,7 @@ export default function Layout() {
     if (
       !adtech_admin_panel?.permission?.some(
         (el) => el.name === "order-create"
-      ) ||
+      ) &&
       !adtech_admin_panel?.permission?.some((el) => el.name === "order-create")
     ) {
       return false;
@@ -267,7 +264,7 @@ export default function Layout() {
     if (
       !adtech_admin_panel?.permission?.some(
         (el) => el.name === "user-create"
-      ) ||
+      ) &&
       !adtech_admin_panel?.permission?.some((el) => el.name === "user-create")
     ) {
       return false;

@@ -38,10 +38,12 @@ import { AuthContext } from "../../context/AuthContext";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
+import { useNavigate } from "react-router-dom";
 const AutoPlaySwipeableViews = SwipeableViews;
 
 function MySlider() {
   const theme = useTheme();
+  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
   const [promotion, setPromotion] = useState("");
@@ -327,6 +329,7 @@ function MySlider() {
         handleSnakbarOpen("Successful", "success");
         handleClose();
         handleResetForm();
+        navigate("/pending-order-list");
       }
     } catch (error) {
       console.log("error", error);
@@ -532,7 +535,6 @@ function MySlider() {
         onChangeIndex={handleStepChange}
         enableMouseEvents
         disabled
-      
       >
         {forms.map((step, index) => (
           <div key={index}>
@@ -544,7 +546,7 @@ function MySlider() {
                   display: "block",
                   // maxWidth: 400,
                   // overflow: "hidden",
-                  width: "100%", 
+                  width: "100%",
                 }}
                 // src={step.imgPath}
                 // alt={step.label}

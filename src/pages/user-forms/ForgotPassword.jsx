@@ -80,8 +80,9 @@ const ForgotPassword = () => {
         console.log("error", error);
         if (error?.response?.status === 500) {
           handleSnakbarOpen(error?.response?.statusText, "error");
-        }else{
-        handleSnakbarOpen(error.response.data.messages.toString(), "error");}
+        } else {
+          handleSnakbarOpen(error.response.data.messages.toString(), "error");
+        }
         setLoading(false);
       }
       setLoading(false);
@@ -174,7 +175,11 @@ const ForgotPassword = () => {
       )}
 
       {otpSection && (
-        <ForgotPasswordOTPVarify email={email} reference={reference} />
+        <ForgotPasswordOTPVarify
+          email={email}
+          reference={reference}
+          setReference={setReference}
+        />
       )}
     </div>
   );
