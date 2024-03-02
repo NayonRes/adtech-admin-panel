@@ -10,6 +10,10 @@ import { Paper } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import ColorPalette from "./color-palette/ColorPalette";
 import "./App.css";
+import {
+  GoogleReCaptchaProvider,
+  GoogleReCaptcha,
+} from "react-google-recaptcha-v3";
 const theme = createTheme({
   palette: {
     mode: "light", // Light theme mode
@@ -280,23 +284,27 @@ function App() {
   return (
     <div>
       {/* <div style={{ maxWidth: "1366px", margin: "auto" }}> */}
-
-      <ThemeProvider theme={theme}>
-        <SnackbarProvider
-          maxSnack={1}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          TransitionComponent={Slide}
-        >
-          <BrowserRouter>
-            <AuthContextProvider>
-              <Layout />
-            </AuthContextProvider>
-          </BrowserRouter>
-        </SnackbarProvider>
-      </ThemeProvider>
+      <GoogleReCaptchaProvider
+        reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}
+        // reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}
+      >
+        <ThemeProvider theme={theme}>
+          <SnackbarProvider
+            maxSnack={1}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            TransitionComponent={Slide}
+          >
+            <BrowserRouter>
+              <AuthContextProvider>
+                <Layout />
+              </AuthContextProvider>
+            </BrowserRouter>
+          </SnackbarProvider>
+        </ThemeProvider>
+      </GoogleReCaptchaProvider>
     </div>
   );
 }

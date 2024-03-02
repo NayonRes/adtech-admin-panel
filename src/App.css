@@ -71,3 +71,7 @@ input[type="number"]::-webkit-outer-spin-button {
 ::-webkit-scrollbar-thumb:hover {
   background: darkgray;
 }
+
+.grecaptcha-badge { 
+  visibility: hidden !important;
+}

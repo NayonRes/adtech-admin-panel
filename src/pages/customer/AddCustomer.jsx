@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import FormControl from "@mui/material/FormControl";
@@ -13,10 +13,16 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { Box } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import {
+  GoogleReCaptchaProvider,
+  GoogleReCaptcha,
+  useGoogleReCaptcha,
+} from "react-google-recaptcha-v3";
 
 const AddCustomer = () => {
   const theme = useTheme();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobileNo, setMobileNo] = useState("");
@@ -25,7 +31,8 @@ const AddCustomer = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const { enqueueSnackbar } = useSnackbar();
-
+  const [token, setToken] = useState();
+  const [refreshReCaptcha, setRefreshReCaptcha] = useState(false);
   const validation = () => {
     let isError = false;
     // if (!name.trim()) {
@@ -79,6 +86,26 @@ const AddCustomer = () => {
     return isError;
   };
 
+  const handleVerify = () => {
+    console.log("111");
+  };
+  // Create an event handler so you can call the verification on button click event or form submit
+  const handleReCaptchaVerify = useCallback(async () => {
+    if (!executeRecaptcha) {
+      handleSnakbarOpen("Execute recaptcha not yet available", "error");
+      return;
+    }
+
+    const token = await executeRecaptcha("yourAction");
+    // console.log("token", token);
+    return token;
+    // Do whatever you want with the token
+  }, [executeRecaptcha]);
+
+  const doSomething = () => {
+    /* do something like submit a form and then refresh recaptcha */
+    setRefreshReCaptcha((r) => !r);
+  };
   const handleSnakbarOpen = (msg, vrnt) => {
     let duration;
     if (vrnt === "error") {
@@ -97,60 +124,61 @@ const AddCustomer = () => {
     let err = validation();
     // let err = false;
     setErrors({});
+    let recaptcha_token = await handleReCaptchaVerify();
+    if (recaptcha_token) {
+      if (err) {
+        return;
+      } else {
+        setLoading(true);
+        try {
+          let data = {
+            name,
+            email,
+            mobile: mobileNo,
+            password: password,
+            password_confirm: confirmPassword,
+            recaptcha_token: recaptcha_token,
+          };
+          let response = await axios({
+            url: "/api/customer",
+            method: "post",
+            data: data,
+            headers: {
+              Authorization: `Bearer ${adtech_admin_panel.token}`,
+            },
+          });
 
-    if (err) {
-      return;
-    } else {
-      setLoading(true);
-      try {
-        let data = {
-          name,
-          email,
-          mobile: mobileNo,
-          password: password,
-          password_confirm: confirmPassword,
+          if (response?.status > 199 && response?.status < 300) {
+            handleSnakbarOpen("Successful", "success");
+            setName("");
+            setEmail("");
+            setPassword("");
+            setConfirmPassword("");
+            setMobileNo("");
+          }
+        } catch (error) {
+          console.log("error", error);
+          setLoading(false);
 
-          // status: "Active",
-        };
-        let response = await axios({
-          url: "/api/customer",
-          method: "post",
-          data: data,
-          headers: {
-            Authorization: `Bearer ${adtech_admin_panel.token}`,
-          },
-        });
-
-        if (response?.status > 199 && response?.status < 300) {
-          handleSnakbarOpen("Successful", "success");
-          setName("");
-          setEmail("");
-          setPassword("");
-          setConfirmPassword("");
-          setMobileNo("");
+          if (
+            error?.response?.status === 401 ||
+            error?.response?.status === 403
+          ) {
+            logout();
+            return;
+          }
+          if (error?.response?.status === 500) {
+            handleSnakbarOpen(error?.response?.statusText, "error");
+          } else {
+            setErrors(error.response.data.errors);
+          }
+          // handleSnakbarOpen(error.response.data.messages.toString(), "error");
+          // if (error.response.data.errors.length < 1) {
+          //   handleSnakbarOpen("Something went wrong", "error");
+          // }
         }
-      } catch (error) {
-        console.log("error", error);
         setLoading(false);
-
-        if (
-          error?.response?.status === 401 ||
-          error?.response?.status === 403
-        ) {
-          logout();
-          return;
-        }
-        if (error?.response?.status === 500) {
-          handleSnakbarOpen(error?.response?.statusText, "error");
-        } else {
-          setErrors(error.response.data.errors);
-        }
-        // handleSnakbarOpen(error.response.data.messages.toString(), "error");
-        // if (error.response.data.errors.length < 1) {
-        //   handleSnakbarOpen("Something went wrong", "error");
-        // }
       }
-      setLoading(false);
     }
   };
 
@@ -180,6 +208,7 @@ const AddCustomer = () => {
           >
             Add Customer
           </Typography>
+
           <Box sx={{ marginBottom: "18px" }}>
             <Typography variant="base" htmlFor="name">
               Name *
@@ -286,7 +315,17 @@ const AddCustomer = () => {
               </Typography>
             )} */}
           </Box>
-
+          {/* <Box sx={{ marginBottom: "18px" }}> */}
+          {/* <GoogleReCaptchaProvider
+              reCaptchaKey="6LeJVocpAAAAAISRk8GeTI3_y6n-HBbtU35Xs_b4"
+              // reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}
+            > */}
+          {/* <GoogleReCaptcha
+              onVerify={onVerify}
+              refreshReCaptcha={refreshReCaptcha}
+            /> */}
+          {/* </GoogleReCaptchaProvider> */}
+          {/* </Box> */}
           <Button
             variant="contained"
             disableElevation
