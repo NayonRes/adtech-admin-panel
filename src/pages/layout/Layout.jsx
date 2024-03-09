@@ -142,7 +142,8 @@ export default function Layout() {
   const { login, adtech_admin_panel, logout } = useContext(AuthContext);
   // console.log("adtech_admin_panel", adtech_admin_panel);
   const [open, setOpen] = useState(true);
-
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const menuOpen = Boolean(anchorEl);
   const [openLoadingDialog, setOpenLoadingDialog] = useState(false);
   const time = parseInt(1000 * 60 * 120);
   
@@ -206,8 +207,7 @@ export default function Layout() {
     navigate("/");
   };
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const menuOpen = Boolean(anchorEl);
+  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
