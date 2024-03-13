@@ -129,22 +129,22 @@ const Navigation = () => {
             </PrivateRoute>
           }
         />
-        <Route
+        {/* <Route
           path="add-customer"
           element={
             <PrivateRoute>
               <AddCustomer />
             </PrivateRoute>
           }
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="add-order"
           element={
             <PrivateRoute>
               <AddOrder />
             </PrivateRoute>
           }
-        />
+        /> */}
 
         <Route
           path="update-customer/:id"

@@ -42,6 +42,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import moment from "moment";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
@@ -55,6 +56,7 @@ import PulseLoader from "react-spinners/PulseLoader";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import MoneyOffCsredOutlinedIcon from "@mui/icons-material/MoneyOffCsredOutlined";
 import PlaylistPlayOutlinedIcon from "@mui/icons-material/PlaylistPlayOutlined";
+import DetailDialog from "../DetailDialog";
 const PendingOrderList = () => {
   const theme = useTheme();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
@@ -77,10 +79,21 @@ const PendingOrderList = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [downloadloading, setDownloadloading] = useState(false);
   const [open, setOpen] = useState(false);
+
   const [openRefund, setOpenRefund] = useState(false);
   const [updateId, setUpdateId] = useState("");
   const [updateLoading, setUpdateLoading] = useState(false);
+  const [openDetailDialog, setOpenDetailDialog] = useState(false);
+  const [detailData, setDetailData] = useState({});
+  const handleDetailClickOpen = (data) => {
+    setDetailData(data);
+    setOpenDetailDialog(true);
+  };
 
+  const handleDetailClose = () => {
+    setDetailData({});
+    setOpenDetailDialog(false);
+  };
   const handleClickOpen = (id) => {
     setUpdateId(id);
     setOpen(true);
@@ -125,8 +138,8 @@ const PendingOrderList = () => {
     let cellNo = adtech_admin_panel?.permission?.some(
       (el) => el.name === "order-update"
     )
-      ? 13
-      : 12;
+      ? 14
+      : 14;
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
@@ -574,18 +587,21 @@ const PendingOrderList = () => {
                 <TableCell>Age</TableCell>
                 <TableCell>Location</TableCell>
                 {/* <TableCell align="center">Status</TableCell> */}
-                <TableCell>Remarks</TableCell>
+                <TableCell>Note</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated By</TableCell>
-                {adtech_admin_panel?.permission?.some(
+                <TableCell sx={{ whiteSpace: "nowrap" }}>
+                  Payment Status
+                </TableCell>
+                {/* {adtech_admin_panel?.permission?.some(
                   (el) => el.name === "order-update"
-                ) && (
-                  <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
-                    Actions
-                  </TableCell>
-                )}
+                ) && ( */}
+                <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
+                  Actions
+                </TableCell>
+                {/* )} */}
               </TableRow>
             </TableHead>
             <TableBody>
@@ -657,11 +673,11 @@ const PendingOrderList = () => {
                       )}
                     </TableCell> */}
                     <TableCell sx={{ width: "190px" }}>
-                      {row?.remarks === null
+                      {row?.note === null
                         ? "-------"
-                        : row?.remarks === ""
+                        : row?.note === ""
                         ? "-------"
-                        : row?.remarks}
+                        : row?.note}
                     </TableCell>
                     <TableCell sx={{ minWidth: "90px" }}>
                       {" "}
@@ -694,46 +710,71 @@ const PendingOrderList = () => {
                         ? row.updated_by.name
                         : "-------"}
                     </TableCell>
-                    {adtech_admin_panel?.permission?.some(
-                      (el) => el.name === "order-update"
-                    ) && (
-                      <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
-                        <Button
+
+                    <TableCell align="center">
+                      {row.payment?.status === "Success" ? (
+                        <Chip
+                          label={row.payment?.status}
                           variant="outlined"
-                          color="info"
+                          color="success"
                           size="small"
-                          startIcon={
-                            <PlaylistPlayOutlinedIcon
-                              style={{ position: "relative", top: -1 }}
-                            />
-                          }
-                          onClick={() => handleClickOpen(row?.id)}
-                        >
-                          Publish Order
-                        </Button>{" "}
-                        &nbsp;
-                        <Button
+                          sx={{ minWidth: "75px", textAlign: "center" }}
+                        />
+                      ) : row.payment?.status === "Failed" ? (
+                        <Chip
+                          label={row.payment?.status}
                           variant="outlined"
                           color="error"
                           size="small"
-                          startIcon={
-                            <MoneyOffCsredOutlinedIcon
-                              style={{ position: "relative", top: -1 }}
-                            />
-                          }
-                          onClick={() => handleClickOpenRefund(row?.id)}
-                        >
-                          Refund Order
-                        </Button>
-                        {/* <IconButton
-                        aria-label="edit"
-                        component={Link}
-                        to={`/update-customer/${row?.id}`}
+                          sx={{ minWidth: "75px", textAlign: "center" }}
+                        />
+                      ) : (
+                        <Chip
+                          label={row.payment?.status}
+                          variant="outlined"
+                          color="warning"
+                          size="small"
+                          sx={{ minWidth: "75px", textAlign: "center" }}
+                        />
+                      )}
+                    </TableCell>
+
+                    <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
+                      {adtech_admin_panel?.permission?.some(
+                        (el) => el.name === "order-update"
+                      ) && (
+                        <>
+                          <Button
+                            variant="outlined"
+                            color="info"
+                            size="small"
+                            disabled={row.payment?.status !== "Success"}
+                            startIcon={
+                              <PlaylistPlayOutlinedIcon
+                                style={{ position: "relative", top: -1 }}
+                              />
+                            }
+                            onClick={() => handleClickOpen(row?.id)}
+                          >
+                            Publish Order
+                          </Button>{" "}
+                          &nbsp;
+                        </>
+                      )}
+                      <Button
+                        variant="outlined"
+                        color="text"
+                        size="small"
+                        startIcon={
+                          <VisibilityOutlinedIcon
+                            style={{ position: "relative", top: 0 }}
+                          />
+                        }
+                        onClick={() => handleDetailClickOpen(row)}
                       >
-                        <EditOutlinedIcon />
-                      </IconButton> */}
-                      </TableCell>
-                    )}
+                        Details
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
 
@@ -877,6 +918,13 @@ const PendingOrderList = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <DetailDialog
+        openDetailDialog={openDetailDialog}
+        setOpenDetailDialog={setOpenDetailDialog}
+        handleDetailClickOpen={handleDetailClickOpen}
+        handleDetailClose={handleDetailClose}
+        detailData={detailData}
+      />
     </div>
   );
 };

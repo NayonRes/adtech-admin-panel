@@ -146,7 +146,7 @@ export default function Layout() {
   const menuOpen = Boolean(anchorEl);
   const [openLoadingDialog, setOpenLoadingDialog] = useState(false);
   const time = parseInt(1000 * 60 * 120);
-  
+
   const listButtonStyle = {
     // marginBottom: "5px !important",
     padding: "6px 16px !important",
@@ -207,7 +207,6 @@ export default function Layout() {
     navigate("/");
   };
 
-  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -458,7 +457,7 @@ export default function Layout() {
                 >
                   Customer Pages
                 </Typography>
-                {adtech_admin_panel?.permission?.some(
+                {/* {adtech_admin_panel?.permission?.some(
                   (el) => el.name === "customer-create"
                 ) && (
                   <ListItemButton
@@ -475,7 +474,7 @@ export default function Layout() {
 
                     <ListItemText primary="Add Customer" />
                   </ListItemButton>
-                )}
+                )} */}
                 {adtech_admin_panel?.permission?.some(
                   (el) => el.name === "customer-list"
                 ) && (
@@ -553,7 +552,7 @@ export default function Layout() {
                 >
                   Order Pages
                 </Typography>
-                {adtech_admin_panel?.permission?.some(
+                {/* {adtech_admin_panel?.permission?.some(
                   (el) => el.name === "order-create"
                 ) && (
                   <ListItemButton
@@ -570,7 +569,7 @@ export default function Layout() {
 
                     <ListItemText primary="Add Order" />
                   </ListItemButton>
-                )}
+                )} */}
                 {adtech_admin_panel?.permission?.some(
                   (el) => el.name === "order-list"
                 ) && (
