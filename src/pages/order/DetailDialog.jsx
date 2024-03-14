@@ -63,6 +63,25 @@ const DetailDialog = ({
     return null; // Return null if key is not found
   }
 
+  function getLeadValues(data) {
+    const leadValues = [];
+    data?.forEach((item) => {
+      if (item.key === "lead") {
+        leadValues.push(item.value);
+      }
+    });
+    return leadValues;
+  }
+  function getMediaValues(data) {
+    const mediaValues = [];
+    data?.forEach((item) => {
+      if (item.key === "lead") {
+        mediaValues.push(item.value);
+      }
+    });
+    return mediaValues;
+  }
+
   const checkCreateAndUpdatedSame = (createdAt, updatedAt) => {
     // Convert strings to Date objects
     const createdDate = new Date(createdAt);
@@ -87,7 +106,12 @@ const DetailDialog = ({
       >
         <DialogTitle
           id="alert-dialog-title"
-          sx={{ fontWeight: 600, position: "relative" }}
+          sx={{
+            fontWeight: 600,
+            position: "relative",
+            background: "#f4f4f4",
+            mb: 2,
+          }}
         >
           {/* {"Order Details"}{" "}
           <IconButton
@@ -96,7 +120,12 @@ const DetailDialog = ({
           >
             <ClearOutlinedIcon />
           </IconButton> */}
-          <Grid container alignItems="center" justifyContent="space-between">
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-between"
+            // sx={{ background: "#f4f4f4", mb: 2 }}
+          >
             <Grid item xs="auto">
               <Grid container alignItems="center" spacing={1}>
                 <Grid item xs="auto">
@@ -122,7 +151,7 @@ const DetailDialog = ({
                     color="text.main"
                     sx={{ fontWeight: 500 }}
                   >
-                    Order Details
+                    Campaign Details
                   </Typography>
 
                   {/* <Breadcrumbs
@@ -148,47 +177,71 @@ const DetailDialog = ({
         </DialogTitle>
         <DialogContent sx={{ minWidth: "350px" }}>
           <DialogContentText id="alert-dialog-description">
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Invoice No: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
                 {detailData?.id}
               </span>
             </Typography>
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Boost Item: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
                 {detailData?.promotion}
               </span>
             </Typography>
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Boost Objective: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
                 {detailData?.promotion_objective}
               </span>
             </Typography>
-            {getValueByKey(detailData?.objectives, "media") !== null && (
-              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            {getMediaValues(detailData?.objectives, "media") !== null && (
+              <Typography
+                variant="base"
+                color="text.light"
+                sx={{ mb: 1, display: "block" }}
+              >
                 {" "}
                 Message Media: &nbsp;
                 <span style={{ color: theme.palette.text.main }}>
-                  {getValueByKey(detailData?.objectives, "media")?.join(", ")}
+                  {getMediaValues(detailData?.objectives, "media")?.join(", ")}
                 </span>
               </Typography>
             )}
-            {getValueByKey(detailData?.objectives, "lead") !== null && (
-              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            {getLeadValues(detailData?.objectives, "lead").length > 0 && (
+              <Typography
+                variant="base"
+                color="text.light"
+                sx={{ mb: 1, display: "block" }}
+              >
                 {" "}
                 Lead Items: &nbsp;
                 <span style={{ color: theme.palette.text.main }}>
-                  {getValueByKey(detailData?.objectives, "lead")?.join(", ")}
+                  {getLeadValues(detailData?.objectives, "lead")?.join(", ")}
                 </span>
               </Typography>
             )}
             {getValueByKey(detailData?.objectives, "post_link") !== null && (
-              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              <Typography
+                variant="base"
+                color="text.light"
+                sx={{ mb: 1, display: "block" }}
+              >
                 {" "}
                 Post Link: &nbsp;
                 <span style={{ color: theme.palette.text.main }}>
@@ -197,7 +250,11 @@ const DetailDialog = ({
               </Typography>
             )}
             {getValueByKey(detailData?.objectives, "video_link") !== null && (
-              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              <Typography
+                variant="base"
+                color="text.light"
+                sx={{ mb: 1, display: "block" }}
+              >
                 {" "}
                 Video Link: &nbsp;
                 <span style={{ color: theme.palette.text.main }}>
@@ -206,7 +263,11 @@ const DetailDialog = ({
               </Typography>
             )}
             {getValueByKey(detailData?.objectives, "website_link") !== null && (
-              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              <Typography
+                variant="base"
+                color="text.light"
+                sx={{ mb: 1, display: "block" }}
+              >
                 {" "}
                 Website Link: &nbsp;
                 <span style={{ color: theme.palette.text.main }}>
@@ -215,7 +276,11 @@ const DetailDialog = ({
               </Typography>
             )}
             {getValueByKey(detailData?.objectives, "link") !== null && (
-              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              <Typography
+                variant="base"
+                color="text.light"
+                sx={{ mb: 1, display: "block" }}
+              >
                 {" "}
                 Link: &nbsp;
                 <span style={{ color: theme.palette.text.main }}>
@@ -224,7 +289,11 @@ const DetailDialog = ({
               </Typography>
             )}
             {getValueByKey(detailData?.objectives, "title") !== null && (
-              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              <Typography
+                variant="base"
+                color="text.light"
+                sx={{ mb: 1, display: "block" }}
+              >
                 {" "}
                 Title: &nbsp;
                 <span style={{ color: theme.palette.text.main }}>
@@ -233,7 +302,11 @@ const DetailDialog = ({
               </Typography>
             )}
             {getValueByKey(detailData?.objectives, "description") !== null && (
-              <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+              <Typography
+                variant="base"
+                color="text.light"
+                sx={{ mb: 1, display: "block" }}
+              >
                 {" "}
                 Description: &nbsp;
                 <span style={{ color: theme.palette.text.main }}>
@@ -242,14 +315,22 @@ const DetailDialog = ({
               </Typography>
             )}
 
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Package Amount: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
                 TK. {detailData?.amount}
               </span>
             </Typography>
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Boosting Period: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
@@ -257,7 +338,11 @@ const DetailDialog = ({
                 {parseInt(detailData?.promotion_period) > 1 && "s"}
               </span>
             </Typography>
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Gender: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
@@ -265,35 +350,52 @@ const DetailDialog = ({
                 {detailData?.gender === "Both" && "(Male and Female)"}
               </span>
             </Typography>
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Age: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
                 {detailData?.min_age} To {detailData?.max_age} Years
               </span>
             </Typography>
-            <Table sx={{ mb: 1 }}>
+            <Table sx={{ mb: -2 }}>
               <TableBody>
                 <TableRow
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  sx={{
+                    "&:last-child td, &:last-child th": { border: 0 },
+                    verticalAlign: "baseline",
+                  }}
                 >
                   <TableCell sx={{ p: 0, width: "75px" }}>
                     {" "}
-                    <Typography variant="base" color="text.light">
-                      {" "}
+                    <Typography
+                      variant="base"
+                      color="text.light"
+                      sx={{ fontSize: "16px" }}
+                    >
                       Location: &nbsp;
                     </Typography>
                   </TableCell>
-                  <TableCell sx={{ p: 0 }}>
-                    {" "}
-                    <Typography variant="base" color="text.main">
+                  <TableCell sx={{ p: 0, pl: 1 }}>
+                    <Typography
+                      variant="base"
+                      color="text.main"
+                      sx={{ fontSize: "16px" }}
+                    >
                       {detailData?.divisions?.join(", ")}
                     </Typography>
                   </TableCell>
                 </TableRow>
               </TableBody>
             </Table>
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Created At: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
@@ -303,7 +405,11 @@ const DetailDialog = ({
                 )}
               </span>
             </Typography>
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Updated At: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
@@ -321,7 +427,11 @@ const DetailDialog = ({
                 )}
               </span>
             </Typography>
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Order Status: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
@@ -380,14 +490,22 @@ const DetailDialog = ({
                 )}
               </span>
             </Typography>
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Payment Method: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
                 {detailData?.payment?.payment_method}
               </span>
             </Typography>
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Payment Status: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
@@ -434,18 +552,37 @@ const DetailDialog = ({
               </span>
             </Typography>
 
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Gateway TRX Id: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
                 {detailData?.payment?.gateway_trx_id}
               </span>
             </Typography>
-            <Typography variant="base" color="text.light" sx={{ mb: 1 }}>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
               {" "}
               Gateway Payment Id: &nbsp;
               <span style={{ color: theme.palette.text.main }}>
                 {detailData?.payment?.gateway_payment_id}
+              </span>
+            </Typography>
+            <Typography
+              variant="base"
+              color="text.light"
+              sx={{ mb: 1, display: "block" }}
+            >
+              {" "}
+              Note: &nbsp;
+              <span style={{ color: theme.palette.text.main }}>
+                {detailData?.note}
               </span>
             </Typography>
           </DialogContentText>
