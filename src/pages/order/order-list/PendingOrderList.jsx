@@ -592,7 +592,7 @@ const PendingOrderList = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated By</TableCell>
-                <TableCell sx={{ whiteSpace: "nowrap" }}>
+                <TableCell align="center" sx={{ whiteSpace: "nowrap" }}>
                   Payment Status
                 </TableCell>
                 {/* {adtech_admin_panel?.permission?.some(

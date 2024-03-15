@@ -483,7 +483,7 @@ export default function Layout() {
                     to="/customer-list"
                     sx={[
                       { ...listButtonStyle, mb: 2 },
-                      pathname === "/customer-list" && { ...activeStyle },
+                      pathname === "/customer-list" && { ...activeStyle }, 
                     ]}
                   >
                     <ListItemIcon>

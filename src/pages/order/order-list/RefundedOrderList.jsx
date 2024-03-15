@@ -55,6 +55,9 @@ import PulseLoader from "react-spinners/PulseLoader";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import CellTowerOutlinedIcon from "@mui/icons-material/CellTowerOutlined";
 import MoneyOffCsredOutlinedIcon from "@mui/icons-material/MoneyOffCsredOutlined";
+import DetailDialog from "../DetailDialog";
+
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 const RefundedOrderList = () => {
   const theme = useTheme();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
@@ -79,6 +82,18 @@ const RefundedOrderList = () => {
   const [open, setOpen] = React.useState(false);
   const [updateId, setUpdateId] = useState("");
   const [updateLoading, setUpdateLoading] = useState(false);
+
+  const [openDetailDialog, setOpenDetailDialog] = useState(false);
+  const [detailData, setDetailData] = useState({});
+  const handleDetailClickOpen = (data) => {
+    setDetailData(data);
+    setOpenDetailDialog(true);
+  };
+
+  const handleDetailClose = () => {
+    setDetailData({});
+    setOpenDetailDialog(false);
+  };
 
   const handleClickOpen = (id) => {
     setUpdateId(id);
@@ -117,7 +132,7 @@ const RefundedOrderList = () => {
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
-      for (let j = 0; j < 12; j++) {
+      for (let j = 0; j < 14; j++) {
         cells.push(
           <TableCell key={j} sx={{ py: 1.5 }}>
             <Skeleton></Skeleton>
@@ -563,6 +578,12 @@ const RefundedOrderList = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated By</TableCell>
+                <TableCell align="center" sx={{ whiteSpace: "nowrap" }}>
+                  Payment Status
+                </TableCell>
+                <TableCell align="center" sx={{ whiteSpace: "nowrap" }}>
+                  Action
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -678,6 +699,48 @@ const RefundedOrderList = () => {
                         ? row.updated_by.name
                         : "-------"}
                     </TableCell>
+                    <TableCell align="center">
+                      {row.payment?.status === "Success" ? (
+                        <Chip
+                          label={row.payment?.status}
+                          variant="outlined"
+                          color="success"
+                          size="small"
+                          sx={{ minWidth: "75px", textAlign: "center" }}
+                        />
+                      ) : row.payment?.status === "Failed" ? (
+                        <Chip
+                          label={row.payment?.status}
+                          variant="outlined"
+                          color="error"
+                          size="small"
+                          sx={{ minWidth: "75px", textAlign: "center" }}
+                        />
+                      ) : (
+                        <Chip
+                          label={row.payment?.status}
+                          variant="outlined"
+                          color="warning"
+                          size="small"
+                          sx={{ minWidth: "75px", textAlign: "center" }}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
+                      <Button
+                        variant="outlined"
+                        color="text"
+                        size="small"
+                        startIcon={
+                          <VisibilityOutlinedIcon
+                            style={{ position: "relative", top: 0 }}
+                          />
+                        }
+                        onClick={() => handleDetailClickOpen(row)}
+                      >
+                        Details
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
 
@@ -755,6 +818,13 @@ const RefundedOrderList = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <DetailDialog
+        openDetailDialog={openDetailDialog}
+        setOpenDetailDialog={setOpenDetailDialog}
+        handleDetailClickOpen={handleDetailClickOpen}
+        handleDetailClose={handleDetailClose}
+        detailData={detailData}
+      />
     </div>
   );
 };

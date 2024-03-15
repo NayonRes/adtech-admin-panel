@@ -56,8 +56,9 @@ import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import CellTowerOutlinedIcon from "@mui/icons-material/CellTowerOutlined";
 
 import FactCheckOutlinedIcon from "@mui/icons-material/FactCheckOutlined";
-
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import MoneyOffCsredOutlinedIcon from "@mui/icons-material/MoneyOffCsredOutlined";
+import DetailDialog from "../DetailDialog";
 const PublishOrderList = () => {
   const theme = useTheme();
   const { adtech_admin_panel, logout } = useContext(AuthContext);
@@ -82,6 +83,18 @@ const PublishOrderList = () => {
   const [open, setOpen] = React.useState(false);
   const [updateId, setUpdateId] = useState("");
   const [updateLoading, setUpdateLoading] = useState(false);
+
+  const [openDetailDialog, setOpenDetailDialog] = useState(false);
+  const [detailData, setDetailData] = useState({});
+  const handleDetailClickOpen = (data) => {
+    setDetailData(data);
+    setOpenDetailDialog(true);
+  };
+
+  const handleDetailClose = () => {
+    setDetailData({});
+    setOpenDetailDialog(false);
+  };
 
   const handleClickOpen = (id) => {
     setUpdateId(id);
@@ -119,8 +132,8 @@ const PublishOrderList = () => {
     let cellNo = adtech_admin_panel?.permission?.some(
       (el) => el.name === "order-update"
     )
-      ? 13
-      : 12;
+      ? 14
+      : 14;
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
@@ -572,6 +585,9 @@ const PublishOrderList = () => {
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated By</TableCell>
+                <TableCell align="center" sx={{ whiteSpace: "nowrap" }}>
+                  Payment Status
+                </TableCell>
                 {adtech_admin_panel?.permission?.some(
                   (el) => el.name === "order-update"
                 ) && (
@@ -694,46 +710,69 @@ const PublishOrderList = () => {
                         ? row.updated_by.name
                         : "-------"}
                     </TableCell>
-                    {adtech_admin_panel?.permission?.some(
-                      (el) => el.name === "order-update"
-                    ) && (
-                      <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
-                        <Button
+                    <TableCell align="center">
+                      {row.payment?.status === "Success" ? (
+                        <Chip
+                          label={row.payment?.status}
                           variant="outlined"
-                          color="info"
+                          color="success"
                           size="small"
-                          startIcon={
-                            <FactCheckOutlinedIcon
-                              style={{ position: "relative", top: -1 }}
-                            />
-                          }
-                          onClick={() => handleClickOpen(row?.id)}
-                        >
-                          Complete Order
-                        </Button>{" "}
-                        {/* &nbsp;
+                          sx={{ minWidth: "75px", textAlign: "center" }}
+                        />
+                      ) : row.payment?.status === "Failed" ? (
+                        <Chip
+                          label={row.payment?.status}
+                          variant="outlined"
+                          color="error"
+                          size="small"
+                          sx={{ minWidth: "75px", textAlign: "center" }}
+                        />
+                      ) : (
+                        <Chip
+                          label={row.payment?.status}
+                          variant="outlined"
+                          color="warning"
+                          size="small"
+                          sx={{ minWidth: "75px", textAlign: "center" }}
+                        />
+                      )}
+                    </TableCell>
+                    <TableCell sx={{ whiteSpace: "nowrap" }} align="center">
+                      {adtech_admin_panel?.permission?.some(
+                        (el) => el.name === "order-update"
+                      ) && (
+                        <>
+                          <Button
+                            variant="outlined"
+                            color="info"
+                            size="small"
+                            startIcon={
+                              <FactCheckOutlinedIcon
+                                style={{ position: "relative", top: -1 }}
+                              />
+                            }
+                            onClick={() => handleClickOpen(row?.id)}
+                          >
+                            Complete Order
+                          </Button>{" "}
+                          &nbsp;
+                        </>
+                      )}
+
                       <Button
                         variant="outlined"
-                        color="error"
+                        color="text"
                         size="small"
                         startIcon={
-                          <MoneyOffCsredOutlinedIcon
-                            style={{ position: "relative", top: -1 }}
+                          <VisibilityOutlinedIcon
+                            style={{ position: "relative", top: 0 }}
                           />
                         }
-                        // onClick={() => handleClickOpen(row?.id)}
+                        onClick={() => handleDetailClickOpen(row)}
                       >
-                        Refund Order
-                      </Button> */}
-                        {/* <IconButton
-                        aria-label="edit"
-                        component={Link}
-                        to={`/update-customer/${row?.id}`}
-                      >
-                        <EditOutlinedIcon />
-                      </IconButton> */}
-                      </TableCell>
-                    )}
+                        Details
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
 
@@ -818,6 +857,13 @@ const PublishOrderList = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <DetailDialog
+        openDetailDialog={openDetailDialog}
+        setOpenDetailDialog={setOpenDetailDialog}
+        handleDetailClickOpen={handleDetailClickOpen}
+        handleDetailClose={handleDetailClose}
+        detailData={detailData}
+      />
     </div>
   );
 };

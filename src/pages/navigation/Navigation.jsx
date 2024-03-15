@@ -28,6 +28,7 @@ import RefundedOrderList from "../order/order-list/RefundedOrderList";
 import AddFeedback from "../feedback/AddFeedback";
 import FeedbackList from "../feedback/FeedbackList";
 import UpdateFeedback from "../feedback/UpdateFeedback";
+import CustomerOrderList from "../customer/CustomerOrderList";
 
 function PrivateRoute({ children }) {
   const { adtech_admin_panel } = useContext(AuthContext);
@@ -102,6 +103,14 @@ const Navigation = () => {
           element={
             <PrivateRoute>
               <UpdateUser />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="customer-order-list/:id"
+          element={
+            <PrivateRoute>
+              <CustomerOrderList />
             </PrivateRoute>
           }
         />
