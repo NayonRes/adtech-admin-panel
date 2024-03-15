@@ -277,7 +277,7 @@ const Tables = () => {
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                 >
-                  <MenuItem value="None">None</MenuItem>
+                  <MenuItem value="None">All</MenuItem>
                   <MenuItem value={1}>Success</MenuItem>
                   <MenuItem value={0}>Pending</MenuItem>
                 </Select>

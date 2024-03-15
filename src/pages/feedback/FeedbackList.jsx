@@ -170,9 +170,9 @@ const FeedbackList = () => {
 
     // Compare the Date objects
     if (createdDate.getTime() === updatedDate.getTime()) {
-     return true
+      return true;
     } else {
-      return false
+      return false;
     }
   };
   useEffect(() => {
@@ -271,7 +271,7 @@ const FeedbackList = () => {
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                 >
-                  <MenuItem value="None">None</MenuItem>
+                  <MenuItem value="None">All</MenuItem>
                   <MenuItem value={"Active"}>Active</MenuItem>
                   <MenuItem value={"Inactive"}>Inactive</MenuItem>
                 </Select>
@@ -444,13 +444,18 @@ const FeedbackList = () => {
                       )}
                     </TableCell>
                     <TableCell sx={{ minWidth: "90px" }}>
-                    {checkCreateAndUpdatedSame(row?.created_at,row?.updated_at) ? "-------":
-                    <>
-                      {moment(row?.updated_at).format(
-                        "DD MMM, YYYY, HH:mm:ss a"
+                      {checkCreateAndUpdatedSame(
+                        row?.created_at,
+                        row?.updated_at
+                      ) ? (
+                        "-------"
+                      ) : (
+                        <>
+                          {moment(row?.updated_at).format(
+                            "DD MMM, YYYY, HH:mm:ss a"
+                          )}
+                        </>
                       )}
-                    </>
-                    }
                     </TableCell>
 
                     <TableCell sx={{ whiteSpace: "nowrap" }}>

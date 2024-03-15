@@ -414,7 +414,7 @@ const CustomerList = () => {
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                 >
-                  <MenuItem value="None">None</MenuItem>
+                  <MenuItem value="None">All</MenuItem>
                   <MenuItem value={"Active"}>Active</MenuItem>
                   <MenuItem value={"Inactive"}>Inactive</MenuItem>
                 </Select>
