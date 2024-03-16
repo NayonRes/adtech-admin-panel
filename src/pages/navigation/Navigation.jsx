@@ -29,6 +29,8 @@ import AddFeedback from "../feedback/AddFeedback";
 import FeedbackList from "../feedback/FeedbackList";
 import UpdateFeedback from "../feedback/UpdateFeedback";
 import CustomerOrderList from "../customer/CustomerOrderList";
+import AddTicket from "../ticket/AddTicket";
+import TicketList from "../ticket/TicketList";
 
 function PrivateRoute({ children }) {
   const { adtech_admin_panel } = useContext(AuthContext);
@@ -132,6 +134,30 @@ const Navigation = () => {
         />
         <Route
           path="update-feedback/:id"
+          element={
+            <PrivateRoute>
+              <UpdateFeedback />
+            </PrivateRoute>
+          }
+        />
+         <Route
+          path="add-ticket"
+          element={
+            <PrivateRoute>
+              <AddTicket />
+            </PrivateRoute>
+          }
+        />
+          <Route
+          path="ticket-list"
+          element={
+            <PrivateRoute>
+              <TicketList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="update-ticket/:id"
           element={
             <PrivateRoute>
               <UpdateFeedback />

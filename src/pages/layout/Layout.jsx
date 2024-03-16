@@ -248,6 +248,17 @@ export default function Layout() {
     }
     return true;
   };
+  const showTicketPages = () => {
+    if (
+      !adtech_admin_panel?.permission?.some(
+        (el) => el.name === "complain-create"
+      ) &&
+      !adtech_admin_panel?.permission?.some((el) => el.name === "complain-list")
+    ) {
+      return false;
+    }
+    return true;
+  };
   const showOrderPages = () => {
     if (
       !adtech_admin_panel?.permission?.some(
@@ -483,7 +494,7 @@ export default function Layout() {
                     to="/customer-list"
                     sx={[
                       { ...listButtonStyle, mb: 2 },
-                      pathname === "/customer-list" && { ...activeStyle }, 
+                      pathname === "/customer-list" && { ...activeStyle },
                     ]}
                   >
                     <ListItemIcon>
@@ -495,7 +506,55 @@ export default function Layout() {
                 )}
               </>
             )}
-            {showFeedbackPages() && (
+            {showTicketPages() && (
+              <>
+                <Typography
+                  variant="small"
+                  color="text.main"
+                  sx={{ fontWeight: 700, mb: 1 }}
+                >
+                  Ticket Pages
+                </Typography>
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "complain-create"
+                ) && (
+                  <ListItemButton
+                    component={Link}
+                    to="/add-ticket"
+                    sx={[
+                      { ...listButtonStyle, mb: 0.5 },
+                      pathname === "/add-ticket" && { ...activeStyle },
+                    ]}
+                  >
+                    <ListItemIcon>
+                      <AddCommentOutlinedIcon />
+                    </ListItemIcon>
+
+                    <ListItemText primary="Add Ticket" />
+                  </ListItemButton>
+                )}
+
+                {adtech_admin_panel?.permission?.some(
+                  (el) => el.name === "complain-list"
+                ) && (
+                  <ListItemButton
+                    component={Link}
+                    to="/ticket-list"
+                    sx={[
+                      { ...listButtonStyle, mb: 2 },
+                      pathname === "/ticket-list" && { ...activeStyle },
+                    ]}
+                  >
+                    <ListItemIcon>
+                      <InsertCommentOutlinedIcon />
+                    </ListItemIcon>
+
+                    <ListItemText primary="Ticket List" />
+                  </ListItemButton>
+                )}
+              </>
+            )}
+            {/* {showFeedbackPages() && (
               <>
                 <Typography
                   variant="small"
@@ -542,7 +601,7 @@ export default function Layout() {
                   </ListItemButton>
                 )}
               </>
-            )}
+            )} */}
             {showOrderPages() && (
               <>
                 <Typography
