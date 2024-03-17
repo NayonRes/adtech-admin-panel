@@ -132,7 +132,7 @@ const CompleteOrderList = () => {
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
-      for (let j = 0; j < 14; j++) {
+      for (let j = 0; j < 15; j++) {
         cells.push(
           <TableCell key={j} sx={{ py: 1.5 }}>
             <Skeleton></Skeleton>
@@ -563,6 +563,9 @@ const CompleteOrderList = () => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>
+                  Customer Info
+                </TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Invoice No</TableCell>
                 <TableCell>Promotion</TableCell>
                 <TableCell>Amount</TableCell>
@@ -593,6 +596,19 @@ const CompleteOrderList = () => {
                   <TableRow
                   // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
+                    <TableCell
+                      sx={{
+                        // color: `${theme.palette.primary.main}`,
+                        fontWeight: 500,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {row?.customer?.name}
+                      <br />
+                      <span style={{ fontWeight: 400, fontSize: "12px" }}>
+                        {row?.customer?.email}
+                      </span>
+                    </TableCell>
                     <TableCell
                       sx={{
                         // color: `${theme.palette.primary.main}`,

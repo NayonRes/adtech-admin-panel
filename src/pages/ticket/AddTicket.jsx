@@ -85,6 +85,7 @@ const AddTicket = () => {
   const [updateLoading, setUpdateLoading] = useState(false);
   const [openDetailDialog, setOpenDetailDialog] = useState(false);
   const [detailData, setDetailData] = useState({});
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
   const handleDetailClickOpen = (data) => {
@@ -223,15 +224,21 @@ const AddTicket = () => {
     // setErrors({});
 
     setUpdateLoading(true);
+    if (!title.trim()) {
+      handleSnakbarOpen("Please enter title", "error");
+      document.getElementById("title").focus();
+      setUpdateLoading(false);
+      return;
+    }
     if (!description.trim()) {
       handleSnakbarOpen("Please enter description", "error");
       document.getElementById("description").focus();
-      setUpdateLoading(true);
+      setUpdateLoading(false);
       return;
     }
     try {
       let data = {
-        // title: "Title",
+        title: title,
         order_id: updateId,
         description: description,
       };
@@ -245,8 +252,10 @@ const AddTicket = () => {
       });
 
       if (response?.status > 199 && response?.status < 300) {
-        handleSnakbarOpen("Update Successfully", "success");
+        handleSnakbarOpen("Successfully", "success");
         handleClose();
+        setTitle("");
+        setDescription("");
         setUpdateLoading(false);
       }
     } catch (error) {
@@ -701,7 +710,7 @@ const AddTicket = () => {
         maxWidth="lg"
         sx={{ ".MuiDialog-paper": { p: 3 } }}
       >
-        <DialogContent sx={{ minWidth: "350px" }}>
+        <DialogContent sx={{ minWidth: "350px", maxWidth: "350px" }}>
           <Typography
             variant="h5"
             component="div"
@@ -709,6 +718,16 @@ const AddTicket = () => {
           >
             Create Ticket
           </Typography>
+          <TextField
+            fullWidth
+            id="title"
+            label="Title"
+            variant="outlined"
+            size="small"
+            sx={{ mb: 2 }}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <TextField
             fullWidth
             id="description"

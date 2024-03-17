@@ -85,6 +85,7 @@ const TicketList = () => {
   const [openDetailDialog, setOpenDetailDialog] = useState(false);
   const [detailData, setDetailData] = useState({});
   const [updateStatus, setUpdateStatus] = useState("");
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const handleDetailClickOpen = (data) => {
     setDetailData(data);
@@ -98,6 +99,7 @@ const TicketList = () => {
   const handleClickOpen = (data) => {
     console.log("data", data);
     setUpdateId(data.id);
+    setTitle(data.title);
     setDescription(data.description);
     setUpdateStatus(data.status);
     setOpen(true);
@@ -142,8 +144,8 @@ const TicketList = () => {
     let cellNo = adtech_admin_panel?.permission?.some(
       (el) => el.name === "complain-update"
     )
-      ? 11
-      : 10;
+      ? 12
+      : 11;
     for (let i = 0; i < 25; i++) {
       let cells = [];
 
@@ -232,9 +234,22 @@ const TicketList = () => {
     // setErrors({});
 
     setUpdateLoading(true);
+
+    if (!title.trim()) {
+      handleSnakbarOpen("Please enter title", "error");
+      document.getElementById("title").focus();
+      setUpdateLoading(false);
+      return;
+    }
+    if (!description.trim()) {
+      handleSnakbarOpen("Please enter description", "error");
+      document.getElementById("description").focus();
+      setUpdateLoading(false);
+      return;
+    }
     try {
       let data = {
-        // title: "Title",
+        title: title,
         status: updateStatus,
         description: description,
       };
@@ -250,6 +265,8 @@ const TicketList = () => {
       if (response?.status > 199 && response?.status < 300) {
         handleSnakbarOpen("Update Successfully", "success");
         handleClose();
+        setTitle("");
+        setDescription("");
         setUpdateLoading(false);
         getData();
       }
@@ -466,6 +483,14 @@ const TicketList = () => {
             <TableHead>
               <TableRow>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>
+                  {" "}
+                  Ticket Title
+                </TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>
+                  {" "}
+                  Ticket Description
+                </TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>
                   Customer Info
                 </TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Invoice No</TableCell>
@@ -476,7 +501,7 @@ const TicketList = () => {
                 </TableCell>
 
                 {/* <TableCell align="center">Status</TableCell> */}
-                <TableCell>Description</TableCell>
+
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Updated At</TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Created By</TableCell>
@@ -501,6 +526,20 @@ const TicketList = () => {
                   <TableRow
                   // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
+                    <TableCell sx={{ width: "190px" }}>
+                      {row?.title === null
+                        ? "-------"
+                        : row?.title === ""
+                        ? "-------"
+                        : row?.title}
+                    </TableCell>
+                    <TableCell sx={{ width: "190px" }}>
+                      {row?.description === null
+                        ? "-------"
+                        : row?.description === ""
+                        ? "-------"
+                        : row?.description}
+                    </TableCell>
                     <TableCell
                       sx={{
                         // color: `${theme.palette.primary.main}`,
@@ -538,13 +577,6 @@ const TicketList = () => {
                         : "Day"}
                     </TableCell>
 
-                    <TableCell sx={{ width: "190px" }}>
-                      {row?.description === null
-                        ? "-------"
-                        : row?.description === ""
-                        ? "-------"
-                        : row?.description}
-                    </TableCell>
                     <TableCell sx={{ minWidth: "90px" }}>
                       {" "}
                       {moment(row?.order?.created_at).format(
@@ -663,14 +695,25 @@ const TicketList = () => {
         maxWidth="lg"
         sx={{ ".MuiDialog-paper": { p: 3 } }}
       >
-        <DialogContent sx={{ minWidth: "350px" }}>
+        <DialogContent sx={{ minWidth: "350px", maxWidth: "350px" }}>
           <Typography
             variant="h5"
             component="div"
             style={{ marginBottom: "20px" }}
           >
-            Create Ticket
+            Update Ticket
           </Typography>
+
+          <TextField
+            fullWidth
+            id="title"
+            label="Title"
+            variant="outlined"
+            size="small"
+            sx={{ mb: 2 }}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <TextField
             fullWidth
             sx={{ mb: 2 }}

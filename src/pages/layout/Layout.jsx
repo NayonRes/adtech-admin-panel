@@ -466,7 +466,7 @@ export default function Layout() {
                   color="text.main"
                   sx={{ fontWeight: 700, mb: 1 }}
                 >
-                  Customer Pages
+                  Customer
                 </Typography>
                 {/* {adtech_admin_panel?.permission?.some(
                   (el) => el.name === "customer-create"
@@ -513,7 +513,7 @@ export default function Layout() {
                   color="text.main"
                   sx={{ fontWeight: 700, mb: 1 }}
                 >
-                  Ticket Pages
+                  Ticket
                 </Typography>
                 {adtech_admin_panel?.permission?.some(
                   (el) => el.name === "complain-create"
@@ -609,7 +609,7 @@ export default function Layout() {
                   color="text.main"
                   sx={{ fontWeight: 700, mb: 1 }}
                 >
-                  Order Pages
+                  Order
                 </Typography>
                 {/* {adtech_admin_panel?.permission?.some(
                   (el) => el.name === "order-create"
@@ -710,7 +710,7 @@ export default function Layout() {
                   color="text.main"
                   sx={{ fontWeight: 700, mb: 1 }}
                 >
-                  Role Page
+                  Role
                 </Typography>
 
                 <ListItemButton
@@ -736,7 +736,7 @@ export default function Layout() {
                   color="text.main"
                   sx={{ fontWeight: 700, mb: 1 }}
                 >
-                  User Pages
+                  User
                 </Typography>
                 {adtech_admin_panel?.permission?.some(
                   (el) => el.name === "user-create"

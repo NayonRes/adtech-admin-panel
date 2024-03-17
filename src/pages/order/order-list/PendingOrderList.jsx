@@ -138,7 +138,7 @@ const PendingOrderList = () => {
     let cellNo = adtech_admin_panel?.permission?.some(
       (el) => el.name === "order-update"
     )
-      ? 14
+      ? 15
       : 14;
     for (let i = 0; i < 25; i++) {
       let cells = [];
@@ -577,6 +577,9 @@ const PendingOrderList = () => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
+              <TableCell sx={{ whiteSpace: "nowrap" }}>
+                  Customer Info
+                </TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Invoice No</TableCell>
                 <TableCell>Promotion</TableCell>
                 <TableCell>Amount</TableCell>
@@ -611,6 +614,19 @@ const PendingOrderList = () => {
                   <TableRow
                   // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
+                     <TableCell
+                      sx={{
+                        // color: `${theme.palette.primary.main}`,
+                        fontWeight: 500,
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {row?.customer?.name}
+                      <br />
+                      <span style={{ fontWeight: 400, fontSize: "12px" }}>
+                        {row?.customer?.email}
+                      </span>
+                    </TableCell>
                     <TableCell
                       sx={{
                         // color: `${theme.palette.primary.main}`,
