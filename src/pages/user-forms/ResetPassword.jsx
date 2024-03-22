@@ -99,6 +99,9 @@ const ResetPassword = () => {
           url: "/api/auth/user/change-password",
           method: "post",
           data: data,
+          headers: {
+            Authorization: `Bearer ${adtech_admin_panel.token}`,
+          },
         });
 
         if (response?.status > 199 && response?.status < 300) {
