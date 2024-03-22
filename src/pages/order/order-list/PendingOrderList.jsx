@@ -68,7 +68,7 @@ const PendingOrderList = () => {
   const [name, setName] = useState("");
   const [invoiceNo, setInvoiceNo] = useState("");
   const [gender, setGender] = useState("");
-  const [status, setStatus] = useState("Pending");
+  const [status, setStatus] = useState("Active");
   const [totalPage, setTotalPage] = useState(0);
   const [totalData, setTotalData] = useState(0);
   const [message, setMessage] = useState("");
@@ -577,7 +577,7 @@ const PendingOrderList = () => {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-              <TableCell sx={{ whiteSpace: "nowrap" }}>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>
                   Customer Info
                 </TableCell>
                 <TableCell sx={{ whiteSpace: "nowrap" }}>Invoice No</TableCell>
@@ -614,7 +614,7 @@ const PendingOrderList = () => {
                   <TableRow
                   // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
-                     <TableCell
+                    <TableCell
                       sx={{
                         // color: `${theme.palette.primary.main}`,
                         fontWeight: 500,
